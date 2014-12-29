@@ -282,6 +282,20 @@ public final class PathPartList
         return m_box;
     }
 
+    public void reverseAddAll(PathPartList other) {
+        for ( int i = m_jso.length() - 1; i >= 0; i-- ) {
+            PathPartEntryJSO entry = m_jso.get(i);
+            push( entry );
+        }
+    }
+
+    public void addAll(PathPartList other) {
+        for ( int i = 0, length = m_jso.length(); i < length; i++ ) {
+            PathPartEntryJSO entry = m_jso.get(i);
+            push( entry );
+        }
+    }
+
     public static final class PathPartListJSO extends JsArray<PathPartEntryJSO>
     {
         public static final PathPartListJSO make()
