@@ -33,6 +33,10 @@ public class ShapeType
 
     public static final ShapeType LINE                = new ShapeType("Line");
 
+    public static final ShapeType STRAIGHT_LINE       = new ShapeType("StraightLine");
+
+    public static final ShapeType ORTHOGONAL_LINE     = new ShapeType("OrthogonalLine");
+
     public static final ShapeType MOVIE               = new ShapeType("Movie");
 
     public static final ShapeType PARALLELOGRAM       = new ShapeType("Parallelogram");
