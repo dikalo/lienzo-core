@@ -14,7 +14,7 @@ import com.ait.lienzo.client.core.types.Point2DArray;
 import com.ait.lienzo.shared.core.types.ShapeType;
 import com.google.gwt.json.client.JSONObject;
 
-public class OrthogonalLine extends Shape<OrthogonalLine> {
+public class OrthogonalLine extends Shape<OrthogonalLine> implements MultiPointLine{
     private static final int NE = 1;
     private static final int SE = 2;
     private static final int SW = 3;
@@ -26,27 +26,32 @@ public class OrthogonalLine extends Shape<OrthogonalLine> {
     private static final int S = 3;
     private static final int W = 4;
 
-    private PathPartList paths;
+    private final PathPartList m_list = new PathPartList();
 
     public OrthogonalLine(Point2D start, Point2D... points) {
         super(ShapeType.ORTHOGONAL_LINE);
 
         Point2DArray array = new Point2DArray();
         array.push(start, points);
-        init( array);
+        init(array);
     }
 
     public OrthogonalLine(Point2DArray points) {
         super(ShapeType.ORTHOGONAL_LINE);
-        init( points);
+        init(points);
     }
 
     public void init(Point2DArray points) {
         getAttributes().setControlPoints(points);
     }
 
-    public OrthogonalLine(JSONObject node, ValidationContext ctx)  throws ValidationException {
+    public OrthogonalLine(JSONObject node, ValidationContext ctx) throws ValidationException {
         super(ShapeType.ORTHOGONAL_LINE, node, ctx);
+    }
+
+    public void setControlPoints(Point2DArray points) {
+        m_list.clear();
+        getAttributes().setControlPoints(points);
     }
 
     @Override
@@ -56,17 +61,21 @@ public class OrthogonalLine extends Shape<OrthogonalLine> {
 
     @Override
     protected boolean prepare(Context2D context, Attributes attr, double alpha) {
-        if ( paths == null ) {
+        if (m_list.size() < 1) {
             buildPath(attr);
-            context.path( paths );
-            return true;
-        } else {
+        }
+
+        if (m_list.size() < 1)
+        {
             return false;
         }
+
+        context.path(m_list);
+
+        return true;
     }
 
     private void buildPath(Attributes attr) {
-        paths = new PathPartList();
         if (false == LienzoCore.get().isNativeLineDashSupported())
         {
             setDashArray( null ); // fall back to solid line
@@ -77,32 +86,27 @@ public class OrthogonalLine extends Shape<OrthogonalLine> {
         Point2D p1 = points.get(0);
         Point2D p2 = points.get(1);
 
-        System.out.print( points );
-        System.out.println(" ");
-
-        paths.M(p1.getX(), p1.getY());
-
-
+        m_list.M(p1.getX(), p1.getY());
 
         if (points.size() == 2) {
-            paths.L(p2.getX(), p2.getY());
+            m_list.L(p2.getX(), p2.getY());
         } else {
 
             NFastDoubleArrayJSO newPoints1 = getOrthonalLinePoints(points, false);
             NFastDoubleArrayJSO newPoints2 = getOrthonalLinePoints(points, true);
             if ( newPoints2 == null || (newPoints1 != null &&  newPoints1.size() < newPoints2.size() )) {
-                drawOrthonalLinePoints(newPoints1, paths);
+                drawOrthogonalLinePoints(newPoints1, m_list);
             } else if ( newPoints1 == null || (newPoints2 != null && newPoints2.size() < newPoints1.size() )) {
-                drawOrthonalLinePoints(newPoints2, paths);
+                drawOrthogonalLinePoints(newPoints2, m_list);
             } else if (newPoints1 != null &&  newPoints2 != null && newPoints1.size() == newPoints2.size()) {
-                drawOrthonalLinePoints(newPoints1, paths);
+                drawOrthogonalLinePoints(newPoints1, m_list);
             } else  {
-                throw new RuntimeException("Defensive Programming. The else should not drop through, we should not have two invalid paths");
+                throw new RuntimeException("Defensive Programming. The else should not drop through, we should not have two invalid m_list");
             }
         }
     }
 
-    public void drawOrthonalLinePoints(NFastDoubleArrayJSO points, PathPartList paths) {
+    public void drawOrthogonalLinePoints(NFastDoubleArrayJSO points, PathPartList paths) {
         for ( int i = 0, length = points.size(); i < length; i += 2) {
             double x = points.get(i);
             double y = points.get(i+1);
@@ -116,14 +120,13 @@ public class OrthogonalLine extends Shape<OrthogonalLine> {
         Point2D p1 = points.get(0);
         Point2D p2 = points.get(1);
 
-        int direction = getOrthonalLinePoints(newPoints, p1, p2, points.get(2), alternative);
+        int direction = getOrthogonalLinePoints(newPoints, p1, p2, points.get(2), alternative);
         p1 = p2;
         for (int i = 2, length = points.size(); i < length; i++) {
             p2 = points.get(i);
             direction = getOrthonalLinePoints(newPoints, direction, p1, p2);
 
             if ( direction == -1 ) {
-                System.out.println( newPoints );
                 return null;
             }
 
@@ -132,7 +135,7 @@ public class OrthogonalLine extends Shape<OrthogonalLine> {
         return newPoints;
     }
 
-    public int getOrthonalLinePoints(NFastDoubleArrayJSO newPoints, Point2D p1, Point2D p2, Point2D p3, boolean alternative) {
+    public int getOrthogonalLinePoints(NFastDoubleArrayJSO newPoints, Point2D p1, Point2D p2, Point2D p3, boolean alternative) {
         int direction = direction(p1, p2, p3, alternative);
 
         int secondDirection;
