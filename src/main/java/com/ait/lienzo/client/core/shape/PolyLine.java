@@ -22,6 +22,7 @@ import com.ait.lienzo.client.core.shape.json.IFactory;
 import com.ait.lienzo.client.core.shape.json.validators.ValidationContext;
 import com.ait.lienzo.client.core.shape.json.validators.ValidationException;
 import com.ait.lienzo.client.core.types.BoundingBox;
+import com.ait.lienzo.client.core.types.PathPartList;
 import com.ait.lienzo.client.core.types.Point2D;
 import com.ait.lienzo.client.core.types.Point2DArray;
 import com.ait.lienzo.shared.core.types.ShapeType;
@@ -33,17 +34,19 @@ import com.google.gwt.json.client.JSONObject;
  */
 public class PolyLine extends AbstractOffsetMultiPointShape<PolyLine>
 {
-    private double  m_tailOffsetValue = 0;
+    private       double       m_tailOffsetValue = 0;
 
-    private double  m_headOffsetValue = 0;
+    private       double       m_headOffsetValue = 0;
 
-    private Point2D m_tailOffsetPoint = null;
+    private       Point2D      m_tailOffsetPoint = null;
 
-    private Point2D m_headOffsetPoint = null;
+    private       Point2D      m_headOffsetPoint = null;
+
+    private final PathPartList m_list            = new PathPartList();
 
     /**
      * Constructor. Creates an instance of a polyline.
-     * 
+     *
      * @param points a {@link Point2DArray} containing 2 or more points.
      */
     public PolyLine(final Point2DArray points)
@@ -83,38 +86,109 @@ public class PolyLine extends AbstractOffsetMultiPointShape<PolyLine>
 
     /**
      * Draws this polyline.
-     * 
+     *
      * @param context
      */
     @Override
     protected boolean prepare(final Context2D context, final Attributes attr, final double alpha)
     {
-        Point2DArray list = attr.getPoints();
-
-        if (null != list)
+        if (m_list.size() < 1)
         {
-            list = list.noAdjacentPoints();
-
-            final int size = list.size();
-
-            if (size > 1)
+            if (false == parse(attr))
             {
-                Point2D point = list.get(0);
-
-                context.beginPath();
-
-                context.moveTo(point.getX(), point.getY());
-
-                for (int i = 1; i < size; i++)
-                {
-                    point = list.get(i);
-
-                    context.lineTo(point.getX(), point.getY());
-                }
-                return true;
+                return false;
             }
         }
-        return false;
+        if (m_list.size() < 1)
+        {
+            return false;
+        }
+        context.path(m_list);
+
+        return true;
+    }
+
+    protected boolean parse(final Attributes attr)
+    {
+        Point2DArray list = attr.getPoints();
+        if (null == list)
+        {
+            return false;
+        }
+
+        list = list.noAdjacentPoints();
+        final int size = list.size();
+
+        if ( size == 0 )
+        {
+            return false;
+        }
+
+        int startIndex = correctTailWithOffset(list, size);
+        int endIndex = correctHeadWithOffset(list, size);
+
+        Point2D p0 = list.get(startIndex);
+        m_list.M(p0.getX(), p0.getY());
+
+        Point2D point = p0;
+        for (int i = startIndex+1; i <= endIndex; i++)
+        {
+            point = list.get(i);
+
+            m_list.L(point.getX(), point.getY());
+        }
+
+        return true;
+    }
+
+    private int correctTailWithOffset(Point2DArray list, int size)
+    {
+        int i = 1;
+        double tailOffset = getTailOffset();
+        if ( tailOffset > 0 )
+        {
+            Point2D p0 = list.get(0);
+            for (; i < size; i++)
+            {
+                Point2D p1 = list.get(i);
+                Point2D dx = p1.sub(p0);
+                double length = dx.getLength();
+                if (length > tailOffset)
+                {
+                    // offset is within this point, now find the intersect, this is the new p0.
+                    p0 = p0.add(dx.unit().mul(tailOffset));
+                    break;
+                }
+            }
+            list.set(i-1, p0);
+            m_tailOffsetPoint = p0;
+        }
+        return i-1;
+    }
+
+    private int correctHeadWithOffset(Point2DArray list, int size)
+    {
+        int i = size - 2;
+        double headOffset = getHeadOffset();
+        if ( headOffset > 0 )
+        {
+            Point2D pLast = list.get(size - 1);
+            for (; i >= 0; i--)
+            {
+                Point2D p1 = list.get(i);
+                Point2D dx = pLast.sub(p1);
+                double length = dx.getLength();
+                if (length > headOffset)
+                {
+                    // offset is within this point, now find the intersect, this is the new pLast.
+                    pLast = pLast.sub(dx.unit().mul(headOffset));
+                    break;
+                }
+            }
+            list.set(i + 1, pLast);
+            m_headOffsetPoint = pLast;
+        }
+        return i+1;
     }
 
     @Override
