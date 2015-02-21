@@ -18,10 +18,14 @@ package com.ait.lienzo.client.core.shape;
 
 import com.ait.lienzo.client.core.Attribute;
 import com.ait.lienzo.client.core.Context2D;
+import com.ait.lienzo.client.core.event.AttributesChangedEvent;
 import com.ait.lienzo.client.core.shape.json.IFactory;
 import com.ait.lienzo.client.core.shape.json.validators.ValidationContext;
 import com.ait.lienzo.client.core.shape.json.validators.ValidationException;
 import com.ait.lienzo.client.core.types.BoundingBox;
+import com.ait.lienzo.client.core.util.EdgeAndCenterIndex;
+import com.ait.lienzo.client.core.util.EdgeAndCenterIndex.EdgeAndCenterIndexHandler;
+import com.ait.lienzo.client.core.util.EdgeAndCenterIndex.AlignmentCallback;
 import com.ait.lienzo.shared.core.types.ShapeType;
 import com.google.gwt.json.client.JSONObject;
 
@@ -212,4 +216,41 @@ public class Rectangle extends Shape<Rectangle>
             return new Rectangle(node, ctx);
         }
     }
+
+    @Override
+    public EdgeAndCenterIndexHandler getEdgeAndCenterIndexHandler(EdgeAndCenterIndex edgeAndCenterIndex, AlignmentCallback alignmentCallback)
+    {
+        return new RectangleEdgeAndCenterIndexHandler(this, edgeAndCenterIndex, alignmentCallback);
+    }
+
+    public static class RectangleEdgeAndCenterIndexHandler extends EdgeAndCenterIndexHandler
+    {
+        public RectangleEdgeAndCenterIndexHandler(Rectangle rect, EdgeAndCenterIndex edgeAndCenterIndex, AlignmentCallback alignmentCallback)
+        {
+            super(rect, edgeAndCenterIndex, alignmentCallback, Attribute.X, Attribute.Y, Attribute.WIDTH, Attribute.HEIGHT);
+        }
+
+        public void doOnAttributesChanged(AttributesChangedEvent event)
+        {
+            boolean xChanged = event.has(Attribute.X);
+            boolean yChanged = event.has(Attribute.Y);
+            boolean wChanged = event.has(Attribute.WIDTH);
+            boolean hChanged = event.has(Attribute.HEIGHT);
+
+            if ( !xChanged && !yChanged && !wChanged && !hChanged) {
+                return ;
+            }
+
+            if ( ( xChanged && m_shape.getX() == m_x ) || ( yChanged && m_shape.getY() == m_y )) {
+                // this can happen when the event batching triggers after a drag has stopped, but the event change was due to the dragging.
+                // @dean REVIEW
+                return;
+            }
+
+            capturePositions( m_shape.getX(),  m_shape.getY());
+            updateIndex(xChanged, xChanged || wChanged, xChanged || wChanged,
+                        yChanged, yChanged || hChanged, yChanged || hChanged);
+        }
+    }
+
 }
