@@ -61,77 +61,20 @@ public class OrthogonalPolyLine extends AbstractDirectionalMultiPointShape<Ortho
         super(ShapeType.ORTHOGONAL_POLYLINE, node, ctx);
     }
 
-    public void correctTailWithOffset(Point2DArray points, double offset, Direction direction)
-    {
-        Point2D p0 = points.get(0);
-
-        Point2D p1 = points.get(1);
-
-        Point2D p = correctEndWithOffset(offset, direction, p0, p1, false);
-
-        m_tailOffsetPoint = p;
-
-        points.set(0, p);
-    }
-
-    public void correctHeadWithOffset(Point2DArray points, double offset, Direction direction)
-    {
-        int size = points.size();
-
-        Point2D p0 = points.get(size - 2);
-
-        Point2D p1 = points.get(size - 1);
-
-        Point2D p = correctEndWithOffset(offset, direction, p0, p1, true);
-
-        m_headOffsetPoint = p;
-
-        points.set(size - 1, p);
-    }
-
-    private static final Point2D correctEndWithOffset(double offset, final Direction direction, final Point2D p0, final Point2D p1, final boolean reverse)
-    {
-        Point2D target;
-
-        if (reverse)
-        {
-            target = p1;
-
-            offset = -offset;
-        }
-        else
-        {
-            target = p0;
-        }
-        switch (direction)
-        {
-            case NORTH:
-                return target.setY(target.getY() - offset);
-            case EAST:
-                return target.setX(target.getX() + offset);
-            case SOUTH:
-                return target.setY(target.getY() + offset);
-            case WEST:
-                return target.setX(target.getX() - offset);
-            case NONE:
-            default:
-                return target.add(p1.sub(p0).unit().mul(offset)); // unit vector in the direction of SE
-        }
-    }
-
     private static final NFastDoubleArrayJSO getOrthogonalLinePoints(final Point2DArray points, Direction tailDirection, Direction headDirection, final double correction)
     {
         final NFastDoubleArrayJSO buffer = NFastDoubleArrayJSO.make();
 
+        Point2D p0 = points.get(0);
+
+        double p0x = p0.getX();
+
+        double p0y = p0.getY();
+
+        addPoint(buffer, p0x, p0y);
         if (points.size() == 2)
         {
-            Point2D p0 = points.get(0);
-
             Point2D p1 = points.get(1);
-
-            double p0x = p0.getX();
-
-            double p0y = p0.getY();
 
             switch (tailDirection)
             {
@@ -645,33 +588,25 @@ public class OrthogonalPolyLine extends AbstractDirectionalMultiPointShape<Ortho
 
             if (points.size() > 1)
             {
-                final double tailOffset = attr.getTailOffset();
-
-                final double headOffset = attr.getHeadOffset();
-
                 final double correction = attr.getCorrectionOffset();
 
                 final Direction headDirection = attr.getHeadDirection();
 
                 final Direction tailDirection = attr.getTailDirection();
 
-                if (tailOffset > 0)
-                {
-                    correctTailWithOffset(points, tailOffset, tailDirection);
-                }
-                if (headOffset > 0)
-                {
-                    correctHeadWithOffset(points, headOffset, headDirection);
-                }
-                final Point2D p1 = points.get(0);
-
                 final NFastDoubleArrayJSO linept = getOrthogonalLinePoints(points, tailDirection, headDirection, correction);
 
+                final int size = linept.size();
+
+                int startIndex = correctTailWithOffset(linept, size);
+                int endIndex = correctHeadWithOffset(linept, size);
+
+                final Point2D p1 = points.get(startIndex);
                 if (null != linept)
                 {
-                    m_list.M(p1.getX(), p1.getY());
+                    m_list.M(linept.get(startIndex), linept.get(startIndex+1));
 
-                    addLinePoints(linept);
+                    addLinePoints(linept, startIndex+2, endIndex);
 
                     return true;
                 }
@@ -680,14 +615,65 @@ public class OrthogonalPolyLine extends AbstractDirectionalMultiPointShape<Ortho
         return false;
     }
 
-    private final void addLinePoints(final NFastDoubleArrayJSO points)
+    private final void addLinePoints(final NFastDoubleArrayJSO points, int startIndex, int endIndex)
     {
-        final int size = points.size();
 
-        for (int i = 0; i < size; i += 2)
+        for (int i = startIndex; i < endIndex; i += 2)
         {
             m_list.L(points.get(i), points.get(i + 1));
         }
+    }
+
+    private int correctTailWithOffset(NFastDoubleArrayJSO array, int size)
+    {
+        int i = 2;
+        double tailOffset = getTailOffset();
+        if ( tailOffset > 0 )
+        {
+            Point2D p0 = new Point2D( array.get(0), array.get(1) );
+            for (; i < size; i +=2)
+            {
+                Point2D p1 = new Point2D( array.get(i), array.get(i+1) );
+                Point2D dx = p1.sub(p0);
+                double length = dx.getLength();
+                if (length > tailOffset)
+                {
+                    // offset is within this point, now find the intersect, this is the new p0.
+                    p0 = p0.add(dx.unit().mul(tailOffset));
+                    break;
+                }
+            }
+            array.set(i-2, p0.getX());
+            array.set(i-1, p0.getY());
+            m_tailOffsetPoint = p0;
+        }
+        return i-2;
+    }
+
+    private int correctHeadWithOffset(NFastDoubleArrayJSO array, int size)
+    {
+        int i = size - 4;
+        double headOffset = getHeadOffset();
+        if ( headOffset > 0 )
+        {
+            Point2D pLast = new Point2D( array.get(size - 2), array.get(size - 1) );
+            for (; i >= 0; i-=2)
+            {
+                Point2D p1 = new Point2D( array.get(i), array.get(i+1) );
+                Point2D dx = pLast.sub(p1);
+                double length = dx.getLength();
+                if (length > headOffset)
+                {
+                    // offset is within this point, now find the intersect, this is the new pLast.
+                    pLast = pLast.sub(dx.unit().mul(headOffset));
+                    break;
+                }
+            }
+            array.set(i + 2, pLast.getX());
+            array.set(i + 3, pLast.getY());
+            m_headOffsetPoint = pLast;
+        }
+        return i+3;
     }
 
     /**
