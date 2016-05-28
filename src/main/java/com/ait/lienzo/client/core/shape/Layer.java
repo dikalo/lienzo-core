@@ -87,6 +87,8 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
 
     private final ColorKeyRotor            m_c_rotor         = new ColorKeyRotor();
 
+    private Layer                          m_replicatedLayer;
+
     private final NFastStringMap<Shape<?>> m_shape_color_map = new NFastStringMap<Shape<?>>();
 
     /**
@@ -643,7 +645,13 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
             }
             if (null == m_context)
             {
-                m_context = new Context2D(m_element);
+                if ( null == m_replicatedLayer) {
+                    m_context = new Context2D(m_element);
+                }
+                else
+                {
+                    m_context = new ReplicatingContext2D(m_element, m_replicatedLayer.getContext() );
+                }
 
                 m_recctx = new RecordingContext2D(m_context);
             }
@@ -700,6 +708,14 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
     public Layer draw()
     {
         return draw(isRecording() ? getRecordingContext() : getContext());
+    }
+
+    public Layer getReplicatedLayer() {
+        return m_replicatedLayer;
+    }
+
+    public void setReplicatedLayer(Layer replicatedLayer) {
+        m_replicatedLayer = replicatedLayer;
     }
 
     protected Layer draw(Context2D context)
