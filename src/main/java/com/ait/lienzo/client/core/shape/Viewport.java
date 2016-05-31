@@ -79,6 +79,8 @@ public class Viewport extends ContainerNode<Scene, Viewport>
 
     private Scene            m_drag    = new Scene();
 
+    private Layer            m_replicatedLayer;
+
     private Scene            m_main    = null;
 
     private Scene            m_back    = new Scene();
@@ -94,7 +96,14 @@ public class Viewport extends ContainerNode<Scene, Viewport>
 
     public Viewport(final Scene main, final int wide, final int high)
     {
+        this(main, wide, high, null);
+    }
+
+    public Viewport(final Scene main, final int wide, final int high, Layer replicatedLayer)
+    {
         super(NodeType.VIEWPORT, new ViewportFastArrayStorageEngine());
+
+        m_replicatedLayer = replicatedLayer;
 
         m_wide = wide;
 
@@ -103,15 +112,21 @@ public class Viewport extends ContainerNode<Scene, Viewport>
         setSceneAndState(main);
     }
 
+    public Viewport(final int wide, final int high)
+    {
+        this( wide, high, null);
+    }
     /**
      * Constructor. Creates an instance of a viewport.
      * 
      * @param wide
      * @param high
      */
-    public Viewport(final int wide, final int high)
+    public Viewport(final int wide, final int high, Layer replicatedLayer)
     {
         super(NodeType.VIEWPORT, new ViewportFastArrayStorageEngine());
+
+        m_replicatedLayer = replicatedLayer;
 
         m_wide = wide;
 
@@ -152,9 +167,12 @@ public class Viewport extends ContainerNode<Scene, Viewport>
     {
         add(m_back, m_main = main, m_drag);
 
-        m_drag.add(new DragLayer());
+        // this must set the replicated layer at constructor time, as it access the Elemnt during construction time
+        m_drag.add(new DragLayer(m_replicatedLayer));
 
+        // this can still be set after, as normal
         m_drag.add(new Layer());
+        getOverLayer().setReplicatedLayer(m_replicatedLayer);
 
         m_mediators = new Mediators(this);
 
@@ -183,6 +201,11 @@ public class Viewport extends ContainerNode<Scene, Viewport>
     public final Viewport asViewport()
     {
         return this;
+    }
+
+
+    public Layer getReplicatedLayer() {
+        return m_replicatedLayer;
     }
 
     /**
@@ -760,10 +783,13 @@ public class Viewport extends ContainerNode<Scene, Viewport>
 
     private static class DragLayer extends Layer
     {
-        private DragContext2D m_context;
+        private Context2D m_context;
 
-        public DragLayer()
+
+        public DragLayer(Layer replicatedLayer)
         {
+            setReplicatedLayer(replicatedLayer);
+
             setVisible(true);
 
             setListening(false);
@@ -778,7 +804,16 @@ public class Viewport extends ContainerNode<Scene, Viewport>
             {
                 if (null == m_context)
                 {
-                    m_context = new DragContext2D(element);
+                    if ( null == getReplicatedLayer()) {
+                        m_context = new DragContext2D(element);
+                    }
+                    else
+                    {
+                        ReplicatingContext2D context = new ReplicatingContext2D(element, getReplicatedLayer().getContext() );
+                        context.setDrag(true);
+                        m_context = context;
+                    }
+
                 }
             }
             return element;

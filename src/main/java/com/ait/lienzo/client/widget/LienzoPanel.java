@@ -71,6 +71,8 @@ public class LienzoPanel extends FocusPanel implements RequiresResize, ProvidesR
 
     private Cursor               m_select_cursor;
 
+    private Layer                m_replicatedLayer;
+
     public LienzoPanel()
     {
         this(new Viewport());
