@@ -18,6 +18,7 @@ package com.ait.lienzo.client.core.shape;
 
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.function.Predicate;
 
 import com.ait.lienzo.client.core.Attribute;
 import com.ait.lienzo.client.core.Context2D;
@@ -43,7 +44,6 @@ import com.ait.lienzo.client.core.types.Transform;
 import com.ait.lienzo.client.core.util.ScratchPad;
 import com.ait.lienzo.shared.core.types.DataURLType;
 import com.ait.lienzo.shared.core.types.NodeType;
-import com.ait.tooling.common.api.java.util.function.Predicate;
 import com.ait.tooling.nativetools.client.collection.MetaData;
 import com.ait.tooling.nativetools.client.collection.NFastArrayList;
 import com.google.gwt.dom.client.CanvasElement;

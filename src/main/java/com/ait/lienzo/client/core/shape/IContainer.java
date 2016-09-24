@@ -16,9 +16,10 @@
 
 package com.ait.lienzo.client.core.shape;
 
+import java.util.function.Predicate;
+
 import com.ait.lienzo.client.core.shape.storage.IStorageEngine;
 import com.ait.lienzo.client.core.types.BoundingBox;
-import com.ait.tooling.common.api.java.util.function.Predicate;
 import com.ait.tooling.nativetools.client.collection.NFastArrayList;
 
 /**

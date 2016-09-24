@@ -16,7 +16,8 @@
 
 package com.ait.lienzo.client.core.mediator;
 
-import com.ait.tooling.common.api.java.util.function.Predicate;
+import java.util.function.Predicate;
+
 import com.google.gwt.event.shared.GwtEvent;
 
 /**

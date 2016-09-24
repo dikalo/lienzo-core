@@ -16,6 +16,8 @@
 
 package com.ait.lienzo.client.widget;
 
+import java.util.function.Predicate;
+
 import com.ait.lienzo.client.core.config.LienzoCore;
 import com.ait.lienzo.client.core.i18n.MessageConstants;
 import com.ait.lienzo.client.core.mediator.IMediator;
@@ -29,7 +31,6 @@ import com.ait.lienzo.client.core.util.CursorMap;
 import com.ait.lienzo.shared.core.types.AutoScaleType;
 import com.ait.lienzo.shared.core.types.DataURLType;
 import com.ait.lienzo.shared.core.types.IColor;
-import com.ait.tooling.common.api.java.util.function.Predicate;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Style.Cursor;

@@ -16,6 +16,8 @@
 
 package com.ait.lienzo.client.core.config;
 
+import java.util.function.Supplier;
+
 import com.ait.lienzo.client.core.image.filter.AlphaScaleColorImageDataFilter;
 import com.ait.lienzo.client.core.image.filter.AverageGrayScaleImageDataFilter;
 import com.ait.lienzo.client.core.image.filter.BrightnessImageDataFilter;
@@ -84,7 +86,6 @@ import com.ait.lienzo.shared.core.types.ImageFilterType;
 import com.ait.lienzo.shared.core.types.NodeType;
 import com.ait.lienzo.shared.core.types.PaletteType;
 import com.ait.lienzo.shared.core.types.ShapeType;
-import com.ait.tooling.common.api.java.util.function.Supplier;
 
 final class LienzoCorePlugin extends AbstractLienzoCorePlugin
 {

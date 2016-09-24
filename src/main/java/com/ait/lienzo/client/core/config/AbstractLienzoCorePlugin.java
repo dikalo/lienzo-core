@@ -17,10 +17,10 @@
 package com.ait.lienzo.client.core.config;
 
 import java.util.Collection;
+import java.util.function.Supplier;
 
 import com.ait.lienzo.client.core.shape.json.IFactory;
 import com.ait.tooling.common.api.java.util.StringOps;
-import com.ait.tooling.common.api.java.util.function.Supplier;
 import com.ait.tooling.common.api.types.IStringValued;
 import com.ait.tooling.nativetools.client.collection.NFastStringMap;
 
