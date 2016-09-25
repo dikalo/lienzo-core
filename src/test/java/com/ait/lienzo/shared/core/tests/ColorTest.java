@@ -36,10 +36,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Test;
-
 import com.ait.lienzo.shared.core.types.Color;
 import com.ait.lienzo.shared.core.types.ColorName;
+import org.junit.Test;
 
 public class ColorTest
 {
@@ -181,6 +180,7 @@ public class ColorTest
         assertFalse(color.equals(SALMON.getColor()));
     }
 
+    @Test
     public void testGetHSLFromRGB()
     {
         final String SIENNA_HSL = "hsl(19.3,56.1%,40.2%)";
@@ -225,6 +225,7 @@ public class ColorTest
         assertEquals(BLUE.getColor(), blue);
     }
 
+    @Test
     public void testGetHSL()
     {
         assertEquals("hsl(271.1,75.9%,52.7%)", BLUEVIOLET.getColor().getHSL().toBrowserHSL());

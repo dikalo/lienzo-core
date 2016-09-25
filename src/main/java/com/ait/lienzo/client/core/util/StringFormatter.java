@@ -22,25 +22,27 @@ public final class StringFormatter
     {
     }
 
-    public static final native String toFixed(double value, int digits)
-    /*-{
-		var n = value;
-		if (isFinite(n)) {
-			return n.toFixed(digits);
-		}
-		return "NaN";
-    }-*/;
+    public static String toFixed(double value, int digits)
+    {
+        if (digits < 0)
+        {
+            return Double.toString(value);
+        }
+
+        double correction = Math.pow(10, digits);
+        return Double.toString(Math.round(value * correction) / correction);
+    }
 
     /**
      * Simple formatter. Replaces strings of the form "{0}", "{1}" etc. with the
      * corresponding parameters.
-     * 
+     *
      * @param format String with "{0}", "{1}" placeholders.
      * @param params First parameter will be placed in "{0}" placeholder.
-     * 
+     *
      * @return Formatted string
      */
-    public static final String format(final String format, final Object... params)
+    public static String format(final String format, final Object... params)
     {
         final StringBuilder b = new StringBuilder();
 
