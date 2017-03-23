@@ -29,6 +29,7 @@ import com.ait.lienzo.client.core.Context2D;
 import com.ait.lienzo.client.core.shape.json.validators.ValidationContext;
 import com.ait.lienzo.client.core.shape.json.validators.ValidationException;
 import com.ait.lienzo.client.core.types.BoundingBox;
+import com.ait.lienzo.client.core.types.PathPartEntryJSO;
 import com.ait.lienzo.client.core.types.PathPartList;
 import com.ait.lienzo.client.core.types.Point2D;
 import com.ait.lienzo.client.core.types.Point2DArray;
@@ -43,6 +44,8 @@ public class OrthogonalPolyLine extends AbstractDirectionalMultiPointShape<Ortho
     private Point2D m_headOffsetPoint;
 
     private Point2D m_tailOffsetPoint;
+
+    private double  m_selectionBoxOffset = 20;
 
     public OrthogonalPolyLine(final Point2D start, final Point2D... points)
     {
@@ -66,6 +69,11 @@ public class OrthogonalPolyLine extends AbstractDirectionalMultiPointShape<Ortho
     protected OrthogonalPolyLine(final JSONObject node, final ValidationContext ctx) throws ValidationException
     {
         super(ShapeType.ORTHOGONAL_POLYLINE, node, ctx);
+    }
+
+    public OrthogonalPolyLine setSelectionBoundingBoxOffset(double m_selectionBoxOffset) {
+        this.m_selectionBoxOffset = m_selectionBoxOffset;
+        return this;
     }
 
     public void correctHeadWithOffset(Point2DArray points, double offset, Direction direction)
@@ -902,6 +910,69 @@ public class OrthogonalPolyLine extends AbstractDirectionalMultiPointShape<Ortho
     private static final void addPoint(final NFastDoubleArrayJSO buffer, final double x0, final double y0, double x1, double y1)
     {
         buffer.push(x0, y0, x1, y1);
+    }
+
+    @Override
+    protected boolean dofillBoundsForSelection(final Context2D context,
+                                               final Attributes attr,
+                                               final double alpha) {
+        if (getPathPartList().size() > 0 &&
+                attr.isFillBoundsForSelection() &&
+                (alpha * attr.getFillAlpha()) > 0)
+        {
+            _dofillBoundsForSelection(context);
+            return true;
+        }
+        return false;
+    }
+
+    private void  _dofillBoundsForSelection(final Context2D context) {
+        final String color = getColorKey();
+        if (null != color)
+        {
+            int size = getPathPartList().size();
+            int i = PathPartList.skipRedundantLeadingMoveTo(getPathPartList());
+            double oldx = 0;
+            double oldy = 0;
+            final double offset = m_selectionBoxOffset / 2;
+            for (; i < size; i++)
+            {
+                final PathPartEntryJSO part = getPathPartList().get(i);
+                final NFastDoubleArrayJSO p = part.getPoints();
+
+                double x = 0;
+                double y = 0;
+                double width = 0;
+                double height = 0;
+                switch (part.getCommand())
+                {
+                    case PathPartEntryJSO.LINETO_ABSOLUTE:
+                        x = oldx;
+                        y = oldy;
+                        width = p.get(0) - x;
+                        height = p.get(1) - y;
+                        oldx = x + width;
+                        oldy = y + height;
+                        break;
+                    case PathPartEntryJSO.MOVETO_ABSOLUTE:
+                        oldx = p.get(0);
+                        oldy = p.get(1);
+                        break;
+                }
+                if (width > 0 || height > 0)
+                {
+                    final double _x = x - offset;
+                    final double _y = y - offset;
+                    final double _width = width + ( width >= offset ? offset : m_selectionBoxOffset);
+                    final double _height = height + ( height >= offset ? offset : m_selectionBoxOffset);
+                    context.setFillColor(color);
+                    context.fillRect(_x,
+                                     _y,
+                                     _width,
+                                     _height);
+                }
+            }
+        }
     }
 
     @Override
