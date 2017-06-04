@@ -24,22 +24,23 @@ import com.ait.lienzo.client.core.types.Point2D;
 import com.ait.lienzo.shared.core.types.ArrowEnd;
 import com.ait.lienzo.shared.core.types.Direction;
 
-public class WiresConnection extends AbstractControlHandle
-{
-    private WiresMagnet                           m_magnet;
+public class WiresConnection extends AbstractControlHandle {
 
-    private WiresConnector                        m_connector;
+    private WiresMagnet m_magnet;
+
+    private WiresConnector m_connector;
 
     private AbstractDirectionalMultiPointShape<?> m_line;
 
-    private MultiPath                             m_endPath;
+    private MultiPath m_endPath;
 
-    Point2D                                       m_point;
+    Point2D m_point;
 
-    ArrowEnd                                      m_end;
+    ArrowEnd m_end;
 
-    public WiresConnection(WiresConnector connector, MultiPath endPath, ArrowEnd end)
-    {
+    public WiresConnection(WiresConnector connector,
+                           MultiPath endPath,
+                           ArrowEnd end) {
         m_connector = connector;
         m_line = connector.getLine();
         m_endPath = endPath;
@@ -48,13 +49,12 @@ public class WiresConnection extends AbstractControlHandle
         m_end = end;
     }
 
-    public WiresConnection(final boolean active)
-    {
+    public WiresConnection(final boolean active) {
         setActive(active);
     }
 
-    public WiresConnection move(final double x, final double y)
-    {
+    public WiresConnection move(final double x,
+                                final double y) {
         m_point.setX(x);
 
         m_point.setY(y);
@@ -63,89 +63,68 @@ public class WiresConnection extends AbstractControlHandle
 
         IControlHandle handle;
 
-        if (m_end == ArrowEnd.HEAD)
-        {
+        if (m_end == ArrowEnd.HEAD) {
             handle = m_connector.getPointHandles().getHandle(0);
-        }
-        else
-        {
+        } else {
             handle = m_connector.getPointHandles().getHandle(m_connector.getPointHandles().size() - 1);
         }
-        if (handle != null && handle.getControl() != null)
-        {
+        if (handle != null && handle.getControl() != null) {
             handle.getControl().setX(x);
 
             handle.getControl().setY(y);
         }
-        if (m_line.getLayer() != null)
-        {
+        if (m_line.getLayer() != null) {
             m_line.getLayer().batch();
         }
         return this;
     }
 
-    public ArrowEnd getEnd()
-    {
+    public ArrowEnd getEnd() {
         return m_end;
     }
 
-    public void setEnd(ArrowEnd end)
-    {
+    public void setEnd(ArrowEnd end) {
         m_end = end;
     }
 
-    public AbstractDirectionalMultiPointShape<?> getLine()
-    {
+    public AbstractDirectionalMultiPointShape<?> getLine() {
         return m_line;
     }
 
-    public void setLine(AbstractDirectionalMultiPointShape<?> line)
-    {
+    public void setLine(AbstractDirectionalMultiPointShape<?> line) {
         m_line = line;
     }
 
-    public MultiPath getEndPath()
-    {
+    public MultiPath getEndPath() {
         return m_endPath;
     }
 
-    public WiresConnector getConnector()
-    {
+    public WiresConnector getConnector() {
         return m_connector;
     }
 
-    public WiresConnection setMagnet(final WiresMagnet magnet)
-    {
-        if (m_magnet != null)
-        {
+    public WiresConnection setMagnet(final WiresMagnet magnet) {
+        if (m_magnet != null) {
             m_magnet.removeHandle(this);
         }
 
-        if (magnet != null)
-        {
+        if (magnet != null) {
             magnet.addHandle(this);
 
-            Point2D absLoc = WiresUtils.getLocation(magnet.getControl());
+            final Point2D absLoc = magnet.getControl().getComputedLocation();
 
-            move(absLoc.getX(), absLoc.getY());
+            move(absLoc.getX(),
+                 absLoc.getY());
 
-            if (m_end == ArrowEnd.TAIL)
-            {
+            if (m_end == ArrowEnd.TAIL) {
                 m_line.setTailDirection(magnet.getDirection());
-            }
-            else
-            {
+            } else {
                 m_line.setHeadDirection(magnet.getDirection());
             }
-        }
-        else
-        {
-            if (m_end == ArrowEnd.TAIL)
-            {
+        } else {
+            if (m_end == ArrowEnd.TAIL) {
                 m_line.setTailDirection(Direction.NONE);
-            }
-            else
-            {
+            } else {
                 m_line.setHeadDirection(Direction.NONE);
             }
         }
@@ -158,33 +137,26 @@ public class WiresConnection extends AbstractControlHandle
         return this;
     }
 
-    public WiresMagnet getMagnet()
-    {
+    public WiresMagnet getMagnet() {
         return m_magnet;
     }
 
     @Override
-    public IPrimitive<?> getControl()
-    {
-        if (m_end == ArrowEnd.HEAD)
-        {
+    public IPrimitive<?> getControl() {
+        if (m_end == ArrowEnd.HEAD) {
             return m_connector.getPointHandles().getHandle(0).getControl();
-        }
-        else
-        {
+        } else {
             return m_connector.getPointHandles().getHandle(m_connector.getPointHandles().size() - 1).getControl();
         }
     }
 
     @Override
-    public ControlHandleType getType()
-    {
+    public ControlHandleType getType() {
         return ControlHandleStandardType.HANDLE;
     }
 
     @Override
-    public void destroy()
-    {
+    public void destroy() {
         super.destroy();
 
         //        m_context.getHandleManager().destroy(this);
