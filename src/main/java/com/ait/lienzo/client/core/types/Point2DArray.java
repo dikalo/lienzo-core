@@ -278,6 +278,11 @@ public class Point2DArray implements Iterable<Point2D>
         return new Point2DArray(m_jso.noAdjacentPoints());
     }
 
+    public final Point2DArray copy()
+    {
+        return new Point2DArray(m_jso.copy());
+    }
+
     public final Collection<Point2D> getPoints()
     {
         final int size = size();
