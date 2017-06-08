@@ -54,6 +54,7 @@ import com.ait.lienzo.client.core.types.PathPartEntryJSO;
 import com.ait.lienzo.client.core.types.PathPartList;
 import com.ait.lienzo.client.core.types.Point2D;
 import com.ait.lienzo.client.core.types.Point2DArray;
+import com.ait.lienzo.client.core.util.Geometry;
 import com.ait.lienzo.shared.core.types.ColorName;
 import com.ait.lienzo.shared.core.types.DragMode;
 import com.ait.lienzo.shared.core.types.ShapeType;
@@ -634,7 +635,7 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
         }
     }
 
-    private static class ResizeControlHandle extends AbstractControlHandle
+    protected static class ResizeControlHandle extends AbstractControlHandle
     {
         private final Shape<?>                       m_shape;
 
@@ -1018,15 +1019,12 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
                             case PathPartEntryJSO.MOVETO_ABSOLUTE:
                             case PathPartEntryJSO.LINETO_ABSOLUTE:
                             {
-                                NFastDoubleArrayJSO doubles = m_entries.get(i);
-                                double x = doubles.get(0);
-                                double newX = m_handle.getX(m_boxStartX, m_boxStartY, m_boxStartWidth, m_boxStartHeight, x, dx);
-
-                                double y = doubles.get(1);
-                                double newY = m_handle.getY(m_boxStartX, m_boxStartY, m_boxStartWidth, m_boxStartHeight, y, dy);
-
-                                points.set(0, newX);
-                                points.set(1, newY);
+                            	resizeMoveToLineTo(dx, dy, i, points);
+                                break;
+                            }
+                            case PathPartEntryJSO.CANVAS_ARCTO_ABSOLUTE:
+                            {
+                            	resizeCanvasArcTo(dx, dy, i, points);
                                 break;
                             }
                         }
@@ -1072,15 +1070,130 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
                         case PathPartEntryJSO.MOVETO_ABSOLUTE:
                         case PathPartEntryJSO.LINETO_ABSOLUTE:
                         {
-                            double x = points.get(0);
-                            double y = points.get(1);
-                            NFastDoubleArrayJSO doubles = NFastDoubleArrayJSO.make(x, y);
-                            m_entries.push(doubles);
+                        	copyMoveToLineTo(points);
                             break;
+                        }
+                        case PathPartEntryJSO.CANVAS_ARCTO_ABSOLUTE:
+                        {
+                        	Point2D previousPoint = getPoint(i - 1, list);
+                        	if (previousPoint == null)
+                        		previousPoint = new Point2D();
+                        		
+                        	copyCanvasArcTo(previousPoint, points);
+                        	break;
                         }
                     }
                 }
             }
         }
+	
+        private Point2D getPoint(int index, PathPartList list)
+        {
+        	Point2D point = new Point2D();
+        	
+        	PathPartEntryJSO entry = list.get(index);                        	
+			NFastDoubleArrayJSO coordinates = entry.getPoints();
+				
+			point.setX(coordinates.get(0));
+			point.setY(coordinates.get(1));
+			
+			return point;
+        }
+	
+        private void copyMoveToLineTo(NFastDoubleArrayJSO points) 
+		{
+			double x = points.get(0);
+			double y = points.get(1);
+			
+			NFastDoubleArrayJSO doubles = NFastDoubleArrayJSO.make(x, y);
+			m_entries.push(doubles);
+		}
+        
+        private void copyCanvasArcTo(Point2D previousPoint, NFastDoubleArrayJSO points) 
+        {
+        	double x1 = points.get(0);
+        	double y1 = points.get(1);
+			double x2 = points.get(2);
+			double y2 = points.get(3);
+			double drawRadius = points.get(4);
+			double scaleRadius = points.get(5);
+		
+			double previousPointX = previousPoint.getX();
+			double previousPointY = previousPoint.getY();
+			
+			NFastDoubleArrayJSO doubles = NFastDoubleArrayJSO.make(previousPointX, previousPointY, x1, y1, x2, y2, drawRadius, scaleRadius);
+			m_entries.push(doubles);
+	}
+
+        private void resizeMoveToLineTo(double dx, double dy, int i, NFastDoubleArrayJSO points)
+        {
+        	NFastDoubleArrayJSO doubles = m_entries.get(i);
+		
+        	double x = doubles.get(0);                                
+        	double newX = m_handle.getX(m_boxStartX, m_boxStartY, m_boxStartWidth, m_boxStartHeight, x, dx);
+        
+        	double y = doubles.get(1);
+        	double newY = m_handle.getY(m_boxStartX, m_boxStartY, m_boxStartWidth, m_boxStartHeight, y, dy);
+
+        	points.set(0, newX);
+        	points.set(1, newY);
+        }
+
+        private void resizeCanvasArcTo(double dx, double dy, int i, NFastDoubleArrayJSO points)
+        {
+        	NFastDoubleArrayJSO doubles = m_entries.get(i);
+        	
+        	double x1 = doubles.get(0);                                
+        	double y1 = doubles.get(1);
+        	Point2D point1 = new Point2D(x1, y1);
+        	double newx1 = m_handle.getX(m_boxStartX, m_boxStartY, m_boxStartWidth, m_boxStartHeight, x1, dx);
+        	double newy1 = m_handle.getY(m_boxStartX, m_boxStartY, m_boxStartWidth, m_boxStartHeight, y1, dy);
+        	Point2D newPoint1 = new Point2D(newx1, newy1);
+			
+        	double x2 = doubles.get(2);                                
+        	double y2 = doubles.get(3);
+        	Point2D point2 = new Point2D(x2, y2);
+        	double newx2 = m_handle.getX(m_boxStartX, m_boxStartY, m_boxStartWidth, m_boxStartHeight, x2, dx);
+        	double newy2 = m_handle.getY(m_boxStartX, m_boxStartY, m_boxStartWidth, m_boxStartHeight, y2, dy);
+        	Point2D newPoint2 = new Point2D(newx2, newy2);
+			
+        	double x3 = doubles.get(4);                                
+        	double y3 = doubles.get(5);
+        	Point2D point3 = new Point2D(x3, y3);
+        	double newx3 = m_handle.getX(m_boxStartX, m_boxStartY, m_boxStartWidth, m_boxStartHeight, x3, dx);
+        	double newy3 = m_handle.getY(m_boxStartX, m_boxStartY, m_boxStartWidth, m_boxStartHeight, y3, dy);
+        	Point2D newPoint3 = new Point2D(newx3, newy3);
+			
+        	double scaleRadius = doubles.get(7);	
+        	double drawRadius = 0d;
+			
+        	Point2DArray arcPoints = Geometry.getCanvasArcToPoints(point1, point2, point3, scaleRadius);
+			
+        	Point2D arcPoint1 = arcPoints.get(0);
+        	double ax1 = m_handle.getX(m_boxStartX, m_boxStartY, m_boxStartWidth, m_boxStartHeight, arcPoint1.getX(), dx);
+        	double ay1 = m_handle.getY(m_boxStartX, m_boxStartY, m_boxStartWidth, m_boxStartHeight, arcPoint1.getY(), dy);
+        	arcPoint1 = new Point2D(ax1, ay1);
+
+        	Point2D arcPoint3 = arcPoints.get(2);
+        	double ax3 = m_handle.getX(m_boxStartX, m_boxStartY, m_boxStartWidth, m_boxStartHeight, arcPoint3.getX(), dx);
+        	double ay3 = m_handle.getY(m_boxStartX, m_boxStartY, m_boxStartWidth, m_boxStartHeight, arcPoint3.getY(), dy);
+        	arcPoint3 = new Point2D(ax3, ay3);
+			
+        	double angle = Geometry.getAngleBetweenTwoLines(newPoint1, newPoint2, newPoint3) / 2d;
+        	double scaleAdjacent = newPoint2.distance(arcPoint3);		
+        	scaleRadius =  scaleAdjacent * Math.tan(angle);;
+			
+        	double drawAdjacent = Math.max(newPoint2.distance(newPoint1), newPoint2.distance(arcPoint1));			
+        	drawAdjacent = Math.min(scaleAdjacent, drawAdjacent);
+        	drawRadius = drawAdjacent * Math.tan(angle);
+			
+        	points.set(0, newx2);
+        	points.set(1, newy2);			
+        	points.set(2, newx3);
+        	points.set(3, newy3);
+        	points.set(4, drawRadius);
+        	points.set(5, scaleRadius);
+        }
+
     }
 }

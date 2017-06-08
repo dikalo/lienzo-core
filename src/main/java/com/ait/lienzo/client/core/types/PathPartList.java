@@ -174,7 +174,7 @@ public final class PathPartList
 
     public PathPartList A(final double x0, final double y0, double x1, final double y1, final double radius)
     {
-        push(PathPartEntryJSO.make(PathPartEntryJSO.CANVAS_ARCTO_ABSOLUTE, NFastDoubleArrayJSO.make(x0, y0, m_cpx = x1, m_cpy = y1, radius)));
+        push(PathPartEntryJSO.make(PathPartEntryJSO.CANVAS_ARCTO_ABSOLUTE, NFastDoubleArrayJSO.make(x0, y0, m_cpx = x1, m_cpy = y1, radius, radius)));
 
         return this;
     }
