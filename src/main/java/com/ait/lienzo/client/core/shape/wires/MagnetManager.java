@@ -95,20 +95,16 @@ public class MagnetManager
         final ControlHandleList list = new ControlHandleList(primTarget);
         final BoundingBox box = wiresShape.getPath().getBoundingBox();
 
-        double left = box.getX();
-        double right = left + box.getWidth();
-        double top = box.getY();
-        double bottom = top + box.getHeight();
-
         final Point2D primLoc = primTarget.getComputedLocation();
         final Magnets magnets = new Magnets(this, list, wiresShape);
 
+        int i = 0;
         for (Point2D p : points)
         {
             final double mx = primLoc.getX() + p.getX();
             final double my = primLoc.getY() + p.getY();
-            WiresMagnet m = new WiresMagnet(magnets, null, 0, p.getX(), p.getY(), getControlPrimitive(mx, my), true);
-            Direction d = getDirection(p, left, right, top, bottom);
+            WiresMagnet m = new WiresMagnet(magnets, null, i++, p.getX(), p.getY(), getControlPrimitive(mx, my), true);
+            Direction d = getDirection(p, box);
             m.setDirection(d);
             list.add(m);
         }
@@ -126,8 +122,13 @@ public class MagnetManager
         return m_magnetRegistry.get(shape.uuid());
     }
 
-    public Direction getDirection(Point2D point, double left, double right, double top, double bottom)
+    public static Direction getDirection(Point2D point, BoundingBox box)
     {
+        double left   = box.getLeft();
+        double right  = box.getRight();
+        double top    = box.getTop();
+        double bottom = box.getBottom();
+
         double x = point.getX();
         double y = point.getY();
 
@@ -159,7 +160,7 @@ public class MagnetManager
                 }
                 else
                 {
-                    return Direction.NORTH_WEST;
+                    return Direction.WEST;//Direction.NORTH_WEST;
                 }
             }
             else
@@ -174,7 +175,7 @@ public class MagnetManager
                 }
                 else
                 {
-                    return Direction.SOUTH_WEST;
+                    return Direction.WEST;//Direction.SOUTH_WEST;
                 }
             }
         }
@@ -192,7 +193,7 @@ public class MagnetManager
                 }
                 else
                 {
-                    return Direction.NORTH_EAST;
+                    return Direction.EAST;//Direction.NORTH_EAST;
                 }
             }
             else
@@ -207,7 +208,7 @@ public class MagnetManager
                 }
                 else
                 {
-                    return Direction.SOUTH_EAST;
+                    return Direction.EAST;//Direction.SOUTH_EAST;
                 }
             }
         }

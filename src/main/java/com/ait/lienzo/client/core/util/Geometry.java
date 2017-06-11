@@ -25,6 +25,7 @@ import com.ait.lienzo.client.core.shape.BezierCurve;
 import com.ait.lienzo.client.core.shape.IPrimitive;
 import com.ait.lienzo.client.core.shape.MultiPath;
 import com.ait.lienzo.client.core.shape.QuadraticCurve;
+import com.ait.lienzo.client.core.shape.wires.WiresConnection;
 import com.ait.lienzo.client.core.types.BoundingBox;
 import com.ait.lienzo.client.core.types.BoundingPoints;
 import com.ait.lienzo.client.core.types.PathPartEntryJSO;
@@ -35,6 +36,7 @@ import com.ait.lienzo.client.core.types.Transform;
 import com.ait.lienzo.shared.core.types.Direction;
 import com.ait.tooling.nativetools.client.collection.NFastArrayList;
 import com.ait.tooling.nativetools.client.collection.NFastDoubleArrayJSO;
+import com.ait.tooling.nativetools.client.util.Console;
 
 /**
  * Static utility methods related to geometry and other math.
@@ -586,8 +588,17 @@ public final class Geometry
         return (Math.abs(dx) > Math.abs(dy)) ? (dy / dx) : (dx / dy);
     }
 
+    public static final double distance(final double x0, final double y0, double x1, double y1)
+    {
+        return distance(x1 - x0, y1 - y0);
+    }
+
     public static final double distance(final double dx, final double dy)
     {
+        if (dx == 0 && dy == 0)
+        {
+            Console.get().info("zero");
+        }
         return Math.sqrt((dx * dx) + (dy * dy));
     }
 
@@ -1067,6 +1078,24 @@ public final class Geometry
         return intersections;
     }
 
+    public static Point2D getPathIntersect(WiresConnection connection, MultiPath path, Point2D c, int pointIndex)
+    {
+        Point2DArray plist =  connection.getConnector().getLine().getPoint2DArray();
+
+        Point2D p = plist.get(pointIndex).copy();
+
+        Point2D offsetP = path.getComputedLocation();
+
+        p.offset(-offsetP.getX(), -offsetP.getY());
+
+        Set<Point2D>[] set    =  Geometry.getIntersects(path, new Point2DArray(c, p));
+        Point2DArray   points = Geometry.removeInnerPoints(c, set);
+
+        //Point2D intersectPoint = connection.getMagnet().getMagnets().getWiresShape().getGroup().getComputedLocation();
+        //return new Point2D(intersectPoint.getX() + points.get(pointIndex).getX(), intersectPoint.getY() + points.get(pointIndex).getY());
+        return points.get(1);
+    }
+
     public static void getCardinalIntersects(PathPartList path, Point2DArray cardinals, Set<Point2D>[] intersections)
     {
         Point2D center = cardinals.get(0);
@@ -1266,6 +1295,11 @@ public final class Geometry
         return new Point2DArray(c, n, ne, e, se, s, sw, w, nw);
     }
 
+    public static final Direction getQuadrant(final Point2D c, final Point2D p1)
+    {
+        return getQuadrant(c.getX(), c.getY(), p1.getX(), p1.getY());
+    }
+
     /**
      * Returns the NESW quadrant the point is in.  The delta from the center
      * NE x > 0, y < 0
@@ -1273,22 +1307,23 @@ public final class Geometry
      * SW x <= 0, y >= 0
      * NW x <= 0, y < 0
      *
+     * @param cx
+     * @param cy*
      * @param x0
      * @param y0
-     * @param c
      * @return
      */
-    public static final Direction getQuadrant(final double x0, final double y0, final Point2D c)
+    public static final Direction getQuadrant(final double cx, double cy, final double x0, final double y0)
     {
-        if (x0 > c.getX() && y0 < c.getY())
+        if (x0 > cx && y0 < cy)
         {
             return Direction.NORTH_EAST;
         }
-        if (x0 > c.getX() && y0 >= c.getY())
+        if (x0 > cx && y0 >= cy)
         {
             return Direction.SOUTH_EAST;
         }
-        if (x0 <= c.getX() && y0 >= c.getY())
+        if (x0 <= cx && y0 >= cy)
         {
             return Direction.SOUTH_WEST;
         }
@@ -1369,7 +1404,7 @@ public final class Geometry
         return nearest;
     }
 
-    private static Point2D findCenter(BoundingBox box)
+    public static Point2D findCenter(BoundingBox box)
     {
         return new Point2D(box.getX() + box.getWidth() / 2, box.getY() + box.getHeight() / 2);
     }
