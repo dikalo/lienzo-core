@@ -361,7 +361,7 @@ public class WiresShapeControlImpl implements WiresShapeControl
 
     private Point2DArray getIntersections(Point2DArray linePoints, MultiPath path, Point2DArray intersectPoints, Point2D absLoc)
     {
-        for (PathPartList pathPartList : path.getPathPartListArray())
+        for (PathPartList pathPartList : path.getActualPathPartListArray())
         {
             intersectPoints = getPoint2Ds(linePoints, intersectPoints, absLoc, pathPartList);
         }
