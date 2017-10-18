@@ -93,6 +93,12 @@ public interface MessageConstants extends Constants
     @DefaultStringValue("The radius of a 90 degree arc, which is used as a rounded corner.")
     public String cornerRadiusDescription();
 
+    @DefaultStringValue("Size constraints")
+    public String sizeConstraintsLabel();
+
+    @DefaultStringValue("Min/Max width and Min/Max height constraint values in pixels.")
+    public String sizeConstraintsDescription();
+
     @DefaultStringValue("Fill")
     public String fillLabel();
 
