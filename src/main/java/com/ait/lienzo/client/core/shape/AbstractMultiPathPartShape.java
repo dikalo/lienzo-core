@@ -54,6 +54,8 @@ import com.ait.lienzo.client.core.types.PathPartEntryJSO;
 import com.ait.lienzo.client.core.types.PathPartList;
 import com.ait.lienzo.client.core.types.Point2D;
 import com.ait.lienzo.client.core.types.Point2DArray;
+import com.ait.lienzo.client.widget.DragConstraintEnforcer;
+import com.ait.lienzo.client.widget.DragContext;
 import com.ait.lienzo.shared.core.types.ColorName;
 import com.ait.lienzo.shared.core.types.DragMode;
 import com.ait.lienzo.shared.core.types.ShapeType;
@@ -161,6 +163,17 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
                 }
             }
         }
+    }
+
+    public BoundingBox getSizeConstraints()
+    {
+        return  getAttributes().getSizeConstraints();
+    }
+
+    public T setSizeConstraints(final BoundingBox sizeConstraints)
+    {
+        getAttributes().setSizeConstraints(sizeConstraints);
+        return refresh();
     }
 
     @Override
@@ -825,7 +838,8 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
         }
     }
 
-    public static class ResizeHandleDragHandler implements NodeDragStartHandler, NodeDragMoveHandler, NodeDragEndHandler
+    public static class ResizeHandleDragHandler implements NodeDragStartHandler, NodeDragMoveHandler, NodeDragEndHandler,
+                                                           DragConstraintEnforcer
     {
         private final Shape<?>                      m_shape;
 
@@ -1005,6 +1019,13 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
 
                 double dy = event.getDragContext().getDistanceAdjusted().getY();
 
+                Point2D delta = new Point2D(dx, dy);
+
+                if (!adjust(delta))
+                {
+                    return;
+                }
+
                 for (PathPartList list : m_listOfPaths)
                 {
                     for (int i = 0; i < list.size(); i++)
@@ -1020,10 +1041,10 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
                             {
                                 NFastDoubleArrayJSO doubles = m_entries.get(i);
                                 double x = doubles.get(0);
-                                double newX = m_handle.getX(m_boxStartX, m_boxStartY, m_boxStartWidth, m_boxStartHeight, x, dx);
+                                double newX = m_handle.getX(m_boxStartX, m_boxStartY, m_boxStartWidth, m_boxStartHeight, x, delta.getX());
 
                                 double y = doubles.get(1);
-                                double newY = m_handle.getY(m_boxStartX, m_boxStartY, m_boxStartWidth, m_boxStartHeight, y, dy);
+                                double newY = m_handle.getY(m_boxStartX, m_boxStartY, m_boxStartWidth, m_boxStartHeight, y, delta.getY());
 
                                 points.set(0, newX);
                                 points.set(1, newY);
@@ -1033,7 +1054,7 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
                     }
                     list.resetBoundingBox();
                 }
-                m_handle.updateOtherHandles(dx, dy, m_offsetX, m_offsetY, m_boxStartX, m_boxStartY, m_boxStartWidth, m_boxStartHeight);
+                m_handle.updateOtherHandles(delta.getX(), delta.getY(), m_offsetX, m_offsetY, m_boxStartX, m_boxStartY, m_boxStartWidth, m_boxStartHeight);
 
                 m_shape.refresh();
 
@@ -1082,6 +1103,124 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
                     }
                 }
             }
+        }
+
+        @Override
+        public void startDrag(DragContext dragContext)
+        {
+        }
+
+        @Override
+        public boolean adjust(Point2D dxy)
+        {
+            BoundingBox sizeConstraints = m_shape.getAttributes().getSizeConstraints();
+
+            if (sizeConstraints == null)
+            {
+                return true;
+            }
+
+            double minWidth = sizeConstraints.getMinX();
+
+            double maxWidth = sizeConstraints.getMaxX();
+
+            double minHeight = sizeConstraints.getMinY();
+
+            double maxHeight = sizeConstraints.getMaxY();
+
+            Point2D adjustedDelta = adjustForPosition(dxy);
+
+            double adjustedX = adjustedDelta.getX();
+
+            double adjustedY = adjustedDelta.getY();
+
+            double width = m_boxStartWidth + adjustedX;
+
+            double height = m_boxStartHeight + adjustedY;
+
+            boolean needsAdjustment = false;
+
+            if (width < minWidth)
+            {
+                double difference = width - minWidth;
+
+                adjustedDelta.setX(adjustedX - difference);
+            }
+            else
+            {
+                needsAdjustment = true;
+            }
+
+            if (width > maxWidth)
+            {
+                double difference = width - maxWidth;
+
+                adjustedDelta.setX(adjustedX - difference);
+            }
+            else
+            {
+                needsAdjustment = true;
+            }
+
+            if (height < minHeight)
+            {
+                double difference = height - minHeight;
+
+                adjustedDelta.setY(adjustedY - difference);
+            }
+            else
+            {
+                needsAdjustment = true;
+            }
+
+            if (height > maxHeight)
+            {
+                double difference = height - maxHeight;
+
+                adjustedDelta.setY(adjustedY - difference);
+            }
+            else
+            {
+                needsAdjustment = true;
+            }
+
+            adjustedDelta = adjustForPosition(adjustedDelta);
+
+            dxy.setX(adjustedDelta.getX());
+
+            dxy.setY(adjustedDelta.getY());
+
+            return needsAdjustment;
+        }
+
+        private Point2D adjustForPosition(Point2D dxy)
+        {
+            Point2D adjustedDXY = dxy.copy();
+
+            double x = adjustedDXY.getX();
+
+            double y = adjustedDXY.getY();
+
+            switch (m_handle.getPosition())
+            {
+                case 0: //tl
+                    x *= -1;
+                    y *= -1;
+                    break;
+                case 1: //tr
+                    y *= -1;
+                    break;
+                case 2: //br
+                    break;
+                case 3: //bl
+                    x *= -1;
+                    break;
+            }
+
+            adjustedDXY.setX(x);
+            adjustedDXY.setY(y);
+
+            return adjustedDXY;
         }
     }
 }
