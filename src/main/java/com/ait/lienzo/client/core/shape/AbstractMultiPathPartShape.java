@@ -54,6 +54,7 @@ import com.ait.lienzo.client.core.types.PathPartEntryJSO;
 import com.ait.lienzo.client.core.types.PathPartList;
 import com.ait.lienzo.client.core.types.Point2D;
 import com.ait.lienzo.client.core.types.Point2DArray;
+import com.ait.lienzo.client.core.util.Geometry;
 import com.ait.lienzo.shared.core.types.ColorName;
 import com.ait.lienzo.shared.core.types.DragMode;
 import com.ait.lienzo.shared.core.types.ShapeType;
@@ -66,6 +67,7 @@ import com.google.gwt.json.client.JSONObject;
 public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPartShape<T>> extends Shape<T>
 {
     private final NFastArrayList<PathPartList> m_points = new NFastArrayList<PathPartList>();
+    private NFastArrayList<PathPartList> m_cornerPoints = new NFastArrayList<PathPartList>();
 
     protected AbstractMultiPathPartShape(final ShapeType type)
     {
@@ -80,7 +82,13 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
     @Override
     public BoundingBox getBoundingBox()
     {
-        final int size = m_points.size();
+        NFastArrayList<PathPartList> points = m_points;
+
+        if (getCornerRadius() > 0)
+        {
+            points = m_cornerPoints;
+        }
+        final int size = points.size();
 
         if (size < 1)
         {
@@ -90,7 +98,7 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
 
         for (int i = 0; i < size; i++)
         {
-            bbox.add(m_points.get(i).getBoundingBox());
+            bbox.add(points.get(i).getBoundingBox());
         }
         return bbox;
     }
@@ -114,6 +122,31 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
         return cast();
     }
 
+    @Override
+    protected boolean prepare(Context2D context, Attributes attr, double alpha)
+    {
+        double radius = getCornerRadius();
+
+        if (radius != 0)
+        {
+            m_cornerPoints = new NFastArrayList<PathPartList>();
+
+            for (int i = 0; i < m_points.size(); i++)
+            {
+                PathPartList baseList = m_points.get(i);
+
+                Point2DArray basePoints = baseList.getPoints();
+
+                PathPartList cornerList = new PathPartList();
+
+                Geometry.drawArcJoinedLines(cornerList, baseList, basePoints, radius);
+
+                m_cornerPoints.add(cornerList);
+            }
+        }
+        return true;
+    }
+
     protected final void add(final PathPartList list)
     {
         m_points.add(list);
@@ -122,6 +155,18 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
     public final NFastArrayList<PathPartList> getPathPartListArray()
     {
         return m_points;
+    }
+
+    public final NFastArrayList<PathPartList> getActualPathPartListArray()
+    {
+        if (getCornerRadius() > 0)
+        {
+            return m_cornerPoints;
+        }
+        else
+        {
+            return m_points;
+        }
     }
 
     @Override
@@ -137,7 +182,13 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
         }
         if (prepare(context, attr, alpha))
         {
-            final int size = m_points.size();
+            NFastArrayList<PathPartList> points = m_points;
+
+            if (getCornerRadius() > 0)
+            {
+                points = m_cornerPoints;
+            }
+            final int size = points.size();
 
             if (size < 1)
             {
@@ -147,7 +198,7 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
             {
                 setAppliedShadow(false);
 
-                final PathPartList list = m_points.get(i);
+                final PathPartList list = points.get(i);
 
                 if (list.size() > 1)
                 {
@@ -161,6 +212,17 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
                 }
             }
         }
+    }
+
+    public double getCornerRadius()
+    {
+        return getAttributes().getCornerRadius();
+    }
+
+    public T setCornerRadius(final double radius)
+    {
+        getAttributes().setCornerRadius(radius);
+        return refresh();
     }
 
     @Override

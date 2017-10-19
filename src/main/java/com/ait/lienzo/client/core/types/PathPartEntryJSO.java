@@ -64,4 +64,13 @@ public final class PathPartEntryJSO extends JavaScriptObject
     /*-{
 		return this.points;
     }-*/;
+
+    public final PathPartEntryJSO copy()
+    {
+        int command = getCommand();
+
+        NFastDoubleArrayJSO points = getPoints().copy();
+
+        return make(command, points);
+    }
 }
