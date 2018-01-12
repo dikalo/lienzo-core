@@ -14,4 +14,5 @@ public interface WiresShapeHandler extends DragConstraintEnforcer,
                                            NodeMouseClickHandler {
 
     WiresShapeControl getControl();
+
 }
