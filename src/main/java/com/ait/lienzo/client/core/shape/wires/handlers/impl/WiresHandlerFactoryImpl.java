@@ -4,7 +4,7 @@ import com.ait.lienzo.client.core.shape.wires.PickerPart;
 import com.ait.lienzo.client.core.shape.wires.WiresConnector;
 import com.ait.lienzo.client.core.shape.wires.WiresManager;
 import com.ait.lienzo.client.core.shape.wires.handlers.WiresConnectorControl;
-import com.ait.lienzo.client.core.shape.wires.handlers.WiresConnectorControlHandler;
+import com.ait.lienzo.client.core.shape.wires.handlers.WiresControlPointHandler;
 import com.ait.lienzo.client.core.shape.wires.handlers.WiresConnectorHandler;
 import com.ait.lienzo.client.core.shape.wires.handlers.WiresHandlerFactory;
 import com.ait.lienzo.client.core.shape.wires.handlers.WiresShapeControl;
@@ -22,8 +22,8 @@ public class WiresHandlerFactoryImpl implements WiresHandlerFactory {
     }
 
     @Override
-    public WiresConnectorControlHandler newConnectorControlHandler(WiresConnector connector, WiresConnectorControl connectorControl) {
-        return new WiresConnectorControlHandlerImpl(connector, connectorControl);
+    public WiresControlPointHandler newControlPointHandler(WiresConnector connector, WiresConnectorControl connectorControl) {
+        return new WiresControlPointHandlerImpl(connector, connectorControl);
     }
 
     @Override

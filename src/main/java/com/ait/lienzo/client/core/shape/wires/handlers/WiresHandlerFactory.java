@@ -13,7 +13,7 @@ public interface WiresHandlerFactory {
 
     WiresConnectorHandler newConnectorHandler(WiresConnector connector, WiresManager wiresManager);
 
-    WiresConnectorControlHandler newConnectorControlHandler(WiresConnector connector, WiresConnectorControl connectorControl);
+    WiresControlPointHandler newControlPointHandler(WiresConnector connector, WiresConnectorControl connectorControl);
 
     WiresShapeHandler newShapeHandler(WiresShapeControl control, WiresShapeHighlight<PickerPart.ShapePart> highlight, WiresManager manager);
 }

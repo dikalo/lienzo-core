@@ -7,15 +7,14 @@ import com.ait.lienzo.client.core.event.NodeMouseDoubleClickEvent;
 import com.ait.lienzo.client.core.shape.IPrimitive;
 import com.ait.lienzo.client.core.shape.wires.WiresConnector;
 import com.ait.lienzo.client.core.shape.wires.handlers.WiresConnectorControl;
-import com.ait.lienzo.client.core.shape.wires.handlers.WiresConnectorControlHandler;
-import com.google.gwt.core.client.GWT;
+import com.ait.lienzo.client.core.shape.wires.handlers.WiresControlPointHandler;
 
-public class WiresConnectorControlHandlerImpl implements WiresConnectorControlHandler {
+public class WiresControlPointHandlerImpl implements WiresControlPointHandler {
 
     private WiresConnector m_connector;
     private WiresConnectorControl m_connectorControl;
 
-    public WiresConnectorControlHandlerImpl(WiresConnector connector, WiresConnectorControl connectorControl) {
+    public WiresControlPointHandlerImpl(WiresConnector connector, WiresConnectorControl connectorControl) {
         this.m_connector = connector;
         this.m_connectorControl = connectorControl;
     }

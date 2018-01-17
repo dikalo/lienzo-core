@@ -14,7 +14,7 @@ import com.ait.lienzo.client.core.shape.wires.WiresConnector;
 import com.ait.lienzo.client.core.shape.wires.WiresManager;
 import com.ait.lienzo.client.core.shape.wires.handlers.WiresConnectionControl;
 import com.ait.lienzo.client.core.shape.wires.handlers.WiresConnectorControl;
-import com.ait.lienzo.client.core.shape.wires.handlers.WiresConnectorControlHandler;
+import com.ait.lienzo.client.core.shape.wires.handlers.WiresControlPointHandler;
 import com.ait.lienzo.client.core.types.BoundingBox;
 import com.ait.lienzo.client.core.types.ImageData;
 import com.ait.lienzo.client.core.types.PathPartEntryJSO;
@@ -478,8 +478,8 @@ public class WiresConnectorControlImpl implements WiresConnectorControl {
             tail.setDragConstraints(tailConnectionHandler);
             m_HandlerRegistrationManager.register(tail.addNodeDragEndHandler(tailConnectionHandler));
 
-            final WiresConnectorControlHandler controlPointsHandler =
-                    m_wiresManager.getWiresHandlerFactory().newConnectorControlHandler(m_connector, this);
+            final WiresControlPointHandler controlPointsHandler =
+                    m_wiresManager.getWiresHandlerFactory().newControlPointHandler(m_connector, this);
 
             for (IControlHandle handle : m_connector.getPointHandles()) {
                 Shape<?> shape = handle.getControl().asShape();

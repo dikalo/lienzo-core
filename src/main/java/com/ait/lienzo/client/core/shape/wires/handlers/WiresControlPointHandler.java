@@ -10,9 +10,9 @@ import com.ait.lienzo.client.core.event.NodeMouseDoubleClickHandler;
  * This may be extended using the {@link WiresHandlerFactory} that is used by  * the {@link WiresConnectorControl}
  * when adding control points to a connector.
  */
-public interface WiresConnectorControlHandler extends NodeMouseDoubleClickHandler,
-                                                      NodeDragStartHandler,
-                                                      NodeDragEndHandler,
-                                                      NodeDragMoveHandler {
+public interface WiresControlPointHandler extends NodeMouseDoubleClickHandler,
+                                                  NodeDragStartHandler,
+                                                  NodeDragEndHandler,
+                                                  NodeDragMoveHandler {
 
 }
