@@ -89,6 +89,9 @@ public class WiresShapeHandlerImpl
             } else if (isContAllow) {
                 highlight.highlight(newParent,
                                     PickerPart.ShapePart.BODY);
+            } else {
+                highlight.error(newParent,
+                                PickerPart.ShapePart.BODY);
             }
         }
 
@@ -102,7 +105,7 @@ public class WiresShapeHandlerImpl
         final int dx = event.getDragContext().getDx();
         final int dy = event.getDragContext().getDy();
         control.onMove(dx,
-                        dy);
+                       dy);
 
         // Complete the control operation.
         if (control.onMoveComplete() && control.accept()) {
