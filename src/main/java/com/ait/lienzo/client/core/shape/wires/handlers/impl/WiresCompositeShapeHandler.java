@@ -36,17 +36,17 @@ import com.ait.lienzo.client.widget.DragContext;
  */
 public class WiresCompositeShapeHandler extends WiresManager.WiresDragHandler implements DragConstraintEnforcer, NodeDragEndHandler
 {
-    private final WiresCompositeControl                     shapeControl;
+    private final WiresCompositeControl                     m_shapeControl;
 
-    private final WiresShapeHighlight<PickerPart.ShapePart> highlight;
+    private final WiresShapeHighlight<PickerPart.ShapePart> m_highlight;
 
     public WiresCompositeShapeHandler(final WiresCompositeControl shapeControl, final WiresShapeHighlight<PickerPart.ShapePart> highlight, final WiresManager manager)
     {
         super(manager);
 
-        this.shapeControl = shapeControl;
+        this.m_shapeControl = shapeControl;
 
-        this.highlight = highlight;
+        this.m_highlight = highlight;
     }
 
     @Override
@@ -54,36 +54,39 @@ public class WiresCompositeShapeHandler extends WiresManager.WiresDragHandler im
     {
         super.startDrag(dragContext);
 
-        shapeControl.onMoveStart(dragContext.getDragStartX(), dragContext.getDragStartY());
+        m_shapeControl.onMoveStart(dragContext.getDragStartX(), dragContext.getDragStartY());
     }
 
     @Override
     protected boolean doAdjust(final Point2D dxy)
     {
-        final boolean adjusted = shapeControl.onMove(dxy.getX(), dxy.getY());
+        final boolean adjusted = m_shapeControl.onMove(dxy.getX(), dxy.getY());
 
         if (adjusted)
         {
-            dxy.set(shapeControl.getAdjust());
+            dxy.set(m_shapeControl.getAdjust());
 
             return true;
         }
         boolean shouldRestore = true;
 
-        if (shapeControl.isAllowed())
+        final WiresContainer parent = m_shapeControl.getSharedParent();
+        if (null != parent && parent instanceof WiresShape)
         {
-            final WiresContainer parent = shapeControl.getSharedParent();
-
-            if ((null != parent) && (parent instanceof WiresShape))
+            if (m_shapeControl.isAllowed())
             {
-                highlight.highlight((WiresShape) parent, PickerPart.ShapePart.BODY);
-
+                m_highlight.highlight((WiresShape) parent, PickerPart.ShapePart.BODY);
+                shouldRestore = false;
+            }
+            else
+            {
+                m_highlight.error((WiresShape) parent, PickerPart.ShapePart.BODY);
                 shouldRestore = false;
             }
         }
         if (shouldRestore)
         {
-            highlight.restore();
+            m_highlight.restore();
         }
         return false;
     }
@@ -95,17 +98,17 @@ public class WiresCompositeShapeHandler extends WiresManager.WiresDragHandler im
 
         final int dy = event.getDragContext().getDy();
 
-        shapeControl.onMove(dx, dy);
+        m_shapeControl.onMove(dx, dy);
 
-        if (shapeControl.onMoveComplete() && shapeControl.accept())
+        if (m_shapeControl.onMoveComplete() && m_shapeControl.accept())
         {
-            shapeControl.execute();
+            m_shapeControl.execute();
         }
         else
         {
             reset();
         }
-        highlight.restore();
+        m_highlight.restore();
     }
 
     @Override
@@ -113,12 +116,12 @@ public class WiresCompositeShapeHandler extends WiresManager.WiresDragHandler im
     {
         super.doReset();
 
-        highlight.restore();
+        m_highlight.restore();
     }
 
     @Override
     public WiresControl getControl()
     {
-        return shapeControl;
+        return m_shapeControl;
     }
 }
