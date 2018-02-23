@@ -21,6 +21,7 @@ import static com.ait.lienzo.client.core.shape.wires.IControlHandle.ControlHandl
 
 import com.ait.lienzo.client.core.shape.AbstractDirectionalMultiPointShape;
 import com.ait.lienzo.client.core.shape.Group;
+import com.ait.lienzo.client.core.shape.IDirectionalMultiPointShape;
 import com.ait.lienzo.client.core.shape.Layer;
 import com.ait.lienzo.client.core.shape.MultiPath;
 import com.ait.lienzo.client.core.shape.MultiPathDecorator;
@@ -40,12 +41,12 @@ public class WiresConnector
     public static boolean updateHeadTailForRefreshedConnector(final WiresConnector c)
     {
         // Iterate each refreshed line and get the new points for the decorators
-        if (c.getLine().getPathPartList().size() < 1)
+        if (c.getLine().asShape().getPathPartList().size() < 1)
         {
             // only do this for lines that have had refresh called
-            final AbstractDirectionalMultiPointShape<?> line = c.getLine();
+            final IDirectionalMultiPointShape<?> line = c.getLine();
 
-            if (c.isSpecialConnection() && (line.getPathPartList().size() == 0))
+            if ( c.isSpecialConnection() && line.asShape().getPathPartList().size() == 0)
             {
                 // if getPathPartList is empty, it was refreshed due to a point change
                 c.updateForSpecialConnections(false);
@@ -77,7 +78,7 @@ public class WiresConnector
 
     private HandlerRegistrationManager                  m_HandlerRegistrationManager;
 
-    private final AbstractDirectionalMultiPointShape<?> m_line;
+    private final IDirectionalMultiPointShape<?>        m_line;
 
     private final MultiPathDecorator                    m_headDecorator;
 
@@ -89,7 +90,7 @@ public class WiresConnector
 
     private WiresConnectorHandler                       m_wiresConnectorHandler;
 
-    public WiresConnector(final AbstractDirectionalMultiPointShape<?> line, final MultiPathDecorator headDecorator, final MultiPathDecorator tailDecorator)
+    public WiresConnector(final IDirectionalMultiPointShape<?> line, final MultiPathDecorator headDecorator, final MultiPathDecorator tailDecorator)
     {
         m_line = line;
 
@@ -127,7 +128,7 @@ public class WiresConnector
         setDraggable();
     }
 
-    public WiresConnector(final WiresMagnet headMagnet, final WiresMagnet tailMagnet, final AbstractDirectionalMultiPointShape<?> line, final MultiPathDecorator headDecorator, final MultiPathDecorator tailDecorator)
+    public WiresConnector(final WiresMagnet headMagnet, final WiresMagnet tailMagnet, final IDirectionalMultiPointShape<?> line, final MultiPathDecorator headDecorator, final MultiPathDecorator tailDecorator)
     {
         this(line, headDecorator, tailDecorator);
 
@@ -268,7 +269,7 @@ public class WiresConnector
         m_pointHandles = pointHandles;
     }
 
-    public AbstractDirectionalMultiPointShape<?> getLine()
+    public IDirectionalMultiPointShape<?> getLine()
     {
         return m_line;
     }

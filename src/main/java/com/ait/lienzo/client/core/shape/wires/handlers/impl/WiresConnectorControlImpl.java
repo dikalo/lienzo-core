@@ -20,6 +20,7 @@ import com.ait.lienzo.client.core.Context2D;
 import com.ait.lienzo.client.core.event.NodeDragEndEvent;
 import com.ait.lienzo.client.core.event.NodeDragEndHandler;
 import com.ait.lienzo.client.core.shape.AbstractDirectionalMultiPointShape;
+import com.ait.lienzo.client.core.shape.IDirectionalMultiPointShape;
 import com.ait.lienzo.client.core.shape.IPrimitive;
 import com.ait.lienzo.client.core.shape.Shape;
 import com.ait.lienzo.client.core.shape.wires.BackingColorMapUtils;
@@ -382,21 +383,18 @@ public class WiresConnectorControlImpl implements WiresConnectorControl {
     {
         final NFastStringMap<Integer> colorMap = new NFastStringMap<>();
 
-        final AbstractDirectionalMultiPointShape<?> line = connector.getLine();
+        final IDirectionalMultiPointShape<?> line = connector.getLine();
 
         final ScratchPad scratch = line.getScratchPad();
-
         scratch.clear();
-
-        final PathPartList path = line.getPathPartList();
-
+        PathPartList path = line.asShape().getPathPartList();
         int pointsIndex = 1;
 
         String color = MagnetManager.m_c_rotor.next();
 
         colorMap.put(color, pointsIndex);
         Context2D ctx = scratch.getContext();
-        double strokeWidth = line.getStrokeWidth();
+        double strokeWidth = line.asShape().getStrokeWidth();
         //setting a minimum stroke width to make finding a close point to the connector easier
         ctx.setStrokeWidth((strokeWidth < MINIMUM_STROKE_WITH ? MINIMUM_STROKE_WITH : strokeWidth));
 
