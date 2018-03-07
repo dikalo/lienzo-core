@@ -170,9 +170,13 @@ public class SelectionManager implements NodeMouseDoubleClickHandler, NodeMouseC
         }, wiresManager);
     }
 
-    public void setSelectionShapeProvider(final SelectionShapeProvider<?> selectionShapeProvider)
+    protected boolean isSelectionCreationInProcess()
     {
-        m_selectionShapeProvider = selectionShapeProvider;
+        return m_selectionCreationInProcess;
+    }
+
+    public void setSelectionShapeProvider(final SelectionShapeProvider m_selectionShapeProvider) {
+        this.m_selectionShapeProvider = m_selectionShapeProvider;
     }
 
     public void selected(final WiresShape shape, final boolean isSelectionMultiple)
@@ -407,7 +411,11 @@ public class SelectionManager implements NodeMouseDoubleClickHandler, NodeMouseC
     @Override
     public void onNodeMouseDown(final NodeMouseDownEvent event)
     {
-        final Node<?> node = m_layer.getViewport().findShapeAtPoint(event.getX(), event.getY());
+        if (!event.isButtonLeft()) {
+            return;
+        }
+
+        Node<?> node = m_layer.getViewport().findShapeAtPoint(event.getX(), event.getY());
 
         if (node == null)
         {
