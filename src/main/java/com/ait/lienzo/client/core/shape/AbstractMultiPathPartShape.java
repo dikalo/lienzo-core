@@ -792,13 +792,11 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
 
         public void init()
         {
-            ResizeHandleDragHandler topRightHandler = new ResizeHandleDragHandler(m_shape, m_listOfPaths, m_chlist, m_prim, this);
+            ResizeHandleDragHandler topRightHandler = new ResizeHandleDragHandler(m_shape, m_listOfPaths, m_chlist, m_prim, this );
 
             m_prim.setDragConstraints(topRightHandler);
 
             register(m_prim.addNodeDragEndHandler(topRightHandler));
-
-
         }
 
         public int getPosition()
@@ -834,7 +832,7 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
             return m_prim;
         }
 
-        public double getX(double startTopLeftX, double startTopLeftY, double startW, double startH, double x, double dx)
+        public double getX(double x, double dx, PathPartList.Proportion proportions)
         {
             double newX = 0;
 
@@ -842,17 +840,18 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
             {
                 case 0:
                 case 3:
-                    newX = getLeft(startTopLeftX, startTopLeftY, startW, startH, x, dx);
+                    newX = getLeft(x, dx, proportions.getLeft());
                     break;
                 case 1:
                 case 2:
-                    newX = getRight(startTopLeftX, startTopLeftY, startW, startH, x, dx);
+                    newX = getRight(x, dx, proportions.getRight());
                     break;
             }
+
             return newX;
         }
 
-        public double getY(double startTopLeftX, double startTopLeftY, double startW, double startH, double y, double dy)
+        public double getY(double y, double dy, PathPartList.Proportion proportions)
         {
             double newY = 0;
 
@@ -860,13 +859,14 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
             {
                 case 0:
                 case 1:
-                    newY = getTop(startTopLeftX, startTopLeftY, startW, startH, y, dy);
+                    newY = getTop(y, dy, proportions.getTop());
                     break;
                 case 2:
                 case 3:
-                    newY = getBottom(startTopLeftX, startTopLeftY, startW, startH, y, dy);
+                    newY = getBottom(y, dy, proportions.getBottom());
                     break;
             }
+
             return newY;
         }
 
@@ -913,37 +913,29 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
             }
         }
 
-        double getLeft(double startTopLeftX, double startTopLeftY, double startW, double startH, double x, double dx)
+        double getLeft(double x, double dx, double wpc)
         {
-            double wpc = ((100 / startW) * ((startTopLeftX + startW) - x)) / 100;
-
             double newX = x + (dx * wpc);
 
             return newX;
         }
 
-        double getRight(double startTopLeftX, double startTopLeftY, double startW, double startH, double x, double dx)
+        double getRight(double x, double dx, double wpc)
         {
-            double wpc = ((100 / startW) * (x - startTopLeftX)) / 100;
-
             double newX = x + (dx * wpc);
 
             return newX;
         }
 
-        double getTop(double startTopLeftX, double startTopLeftY, double startW, double startH, double y, double dy)
+        double getTop(double y, double dy, double hpc)
         {
-            double hpc = ((100 / startH) * ((startTopLeftY + startH) - y)) / 100;
-
             double newY = y + (dy * hpc);
 
             return newY;
         }
 
-        double getBottom(double startTopLeftX, double startTopLeftY, double startW, double startH, double y, double dy)
+        double getBottom(double y, double dy, double hpc)
         {
-            double hpc = ((100 / startH) * (y - startTopLeftY)) / 100;
-
             double newY = y + (dy * hpc);
 
             return newY;
@@ -1119,6 +1111,10 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
                     }
                 }
             });
+
+            for (PathPartList list : m_listOfPaths){
+                list.refreshProportions();
+            }
         }
 
         @Override
@@ -1145,11 +1141,13 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
                             case PathPartEntryJSO.LINETO_ABSOLUTE:
                             {
                                 NFastDoubleArrayJSO doubles = m_entries.get(i);
+
+                                PathPartList.Proportion proportions = list.getProportion(entry);
                                 double x = doubles.get(0);
-                                double newX = m_handle.getX(m_boxStartX, m_boxStartY, m_boxStartWidth, m_boxStartHeight, x, dxy.getX());
+                                double newX = m_handle.getX(x, dxy.getX(), proportions);
 
                                 double y = doubles.get(1);
-                                double newY = m_handle.getY(m_boxStartX, m_boxStartY, m_boxStartWidth, m_boxStartHeight, y, dxy.getY());
+                                double newY = m_handle.getY(y, dxy.getY(), proportions);
 
                                 points.set(0, newX);
                                 points.set(1, newY);
