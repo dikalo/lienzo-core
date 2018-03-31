@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.image.filter;
@@ -33,12 +33,12 @@ public class ContrastImageDataFilter extends AbstractValueTableImageDataFilter<C
         super(ImageFilterType.ContrastImageDataFilterType, 1);
     }
 
-    public ContrastImageDataFilter(double value)
+    public ContrastImageDataFilter(final double value)
     {
         super(ImageFilterType.ContrastImageDataFilterType, value);
     }
 
-    protected ContrastImageDataFilter(JSONObject node, ValidationContext ctx) throws ValidationException
+    protected ContrastImageDataFilter(final JSONObject node, final ValidationContext ctx) throws ValidationException
     {
         super(ImageFilterType.ContrastImageDataFilterType, node, ctx);
     }
@@ -62,7 +62,7 @@ public class ContrastImageDataFilter extends AbstractValueTableImageDataFilter<C
     }
 
     @Override
-    protected final FilterTableArray getTable(double value)
+    protected final FilterTableArray getTable(final double value)
     {
         if (value != m_value)
         {
@@ -94,7 +94,7 @@ public class ContrastImageDataFilter extends AbstractValueTableImageDataFilter<C
         }
 
         @Override
-        public ContrastImageDataFilter create(JSONObject node, ValidationContext ctx) throws ValidationException
+        public ContrastImageDataFilter create(final JSONObject node, final ValidationContext ctx) throws ValidationException
         {
             return new ContrastImageDataFilter(node, ctx);
         }

@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.config;
@@ -93,7 +93,7 @@ public final class LienzoCore
 
     private ImageSelectionMode             m_imageSelectionMode             = ImageSelectionMode.SELECT_NON_TRANSPARENT;
 
-    private final ArrayList<ILienzoPlugin> m_plugins                        = new ArrayList<ILienzoPlugin>();
+    private final ArrayList<ILienzoPlugin> m_plugins                        = new ArrayList<>();
 
     private LienzoCore()
     {
@@ -119,7 +119,7 @@ public final class LienzoCore
 
             return false;
         }
-        for (ILienzoPlugin p : m_plugins)
+        for (final ILienzoPlugin p : m_plugins)
         {
             if (plugin.getNameSpace().equals(p.getNameSpace()))
             {
@@ -137,7 +137,7 @@ public final class LienzoCore
     {
         if (null != (name = StringOps.toTrimOrNull(name)))
         {
-            for (ILienzoPlugin p : m_plugins)
+            for (final ILienzoPlugin p : m_plugins)
             {
                 if (p.getNameSpace().equals(name))
                 {
@@ -162,7 +162,7 @@ public final class LienzoCore
     {
         if (null != (name = StringOps.toTrimOrNull(name)))
         {
-            for (ILienzoPlugin p : m_plugins)
+            for (final ILienzoPlugin p : m_plugins)
             {
                 final IFactory<?> factory = p.getFactory(name);
 
@@ -221,7 +221,7 @@ public final class LienzoCore
         {
             final UmbrellaException u = ((UmbrellaException) e);
 
-            for (Throwable t : u.getCauses())
+            for (final Throwable t : u.getCauses())
             {
                 stack(message, t);
             }
@@ -229,7 +229,7 @@ public final class LienzoCore
         }
         Console.get().error(message, e);
 
-        for (StackTraceElement s : e.getStackTrace())
+        for (final StackTraceElement s : e.getStackTrace())
         {
             Console.get().error(s.toString());
         }
@@ -242,7 +242,7 @@ public final class LienzoCore
 
     public final boolean isSafari()
     {
-        String ua = getUserAgent();
+        final String ua = getUserAgent();
 
         if ((ua.indexOf("Safari") >= 0) && (ua.indexOf("Chrome") < 0))
         {
@@ -278,7 +278,7 @@ public final class LienzoCore
                                 return false;
                             }
                         }
-                        catch (Exception e)
+                        catch (final Exception e)
                         {
                             error("isSafariBroken(" + ua + ")", e);
                         }
@@ -292,7 +292,7 @@ public final class LienzoCore
 
     public final boolean isFirefox()
     {
-        String ua = getUserAgent();
+        final String ua = getUserAgent();
 
         // IE 11 Says it is Mozilla!!! Check for Trident
 
@@ -494,7 +494,7 @@ public final class LienzoCore
             {
                 m_backingStorePixelRatio = new ScratchPad(1, 1).getContext().getBackingStorePixelRatio();
             }
-            catch (Exception e)
+            catch (final Exception e)
             {
                 m_backingStorePixelRatio = 1;
 
@@ -566,7 +566,7 @@ public final class LienzoCore
                     }
                 }
             }
-            catch (Exception e)
+            catch (final Exception e)
             {
                 error("Line Dash test failed ", e);// FF 22 dev mode does not like line dashes
             }

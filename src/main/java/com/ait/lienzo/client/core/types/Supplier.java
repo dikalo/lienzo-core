@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-package com.ait.lienzo.client.core.event;
+package com.ait.lienzo.client.core.types;
 
-import com.google.gwt.event.shared.EventHandler;
-
-public interface NodeMouseUpHandler extends EventHandler
+public interface Supplier<T>
 {
-    public void onNodeMouseUp(NodeMouseUpEvent event);
+    public T get();
 }

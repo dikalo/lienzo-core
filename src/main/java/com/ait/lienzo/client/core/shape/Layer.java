@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.shape;
@@ -57,7 +57,7 @@ import com.google.gwt.json.client.JSONString;
  *      <li>Layers are assigned z-indexes automatically.</li>
  *      <li>Every Layer contains a {@link SelectionLayer} to act as an off-set canvas.</li>
  *      <li>Layers may contain {@link IPrimitive} or {@link Group}.</li>
- * </ul> 
+ * </ul>
  */
 public class Layer extends ContainerNode<IPrimitive<?>, Layer>
 {
@@ -83,7 +83,7 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
 
     private final ColorKeyRotor            m_c_rotor         = new ColorKeyRotor();
 
-    private final NFastStringMap<Shape<?>> m_shape_color_map = new NFastStringMap<Shape<?>>();
+    private final NFastStringMap<Shape<?>> m_shape_color_map = new NFastStringMap<>();
 
     /**
      * Constructor. Creates an instance of a Layer.
@@ -100,8 +100,8 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
 
     /**
      * Constructor. Creates an instance of a Layer.
-     * 
-     * @param node 
+     *
+     * @param node
      */
     protected Layer(final JSONObject node, final ValidationContext ctx) throws ValidationException
     {
@@ -158,7 +158,7 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
 
     /**
      * Returns the Selection Layer.
-     * 
+     *
      * @return {@link SelectionLayer}
      */
     public final SelectionLayer getSelectionLayer()
@@ -179,7 +179,7 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
     /**
      * Looks at the {@link SelectionLayer} and attempts to find a {@link Shape} whose alpha
      * channel is 255.
-     * 
+     *
      * @param x
      * @param y
      * @return {@link Shape}
@@ -240,7 +240,7 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
     {
         add(child);
 
-        for (IPrimitive<?> node : children)
+        for (final IPrimitive<?> node : children)
         {
             add(node);
         }
@@ -248,12 +248,12 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
     }
 
     /**
-    * Removes a primitive from the container. Override to ensure primitive is removed from Layers Color Map
-    * <p>
-    * It should be noted that this operation will not have an apparent effect for an already rendered (drawn) Container.
-    * In other words, if the Container has already been drawn and a new primitive is added, you'll need to invoke draw() on the
-    * Container. This is done to enhance performance, otherwise, for every add we would have draws impacting performance.
-    */
+     * Removes a primitive from the container. Override to ensure primitive is removed from Layers Color Map
+     * <p>
+     * It should be noted that this operation will not have an apparent effect for an already rendered (drawn) Container.
+     * In other words, if the Container has already been drawn and a new primitive is added, you'll need to invoke draw() on the
+     * Container. This is done to enhance performance, otherwise, for every add we would have draws impacting performance.
+     */
     @Override
     public Layer remove(final IPrimitive<?> child)
     {
@@ -346,7 +346,7 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
 
     /**
      * Internal method. Detach a {@link Shape} from the Layers Color Map
-     * 
+     *
      * @param shape
      */
     final void detachShapeFromColorMap(final Shape<?> shape)
@@ -371,7 +371,7 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
 
     /**
      * Serializes this Layer as a {@link com.google.gwt.json.client.JSONObject}
-     * 
+     *
      * @return JSONObject
      */
     @Override
@@ -406,7 +406,7 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
 
                 if (null != prim)
                 {
-                    JSONObject make = prim.toJSONObject();
+                    final JSONObject make = prim.toJSONObject();
 
                     if (null != make)
                     {
@@ -424,7 +424,7 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
 
     /**
      * Sets this layer's pixel size.
-     * 
+     *
      * @param wide
      * @param high
      */
@@ -463,7 +463,7 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
 
     /**
      * Enables event handling on this object.
-     * 
+     *
      * @param listening
      * @param Layer
      */
@@ -537,7 +537,7 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
 
     /**
      * Gets this layer's width.
-     * 
+     *
      * @return int
      */
     public int getWidth()
@@ -547,7 +547,7 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
 
     /**
      * Sets this layer's width
-     * 
+     *
      * @param wide
      */
     void setWidth(final int wide)
@@ -557,7 +557,7 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
 
     /**
      * Gets this layer's height
-     * 
+     *
      * @return int
      */
     public int getHeight()
@@ -567,7 +567,7 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
 
     /**
      * Sets this layer's height
-     * 
+     *
      * @param high
      * @return Layer
      */
@@ -580,7 +580,7 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
      * Returns whether the Layer is zoomable.
      * If not, changes to the (parent) Viewport's transform (probably due to zoom or pan operations) won't affect this layer.
      * The default value is true.
-     * 
+     *
      * @return boolean
      */
     public boolean isTransformable()
@@ -592,7 +592,7 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
      * Sets whether the Layer is zoomable.
      * If not, changes to the (parent) Viewport's transform (probably due to zoom or pan operations) won't affect this layer.
      * The default value is true.
-     * 
+     *
      * @param zoomable boolean
      * @return
      */
@@ -605,7 +605,7 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
 
     /**
      * Returns whether this layer is cleared before being drawn.
-     * 
+     *
      * @return boolean
      */
     public boolean isClearLayerBeforeDraw()
@@ -615,7 +615,7 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
 
     /**
      * Sets whether this layer should be cleared before being drawn.
-     * 
+     *
      * @param clear
      * @return Layer
      */
@@ -628,7 +628,7 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
 
     /**
      * Return the {@link CanvasElement}.
-     * 
+     *
      * @return CanvasElement
      */
     public CanvasElement getCanvasElement()
@@ -654,7 +654,7 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
     /**
      * Handler that can be used to hook into the pre-drawing process.
      * If the handler returns false, no drawing will take place.
-     * 
+     *
      * @param onLayerBeforeDrawHandler
      * @return Layer
      */
@@ -668,7 +668,7 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
     /**
      * Handler that can be used to hook into the post-drawing process.
      * The handler will be invoked after the drawing process finishes.
-     * 
+     *
      * @param onLayerAfterDrawHandler
      * @return Layer
      */
@@ -784,7 +784,7 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
     /**
      * Performs batch updates to the Layer, that is, drawing is deferred till the next AnimationFrame,
      * to cut down on redraws on rapid event dispatch.
-     * 
+     *
      * @return Layer
      */
     @Override
@@ -795,7 +795,7 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
 
     /**
      * Sets whether this object is visible.
-     * 
+     *
      * @param visible
      * @return Layer
      */
@@ -811,7 +811,7 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
 
     /**
      * Returns this layer
-     * 
+     *
      * @return Layer
      */
     @Override
@@ -853,7 +853,7 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
 
     /**
      * Returns the {@link Context2D} this layer is operating on.
-     * 
+     *
      * @return Context2D
      */
     public Context2D getContext()
@@ -863,7 +863,7 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
 
     /**
      * Moves this layer one level up.
-     * 
+     *
      * @return Layer
      */
     @SuppressWarnings("unchecked")
@@ -886,7 +886,7 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
 
     /**
      * Moves this layer one level down.
-     * 
+     *
      * @return Layer
      */
     @SuppressWarnings("unchecked")
@@ -909,7 +909,7 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
 
     /**
      * Moves this layer to the top of the layer stack.
-     * 
+     *
      * @return Layer
      */
     @SuppressWarnings("unchecked")
@@ -932,7 +932,7 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
 
     /**
      * Moves this layer to the bottom of the layer stack.
-     * 
+     *
      * @return Layer
      */
     @SuppressWarnings("unchecked")
@@ -957,7 +957,7 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
      * Returns all the {@link Node} objects present in this layer that match the
      * given {@link com.ait.lienzo.client.core.types.INodeFilter}, this Layer
      * included.
-     * 
+     *
      * @param filter
      * @return ArrayList<Node>
      */
@@ -1002,7 +1002,7 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
 
     /**
      * Returns the content of this Layer as a PNG image that can be used as a source for another canvas or an HTML element.
-     * 
+     *
      * @return String
      */
     public final String toDataURL()
@@ -1019,7 +1019,7 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
 
     /**
      * Returns the content of this {@link Layer} as an image that can be used as a source for another canvas or an HTML element
-     * 
+     *
      * @return String
      */
     public final String toDataURL(DataURLType mimetype)
@@ -1040,12 +1040,12 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
 
     private static native final String toDataURL(CanvasElement element)
     /*-{
-		return element.toDataURL();
+    	return element.toDataURL();
     }-*/;
 
     private static native final String toDataURL(CanvasElement element, String mimetype)
     /*-{
-		return element.toDataURL(mimetype);
+    	return element.toDataURL(mimetype);
     }-*/;
 
     public static class SelectionLayer extends Layer
@@ -1151,7 +1151,7 @@ public class Layer extends ContainerNode<IPrimitive<?>, Layer>
                 {
                     ctx.addBadTypeError(node.getClass().getName() + " is not a Primitive");
                 }
-                catch (ValidationException e)
+                catch (final ValidationException e)
                 {
                     return false;
                 }

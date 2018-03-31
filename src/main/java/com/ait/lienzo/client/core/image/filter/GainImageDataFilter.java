@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.image.filter;
@@ -36,7 +36,7 @@ public class GainImageDataFilter extends AbstractTableImageDataFilter<GainImageD
         this(0.5, 0.5);
     }
 
-    public GainImageDataFilter(double gain, double bias)
+    public GainImageDataFilter(final double gain, final double bias)
     {
         super(ImageFilterType.GainImageDataFilterType);
 
@@ -45,12 +45,12 @@ public class GainImageDataFilter extends AbstractTableImageDataFilter<GainImageD
         setBias(bias);
     }
 
-    protected GainImageDataFilter(JSONObject node, ValidationContext ctx) throws ValidationException
+    protected GainImageDataFilter(final JSONObject node, final ValidationContext ctx) throws ValidationException
     {
         super(ImageFilterType.GainImageDataFilterType, node, ctx);
     }
 
-    public final GainImageDataFilter setGain(double gain)
+    public final GainImageDataFilter setGain(final double gain)
     {
         getAttributes().setGain(Math.max(Math.min(gain, getMaxGain()), getMinGain()));
 
@@ -72,7 +72,7 @@ public class GainImageDataFilter extends AbstractTableImageDataFilter<GainImageD
         return 1;
     }
 
-    public final GainImageDataFilter setBias(double bias)
+    public final GainImageDataFilter setBias(final double bias)
     {
         getAttributes().setBias(Math.max(Math.min(bias, getMaxBias()), getMinBias()));
 
@@ -97,9 +97,9 @@ public class GainImageDataFilter extends AbstractTableImageDataFilter<GainImageD
     @Override
     protected final FilterTableArray getTable()
     {
-        double gain = getGain();
+        final double gain = getGain();
 
-        double bias = getBias();
+        final double bias = getBias();
 
         if ((gain != m_ngain) || (bias != m_nbias))
         {
@@ -121,7 +121,7 @@ public class GainImageDataFilter extends AbstractTableImageDataFilter<GainImageD
             var v = i / 255;
             var k = (1 / gain - 2) * (1 - 2 * v);
             v = (v < 0.5) ? v / (k + 1) : (k - v) / (k - 1);
-            v /= (1 / bias - 2) * (1 - v) + 1; 
+            v /= (1 / bias - 2) * (1 - v) + 1;
             table[i] = (255 * v) | 0;
         }
         return table;
@@ -145,7 +145,7 @@ public class GainImageDataFilter extends AbstractTableImageDataFilter<GainImageD
         }
 
         @Override
-        public GainImageDataFilter create(JSONObject node, ValidationContext ctx) throws ValidationException
+        public GainImageDataFilter create(final JSONObject node, final ValidationContext ctx) throws ValidationException
         {
             return new GainImageDataFilter(node, ctx);
         }

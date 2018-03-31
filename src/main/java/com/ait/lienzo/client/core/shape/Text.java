@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.shape;
@@ -40,12 +40,13 @@ import com.google.gwt.json.client.JSONObject;
  */
 public class Text extends Shape<Text>
 {
-    private static final boolean                             GRADFILLS = LienzoCore.get().isSafariBroken();
+    private static final boolean GRADFILLS = LienzoCore.get().isSafariBroken();
 
-    private final IDrawString STROKE = new IDrawString() {
+    private final IDrawString    STROKE    = new IDrawString()
+    {
         @Override
-        public void draw(Context2D context, String s,
-                         double xOffset, double lineNum) {
+        public void draw(final Context2D context, final String s, final double xOffset, final double lineNum)
+        {
             context.beginPath();
 
             context.strokeText(s, xOffset, getLineHeight(context) * lineNum);
@@ -55,20 +56,20 @@ public class Text extends Shape<Text>
         }
     };
 
-    private final IDrawString FILL = new IDrawString() {
+    private final IDrawString    FILL      = new IDrawString()
+    {
         @Override
-        public void draw(Context2D context,
-                         String s,
-                         double xOffset, double lineNum) {
+        public void draw(final Context2D context, final String s, final double xOffset, final double lineNum)
+        {
             context.fillText(s, xOffset, getLineHeight(context) * lineNum);
         }
     };
 
-    private ITextWrapper wrapper = new TextNoWrap(this);
+    private ITextWrapper         m_wrapper = new TextNoWrap(this);
 
     /**
      * Constructor. Creates an instance of text. Default no-wrap text wrapping.
-     * 
+     *
      * @param text
      */
     public Text(String text)
@@ -86,8 +87,8 @@ public class Text extends Shape<Text>
 
     /**
      * Constructor. Creates an instance of text. Default no-wrap text wrapping.
-     * 
-     * @param text 
+     *
+     * @param text
      * @param family font family
      * @param size font size
      */
@@ -114,7 +115,7 @@ public class Text extends Shape<Text>
 
     /**
      * Constructor. Creates an instance of text. Default no-wrap text wrapping.
-     * 
+     *
      * @param text
      * @param family font family
      * @param style font style (bold, italic, etc)
@@ -145,7 +146,7 @@ public class Text extends Shape<Text>
         setText(text).setFontFamily(family).setFontStyle(style).setFontSize(size);
     }
 
-    protected Text(JSONObject node, ValidationContext ctx) throws ValidationException
+    protected Text(final JSONObject node, final ValidationContext ctx) throws ValidationException
     {
         super(ShapeType.TEXT, node, ctx);
     }
@@ -153,10 +154,11 @@ public class Text extends Shape<Text>
     @Override
     public BoundingBox getBoundingBox()
     {
-        return wrapper.getBoundingBox();
+        return m_wrapper.getBoundingBox();
     }
 
-    private BoundingBox getBoundingBoxForString(String string) {
+    private BoundingBox getBoundingBoxForString(final String string)
+    {
         return TextUtils.getBoundingBox(string, getFontSize(), getFontStyle(), getFontFamily(), getTextUnit(), getTextBaseLine(), getTextAlign());
     }
 
@@ -168,7 +170,7 @@ public class Text extends Shape<Text>
     }
 
     @Override
-    protected void drawWithoutTransforms(final Context2D context, double alpha, BoundingBox bounds)
+    protected void drawWithoutTransforms(final Context2D context, double alpha, final BoundingBox bounds)
     {
         final Attributes attr = getAttributes();
 
@@ -205,7 +207,7 @@ public class Text extends Shape<Text>
         {
             context.setTextAlign(attr.getTextAlign());
         }
-        context.setTextFont(getFontString(size, attr.getTextUnit(), attr.getFontStyle(), attr.getFontFamily()));
+        context.setTextFont(TextUtils.getFontString(size, attr.getTextUnit(), attr.getFontStyle(), attr.getFontFamily()));
 
         final boolean fill = fill(context, attr, alpha);
 
@@ -214,7 +216,7 @@ public class Text extends Shape<Text>
 
     /**
      * Draws this text
-     * 
+     *
      * @param context
      */
     @Override
@@ -256,39 +258,34 @@ public class Text extends Shape<Text>
 
                         final double high = size.getHeight();
 
-                        drawString(context,
-                                   attr,
-                                   new IDrawString() {
-                                       @Override
-                                       public void draw(Context2D context,
-                                                        String s,
-                                                        double xOffset, double lineNum) {
-                                           context.fillTextWithGradient(s, xOffset, getLineHeight(context) * lineNum, 0, 0, wide + (wide / 6), high + (high / 6), color);
-                                       }
-                                   });
-
+                        drawString(context, attr, new IDrawString()
+                        {
+                            @Override
+                            public void draw(final Context2D context, final String s, final double xOffset, final double lineNum)
+                            {
+                                context.fillTextWithGradient(s, xOffset, getLineHeight(context) * lineNum, 0, 0, wide + (wide / 6), high + (high / 6), color);
+                            }
+                        });
                     }
                     else
                     {
                         final Layer layer = getLayer();
 
-                        drawString(context,
-                                   attr,
-                                   new IDrawString() {
-                                       @Override
-                                       public void draw(Context2D context,
-                                                        String s,
-                                                        double xOffset, double lineNum) {
-                                           context.fillTextWithGradient(s, xOffset, getLineHeight(context) * lineNum, 0,0, layer.getWidth(), layer.getHeight(), color);
-                                       }
-                                   });
+                        drawString(context, attr, new IDrawString()
+                        {
+                            @Override
+                            public void draw(final Context2D context, final String s, final double xOffset, final double lineNum)
+                            {
+                                context.fillTextWithGradient(s, xOffset, getLineHeight(context) * lineNum, 0, 0, layer.getWidth(), layer.getHeight(), color);
+                            }
+                        });
                     }
                 }
                 else
                 {
                     context.setFillColor(color);
 
-                    drawString(context,attr,FILL);
+                    drawString(context, attr, FILL);
                 }
                 context.restore();
 
@@ -312,8 +309,8 @@ public class Text extends Shape<Text>
             {
                 context.setFillColor(fill);
 
-                drawString(context,attr,FILL);
-                
+                drawString(context, attr, FILL);
+
                 context.restore();
 
                 return true;
@@ -330,7 +327,7 @@ public class Text extends Shape<Text>
                     {
                         context.setFillGradient(grad.asLinearGradient());
 
-                        drawString(context,attr,FILL);
+                        drawString(context, attr, FILL);
 
                         context.restore();
 
@@ -340,7 +337,7 @@ public class Text extends Shape<Text>
                     {
                         context.setFillGradient(grad.asRadialGradient());
 
-                        drawString(context,attr,FILL);
+                        drawString(context, attr, FILL);
 
                         context.restore();
 
@@ -350,7 +347,7 @@ public class Text extends Shape<Text>
                     {
                         context.setFillGradient(grad.asPatternGradient());
 
-                        drawString(context,attr,FILL);
+                        drawString(context, attr, FILL);
 
                         context.restore();
 
@@ -372,25 +369,21 @@ public class Text extends Shape<Text>
             {
                 doApplyShadow(context, attr);
             }
-
             drawString(context, attr, STROKE);
+
             context.restore();
         }
     }
 
-    private static final native void log(String msg)/*-{
-        console.log(msg);
-    }-*/;
-
-    private void drawString(final Context2D context, final Attributes attr, IDrawString drawCommand)
+    private void drawString(final Context2D context, final Attributes attr, final IDrawString drawCommand)
     {
-        wrapper.drawString(context,attr,drawCommand);
+        m_wrapper.drawString(context, attr, drawCommand);
     }
 
     /**
      * Returns TextMetrics, which includes an approximate value for
      * height. As close as we can estimate it at this time.
-     * 
+     *
      * @param context
      * @return TextMetric or null if the text is empty or null
      */
@@ -410,7 +403,7 @@ public class Text extends Shape<Text>
 
         context.setTextBaseline(TextBaseLine.ALPHABETIC);
 
-        context.setTextFont(getFontString(size, getTextUnit(), getFontStyle(), getFontFamily()));
+        context.setTextFont(TextUtils.getFontString(size, getTextUnit(), getFontStyle(), getFontFamily()));
 
         double width = getStrokeWidth();
 
@@ -422,17 +415,16 @@ public class Text extends Shape<Text>
 
         context.transform(getAbsoluteTransform());
 
-        TextMetrics meas = context.measureText(text);
+        final TextMetrics meas = context.measureText(text);
 
-        double height = context.measureText("M").getWidth();
+        final double height = context.measureText("M").getWidth();
 
-        meas.setHeight(height - height / 6);
+        meas.setHeight(height - (height / 6));
 
         context.restore();
 
         return meas;
     }
-
 
     /**
      * Returns TextMetrics, which includes an approximate value for
@@ -445,20 +437,21 @@ public class Text extends Shape<Text>
     {
         return getBoundingBoxForString("Mg").getHeight();
     }
+
     /**
      * Returns TextMetrics, which includes an approximate value for
      * height. As close as we can estimate it at this time.
-     * 
+     *
      * @param context
      * @return TextMetric or null if the text is empty or null
      */
-    public TextMetrics measureWithIdentityTransform(Context2D context)
+    public TextMetrics measureWithIdentityTransform(final Context2D context)
     {
         context.save();
 
         context.setToIdentityTransform();
 
-        TextMetrics size = measure(context);
+        final TextMetrics size = measure(context);
 
         context.restore();
 
@@ -467,7 +460,7 @@ public class Text extends Shape<Text>
 
     /**
      * Returns the {@link Text} String
-     * 
+     *
      * @return String
      */
     public String getText()
@@ -477,10 +470,10 @@ public class Text extends Shape<Text>
 
     /**
      * Sets the {@link Text} String
-     * 
+     *
      * @return this Text
      */
-    public Text setText(String text)
+    public Text setText(final String text)
     {
         getAttributes().setText(text);
 
@@ -489,7 +482,7 @@ public class Text extends Shape<Text>
 
     /**
      * Returns the Font Family.
-     * 
+     *
      * @return String
      */
     public String getFontFamily()
@@ -499,10 +492,10 @@ public class Text extends Shape<Text>
 
     /**
      * Sets the {@link Text} Font Family
-     * 
+     *
      * @return this Text
      */
-    public Text setFontFamily(String family)
+    public Text setFontFamily(final String family)
     {
         getAttributes().setFontFamily(family);
 
@@ -511,7 +504,7 @@ public class Text extends Shape<Text>
 
     /**
      * Returns the Font Style.
-     * 
+     *
      * @return String
      */
     public String getFontStyle()
@@ -521,11 +514,11 @@ public class Text extends Shape<Text>
 
     /**
      * Sets the Font Style.
-     * 
+     *
      * @param style
      * @return this Text
      */
-    public Text setFontStyle(String style)
+    public Text setFontStyle(final String style)
     {
         getAttributes().setFontStyle(style);
 
@@ -534,7 +527,7 @@ public class Text extends Shape<Text>
 
     /**
      * Returns the Font Size.
-     * 
+     *
      * @return double
      */
     public double getFontSize()
@@ -544,18 +537,18 @@ public class Text extends Shape<Text>
 
     /**
      * Sets the Font Size.
-     * 
+     *
      * @param size
      * @return this Text
      */
-    public Text setFontSize(double size)
+    public Text setFontSize(final double size)
     {
         getAttributes().setFontSize(size);
 
         return this;
     }
 
-    public Text setTextUnit(TextUnit unit)
+    public Text setTextUnit(final TextUnit unit)
     {
         getAttributes().setTextUnit(unit);
 
@@ -569,7 +562,7 @@ public class Text extends Shape<Text>
 
     /**
      * Returns the {@link TextAlign}
-     * 
+     *
      * @return {@link TextAlign}
      */
     public TextAlign getTextAlign()
@@ -579,11 +572,11 @@ public class Text extends Shape<Text>
 
     /**
      * Sets the {@link TextAlign}
-     * 
+     *
      * @param align
      * @return this Text
      */
-    public Text setTextAlign(TextAlign align)
+    public Text setTextAlign(final TextAlign align)
     {
         getAttributes().setTextAlign(align);
 
@@ -592,7 +585,7 @@ public class Text extends Shape<Text>
 
     /**
      * Returns the {@link TextBaseLine}
-     * 
+     *
      * @return {@link TextBaseLine}
      */
     public TextBaseLine getTextBaseLine()
@@ -602,11 +595,11 @@ public class Text extends Shape<Text>
 
     /**
      * Sets the {@link TextBaseLine}
-     * 
+     *
      * @param baseline
      * @return this Text
      */
-    public Text setTextBaseLine(TextBaseLine baseline)
+    public Text setTextBaseLine(final TextBaseLine baseline)
     {
         getAttributes().setTextBaseLine(baseline);
 
@@ -625,12 +618,15 @@ public class Text extends Shape<Text>
         return asAttributes(Attribute.TEXT, Attribute.FONT_SIZE, Attribute.FONT_STYLE, Attribute.FONT_FAMILY, Attribute.TEXT_UNIT, Attribute.TEXT_ALIGN, Attribute.TEXT_BASELINE, Attribute.WIDTH);
     }
 
-    public ITextWrapper getWrapper() {
-        return wrapper;
+    public ITextWrapper getWrapper()
+    {
+        return m_wrapper;
     }
 
-    public Text setWrapper(final ITextWrapper wrapper) {
-        this.wrapper = wrapper;
+    public Text setWrapper(final ITextWrapper wrapper)
+    {
+        m_wrapper = wrapper;
+
         return this;
     }
 
@@ -658,7 +654,7 @@ public class Text extends Shape<Text>
         }
 
         @Override
-        public Text create(JSONObject node, ValidationContext ctx) throws ValidationException
+        public Text create(final JSONObject node, final ValidationContext ctx) throws ValidationException
         {
             return new Text(node, ctx);
         }

@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.shape;
@@ -22,20 +22,20 @@ import com.ait.tooling.common.api.java.util.function.Predicate;
 import com.ait.tooling.nativetools.client.collection.NFastArrayList;
 
 /**
- * Interface to be implemented by all primitive collections. 
+ * Interface to be implemented by all primitive collections.
  */
 public interface IContainer<T extends IContainer<T, M>, M> extends IDrawable<T>
 {
     /**
      * Gets all nodes in this container.
-     * 
+     *
      * @return FastArrayList
      */
     public NFastArrayList<M> getChildNodes();
 
     /**
      * Gets all nodes in this container.
-     * 
+     *
      * @return FastArrayList
      */
     public NFastArrayList<M> getChildNodes(BoundingBox bounds);
@@ -56,14 +56,14 @@ public interface IContainer<T extends IContainer<T, M>, M> extends IDrawable<T>
 
     /**
      * Adds a node to this container
-     * 
+     *
      * @param node
      */
     public T add(M node);
 
     /**
      * Adds a node to this container
-     * 
+     *
      * @param node
      */
     @SuppressWarnings("unchecked")
@@ -71,7 +71,7 @@ public interface IContainer<T extends IContainer<T, M>, M> extends IDrawable<T>
 
     /**
      * Removes the given node from the container.
-     * 
+     *
      * @param node
      */
     public T remove(M node);
@@ -83,21 +83,21 @@ public interface IContainer<T extends IContainer<T, M>, M> extends IDrawable<T>
 
     /**
      * Moves the node one layer up.
-     * 
+     *
      * @param node
      */
     public T moveUp(M node);
 
     /**
      * Modes the node one layer down
-     * 
+     *
      * @param node
      */
     public T moveDown(M node);
 
     /**
      * Moves the node to the top of the layer stack
-     * 
+     *
      * @param node
      */
     public T moveToTop(M node);
@@ -110,7 +110,7 @@ public interface IContainer<T extends IContainer<T, M>, M> extends IDrawable<T>
 
     /**
      * Searches and returns all {@link Node} that match the {@link INodeFilter}
-     * 
+     *
      * @param filter
      * @return ArrayList
      */
@@ -118,7 +118,7 @@ public interface IContainer<T extends IContainer<T, M>, M> extends IDrawable<T>
 
     /**
      * Searches and returns all {@link Node} that have a matching ID {@link INodeFilter}
-     * 
+     *
      * @param filter
      * @return ArrayList
      */
@@ -126,7 +126,7 @@ public interface IContainer<T extends IContainer<T, M>, M> extends IDrawable<T>
 
     /**
      * Returns the number of items in this container
-     * 
+     *
      * @return int
      */
     public int length();

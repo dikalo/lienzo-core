@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.shape;
@@ -31,7 +31,6 @@ import com.ait.lienzo.client.core.event.ResizeEndEvent;
 import com.ait.lienzo.client.core.event.ResizeEndHandler;
 import com.ait.lienzo.client.core.event.ResizeStartEvent;
 import com.ait.lienzo.client.core.event.ResizeStartHandler;
-import com.ait.lienzo.client.core.event.OnMouseEventHandler;
 import com.ait.lienzo.client.core.event.ViewportTransformChangedEvent;
 import com.ait.lienzo.client.core.event.ViewportTransformChangedHandler;
 import com.ait.lienzo.client.core.mediator.IMediator;
@@ -63,34 +62,33 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Serves as a container for {@link Scene}
- * 
+ *
  * <ul>
  * <li>A {@link Viewport} contains three {@link Scene} (Main, Drag and Back Scene)</li>
  * <li>The main {@link Scene} can contain multiple {@link Layer}.</li>
- * </ul> 
+ * </ul>
  */
 public class Viewport extends ContainerNode<Scene, Viewport>
 {
-    private int                    m_wide    = 0;
+    private int                   m_wide            = 0;
 
-    private int                    m_high    = 0;
+    private int                   m_high            = 0;
 
-    private Widget                 m_owns    = null;
+    private Widget                m_owns            = null;
 
-    private final DivElement       m_element = Document.get().createDivElement();
+    private final DivElement      m_element         = Document.get().createDivElement();
 
-    private Scene                  m_drag    = new Scene();
+    private final Scene           m_drag            = new Scene();
 
-    private Scene                  m_main    = null;
+    private Scene                 m_main            = null;
 
-    private Scene                  m_back    = new Scene();
+    private final Scene           m_back            = new Scene();
 
-    private ScratchPad             m_spad    = new ScratchPad(0, 0);
+    private final ScratchPad      m_spad            = new ScratchPad(0, 0);
 
-    private Mediators              m_mediators;
+    private Mediators             m_mediators;
 
     private final OnEventHandlers m_onEventHandlers = new OnEventHandlers();
-
 
     public Viewport()
     {
@@ -110,7 +108,7 @@ public class Viewport extends ContainerNode<Scene, Viewport>
 
     /**
      * Constructor. Creates an instance of a viewport.
-     * 
+     *
      * @param wide
      * @param high
      */
@@ -192,7 +190,7 @@ public class Viewport extends ContainerNode<Scene, Viewport>
 
     /**
      * Returns the viewport width in pixels.
-     * 
+     *
      * @return int
      */
     public final int getWidth()
@@ -202,7 +200,7 @@ public class Viewport extends ContainerNode<Scene, Viewport>
 
     /**
      * Returns the viewport height in pixels.
-     * 
+     *
      * @return int
      */
     public final int getHeight()
@@ -212,7 +210,7 @@ public class Viewport extends ContainerNode<Scene, Viewport>
 
     /**
      * Returns the {@link DivElement}
-     * 
+     *
      * @return {@link DivElement}
      */
     public final DivElement getElement()
@@ -222,7 +220,7 @@ public class Viewport extends ContainerNode<Scene, Viewport>
 
     /**
      * Sets size of the {@link Viewport} in pixels
-     * 
+     *
      * @param wide
      * @param high
      * @return Viewpor this viewport
@@ -265,7 +263,7 @@ public class Viewport extends ContainerNode<Scene, Viewport>
 
     /**
      * Adds a {@link Scene} to this viewport.
-     * 
+     *
      * @param scene
      */
     @Override
@@ -281,7 +279,7 @@ public class Viewport extends ContainerNode<Scene, Viewport>
             {
                 throw new IllegalArgumentException("Too many Scene objects is Viewport.");
             }
-            DivElement element = scene.getElement();
+            final DivElement element = scene.getElement();
 
             scene.setPixelSize(m_wide, m_high);
 
@@ -301,7 +299,7 @@ public class Viewport extends ContainerNode<Scene, Viewport>
     {
         add(scene);
 
-        for (Scene node : children)
+        for (final Scene node : children)
         {
             add(node);
         }
@@ -380,7 +378,7 @@ public class Viewport extends ContainerNode<Scene, Viewport>
 
     /**
      * Returns the main Scene for the {@link Viewport}
-     * 
+     *
      * @return {@link Scene}
      */
     @Override
@@ -391,7 +389,7 @@ public class Viewport extends ContainerNode<Scene, Viewport>
 
     /**
      * Sets the background layer
-     * 
+     *
      * @param layer
      * @return this Viewport
      */
@@ -406,8 +404,8 @@ public class Viewport extends ContainerNode<Scene, Viewport>
 
     /**
      * Returns the Drag Layer.
-     * 
-     * @return {@link Layer} 
+     *
+     * @return {@link Layer}
      */
     public final Layer getDragLayer()
     {
@@ -454,7 +452,7 @@ public class Viewport extends ContainerNode<Scene, Viewport>
 
     /**
      * No-op.
-     * 
+     *
      * @return this Viewport
      */
     @Override
@@ -465,7 +463,7 @@ public class Viewport extends ContainerNode<Scene, Viewport>
 
     /**
      * No-op.
-     * 
+     *
      * @return this Viewport
      */
     @Override
@@ -476,7 +474,7 @@ public class Viewport extends ContainerNode<Scene, Viewport>
 
     /**
      * No-op.
-     * 
+     *
      * @return this Viewport
      */
     @Override
@@ -487,7 +485,7 @@ public class Viewport extends ContainerNode<Scene, Viewport>
 
     /**
      * No-op.
-     * 
+     *
      * @return this Viewport
      */
     @Override
@@ -499,7 +497,7 @@ public class Viewport extends ContainerNode<Scene, Viewport>
     /**
      * Change the viewport's transform so that the specified area (in global or canvas coordinates)
      * is visible.
-     * 
+     *
      * @param x
      * @param y
      * @param width
@@ -507,7 +505,7 @@ public class Viewport extends ContainerNode<Scene, Viewport>
      */
     public final void viewGlobalArea(double x, double y, double width, double height)
     {
-        if (width <= 0 || height <= 0)
+        if ((width <= 0) || (height <= 0))
         {
             return;
         }
@@ -515,9 +513,9 @@ public class Viewport extends ContainerNode<Scene, Viewport>
 
         if (null != t)
         {
-            Point2D a = new Point2D(x, y);
+            final Point2D a = new Point2D(x, y);
 
-            Point2D b = new Point2D(x + width, y + height);
+            final Point2D b = new Point2D(x + width, y + height);
 
             final Transform inv = t.getInverse();
 
@@ -539,7 +537,7 @@ public class Viewport extends ContainerNode<Scene, Viewport>
     /**
      * Change the viewport's transform so that the specified area (in local or world coordinates)
      * is visible.
-     * 
+     *
      * @param x
      * @param y
      * @param width
@@ -558,8 +556,8 @@ public class Viewport extends ContainerNode<Scene, Viewport>
     /**
      * Sets the Transform for this Viewport and fires a ZoomEvent
      * to any ZoomHandlers registered with this Viewport.
-     * 
-     * 
+     *
+     *
      * @param transform Transform
      * @return this Viewport
      */
@@ -575,7 +573,7 @@ public class Viewport extends ContainerNode<Scene, Viewport>
 
     /**
      * Returns a {@link JSONObject} representation of the {@link Viewport} with its {@link Attributes} as well as its children.
-     * 
+     *
      * @return {@link JSONObject}
      */
     @Override
@@ -630,6 +628,7 @@ public class Viewport extends ContainerNode<Scene, Viewport>
     /**
      * Fires the given GWT event.
      */
+    @Override
     public final void fireEvent(final GwtEvent<?> event)
     {
         getScene().fireEvent(event);
@@ -682,7 +681,7 @@ public class Viewport extends ContainerNode<Scene, Viewport>
     /**
      * Returns the {@link Mediators} for this viewport.
      * Mediators can be used to e.g. to add zoom operations.
-     * 
+     *
      * @return Mediators
      */
     public final Mediators getMediators()
@@ -693,9 +692,9 @@ public class Viewport extends ContainerNode<Scene, Viewport>
     /**
      * Add a mediator to the stack of {@link Mediators} for this viewport.
      * The one that is added last, will be called first.
-     * 
+     *
      * Mediators can be used to e.g. to add zoom operations.
-     * 
+     *
      * @param mediator IMediator
      */
     public final void pushMediator(final IMediator mediator)
@@ -704,9 +703,9 @@ public class Viewport extends ContainerNode<Scene, Viewport>
     }
 
     /**
-     * Adds a ViewportTransformChangedHandler that will be notified whenever the Viewport's 
+     * Adds a ViewportTransformChangedHandler that will be notified whenever the Viewport's
      * transform changes (probably due to a zoom or pan operation.)
-     * 
+     *
      * @param handler ViewportTransformChangedHandler
      * @return HandlerRegistration
      */
@@ -744,7 +743,7 @@ public class Viewport extends ContainerNode<Scene, Viewport>
                     {
                         ctx.addError("Too many Scene objects is Viewport");
                     }
-                    catch (ValidationException e)
+                    catch (final ValidationException e)
                     {
                         return false;
                     }
@@ -759,7 +758,7 @@ public class Viewport extends ContainerNode<Scene, Viewport>
                 {
                     ctx.addBadTypeError(node.getClass().getName() + " is not a Scene");
                 }
-                catch (ValidationException e)
+                catch (final ValidationException e)
                 {
                     return false;
                 }
@@ -802,7 +801,7 @@ public class Viewport extends ContainerNode<Scene, Viewport>
 
         private static class DragContext2D extends Context2D
         {
-            public DragContext2D(CanvasElement element)
+            public DragContext2D(final CanvasElement element)
             {
                 super(element);
             }

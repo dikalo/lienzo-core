@@ -1,19 +1,18 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-// TODO - review DSJ
 
 package com.ait.lienzo.client.core.shape.wires;
 
@@ -29,17 +28,17 @@ import com.ait.tooling.nativetools.client.collection.NFastArrayList;
 
 public class WiresMagnet extends AbstractControlHandle implements Iterable<WiresConnection>
 {
-    private final int           m_index;
+    private final int                       m_index;
 
-    private final IPrimitive<?> m_control;
+    private final IPrimitive<?>             m_control;
 
-    private final IWiresContext m_context;
+    private final IWiresContext             m_context;
 
-    private Magnets             m_magnets;
+    private final Magnets                   m_magnets;
 
-    private double              m_x;
+    private double                          m_x;
 
-    private double              m_y;
+    private double                          m_y;
 
     private double                          m_strong      = 0.5;
 
@@ -49,7 +48,7 @@ public class WiresMagnet extends AbstractControlHandle implements Iterable<Wires
 
     private Direction                       m_direction   = Direction.NONE;
 
-    public WiresMagnet(Magnets magnets, final IWiresContext context, final int index, final double x, final double y, final IPrimitive<?> control, final boolean active)
+    public WiresMagnet(final Magnets magnets, final IWiresContext context, final int index, final double x, final double y, final IPrimitive<?> control, final boolean active)
     {
         m_context = context;
 
@@ -71,7 +70,7 @@ public class WiresMagnet extends AbstractControlHandle implements Iterable<Wires
         return m_direction;
     }
 
-    public void setDirection(Direction direction)
+    public void setDirection(final Direction direction)
     {
         m_direction = direction;
     }
@@ -105,7 +104,7 @@ public class WiresMagnet extends AbstractControlHandle implements Iterable<Wires
 
             for (int i = 0; i < size; i++)
             {
-                WiresConnection h = m_connections.get(i);
+                final WiresConnection h = m_connections.get(i);
 
                 h.move(m_x + x, m_y + y);
             }
@@ -118,7 +117,7 @@ public class WiresMagnet extends AbstractControlHandle implements Iterable<Wires
         {
             if (null == m_connections)
             {
-                m_connections = new NFastArrayList<WiresConnection>();
+                m_connections = new NFastArrayList<>();
 
                 m_connections.add(connection);
             }
@@ -237,14 +236,15 @@ public class WiresMagnet extends AbstractControlHandle implements Iterable<Wires
 
     public WiresMagnet setRx(final double x)
     {
-        this.m_x = x;
+        m_x = x;
+
         return this;
     }
 
     public WiresMagnet setRy(final double y)
     {
-        this.m_y = y;
+        m_y = y;
+
         return this;
     }
-
 }

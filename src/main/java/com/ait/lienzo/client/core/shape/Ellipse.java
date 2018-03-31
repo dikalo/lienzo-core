@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.shape;
@@ -37,7 +37,7 @@ public class Ellipse extends Shape<Ellipse>
      * Constructor. Creates an instance of an ellipse.
      * The center of the ellipse will be at (0,0) unless
      * it is moved by setting X, Y, OFFSET or TRANSFORM attributes.
-     * 
+     *
      * @param width
      * @param height
      */
@@ -71,7 +71,7 @@ public class Ellipse extends Shape<Ellipse>
 
     /**
      * Draws this ellipse.
-     * 
+     *
      * @param context the {@link Context2D} used to draw this ellipse.
      */
     @Override
@@ -96,7 +96,7 @@ public class Ellipse extends Shape<Ellipse>
 
     /**
      * Gets this ellipse's width.
-     * 
+     *
      * @return double
      */
     public double getWidth()
@@ -106,7 +106,7 @@ public class Ellipse extends Shape<Ellipse>
 
     /**
      * Sets this ellipse's width.
-     * 
+     *
      * @param width
      * @return Ellipse this ellipse
      */
@@ -119,7 +119,7 @@ public class Ellipse extends Shape<Ellipse>
 
     /**
      * Gets this ellipse's height.
-     * 
+     *
      * @return double
      */
     public double getHeight()
@@ -129,7 +129,7 @@ public class Ellipse extends Shape<Ellipse>
 
     /**
      * Sets this ellipse's height.
-     * 
+     *
      * @param height
      * @return Ellipse this ellipse
      */

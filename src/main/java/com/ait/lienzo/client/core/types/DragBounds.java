@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.types;
@@ -20,7 +20,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONObject;
 
 /**
- * Class to be used to bound the dragging area of a {@link Shape} 
+ * Class to be used to bound the dragging area of a {@link Shape}
  */
 public final class DragBounds
 {
@@ -43,7 +43,7 @@ public final class DragBounds
 
     /**
      * Sets the "x1" boundary coordinate for the Shape.
-     * 
+     *
      * @param x1
      * @return
      */
@@ -56,7 +56,7 @@ public final class DragBounds
 
     /**
      * Gets the "x1" boundary coordinate for the Shape.
-     * 
+     *
      * @return
      */
     public final double getX1()
@@ -66,7 +66,7 @@ public final class DragBounds
 
     /**
      * Sets the "x2" boundary coordinate for the Shape.
-     * 
+     *
      * @param x2
      * @return
      */
@@ -79,7 +79,7 @@ public final class DragBounds
 
     /**
      * Gets the "x2" boundary coordinate for the Shape.
-     * 
+     *
      * @return
      */
     public final double getX2()
@@ -89,7 +89,7 @@ public final class DragBounds
 
     /**
      * Sets the "y1" boundary coordinate for the Shape.
-     * 
+     *
      * @param y1
      * @return
      */
@@ -102,7 +102,7 @@ public final class DragBounds
 
     /**
      * Gets the "y1" boundary coordinate for the Shape.
-     * 
+     *
      * @return
      */
     public final double getY1()
@@ -112,7 +112,7 @@ public final class DragBounds
 
     /**
      * Sets the "y2" boundary coordinate for the Shape.
-     * 
+     *
      * @param y2
      * @return
      */
@@ -125,7 +125,7 @@ public final class DragBounds
 
     /**
      * Gets the "y1" boundary coordinate for the Shape.
-     * 
+     *
      * @return
      */
     public final double getY2()
@@ -135,7 +135,7 @@ public final class DragBounds
 
     /**
      * Returns true if the "x1" boundary coordinate for the Shape has been set.
-     * 
+     *
      * @return
      */
     public final boolean isX1()
@@ -145,7 +145,7 @@ public final class DragBounds
 
     /**
      * Returns true if the "x2" boundary coordinate for the Shape has been set.
-     * 
+     *
      * @return
      */
     public final boolean isX2()
@@ -155,7 +155,7 @@ public final class DragBounds
 
     /**
      * Returns true if the "y1" boundary coordinate for the Shape has been set.
-     * 
+     *
      * @return
      */
     public final boolean isY1()
@@ -165,7 +165,7 @@ public final class DragBounds
 
     /**
      * Returns true if the "y2" boundary coordinate for the Shape has been set.
-     * 
+     *
      * @return
      */
     public final boolean isY2()

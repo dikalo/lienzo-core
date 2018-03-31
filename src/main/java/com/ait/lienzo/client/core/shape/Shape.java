@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.shape;
@@ -80,7 +80,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
         m_type = type;
     }
 
-    public Shape(final ShapeType type, final JSONObject node, final ValidationContext ctx) throws ValidationException
+    protected Shape(final ShapeType type, final JSONObject node, final ValidationContext ctx) throws ValidationException
     {
         super(NodeType.SHAPE, node, ctx);
 
@@ -90,7 +90,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
         if (attr.hasFill())
         {
-            FillGradient grad = attr.getFillGradient();
+            final FillGradient grad = attr.getFillGradient();
 
             if (null != grad)
             {
@@ -109,7 +109,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
                         }
 
                         @Override
-                        public void onImageElementError(String message)
+                        public void onImageElementError(final String message)
                         {
                             LienzoCore.get().error(message);
                         }
@@ -145,7 +145,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Only sub-classes that wish to extend a Shape should use this.
-     * 
+     *
      * @param type
      */
     protected void setShapeType(final ShapeType type)
@@ -160,7 +160,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
     }
 
     @Override
-    public Map<ControlHandleType, IControlHandleList> getControlHandles(ControlHandleType... types)
+    public Map<ControlHandleType, IControlHandleList> getControlHandles(final ControlHandleType... types)
     {
         return getControlHandles(Arrays.asList(types));
     }
@@ -174,9 +174,9 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
         }
         if (types.size() > 1)
         {
-            types = new ArrayList<ControlHandleType>(new HashSet<ControlHandleType>(types));
+            types = new ArrayList<>(new HashSet<>(types));
         }
-        IControlHandleFactory factory = getControlHandleFactory();
+        final IControlHandleFactory factory = getControlHandleFactory();
 
         if (null == factory)
         {
@@ -192,7 +192,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
     }
 
     @Override
-    public T setControlHandleFactory(IControlHandleFactory factory)
+    public T setControlHandleFactory(final IControlHandleFactory factory)
     {
         m_opts.setControlHandleFactory(factory);
 
@@ -223,14 +223,14 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Used internally. Draws the node in the current Context2D
-     * without applying the transformation-related attributes 
+     * without applying the transformation-related attributes
      * (e.g. X, Y, ROTATION, SCALE, SHEAR, OFFSET and TRANSFORM.)
      * <p>
      * Shapes should apply the non-Transform related attributes (such a colors, strokeWidth etc.)
      * and draw the Shape's details (such as the the actual lines and fills.)
      */
     @Override
-    protected void drawWithoutTransforms(final Context2D context, double alpha, BoundingBox bounds)
+    protected void drawWithoutTransforms(final Context2D context, double alpha, final BoundingBox bounds)
     {
         final Attributes attr = getAttributes();
 
@@ -279,7 +279,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
     /**
      * Fills the Shape using the passed attributes.
      * This method will silently also fill the Shape to its unique rgb color if the context is a buffer.
-     * 
+     *
      * @param context
      * @param attr
      */
@@ -517,7 +517,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets the Shape Stroke parameters.
-     * 
+     *
      * @param context
      * @param attr
      * @return boolean
@@ -556,7 +556,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
             return false;
         }
         double offset = 0;
-        
+
         if (context.isSelection())
         {
             color = getColorKey();
@@ -589,7 +589,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
         {
             if (LienzoCore.get().isLineDashSupported())
             {
-                DashArray dash = attr.getDashArray();
+                final DashArray dash = attr.getDashArray();
 
                 if ((null != dash) && (dash.size() > 0))
                 {
@@ -628,7 +628,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets the Shape stroke.
-     * 
+     *
      * @param context
      * @param attr
      */
@@ -662,7 +662,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Applies this shape's Shadow.
-     * 
+     *
      * @param context
      * @param attr
      * @return boolean
@@ -712,7 +712,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Gets the {@link DashArray}. If this is a solid line, the dash array is empty.
-     * 
+     *
      * @return {@link DashArray} if this line is not dashed, there will be no elements in the {@link DashArray}
      */
     public DashArray getDashArray()
@@ -721,8 +721,8 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
     }
 
     /**
-     * Sets the dash array. 
-     * 
+     * Sets the dash array.
+     *
      * @param array contains dash lengths
      * @return this Line
      */
@@ -747,7 +747,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets the dash array with individual dash lengths.
-     * 
+     *
      * @param dash length of dash
      * @param dashes if specified, length of remaining dashes
      * @return this Line
@@ -761,7 +761,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Returns this shape cast as an {@link IPrimitive}
-     * 
+     *
      * @return IPrimitive
      */
     @Override
@@ -778,7 +778,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Returns the Shape type.
-     * 
+     *
      * @return {@link ShapeType}
      */
     public ShapeType getShapeType()
@@ -794,7 +794,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Returns unique RGB color assigned to the off-set Shape.
-     * 
+     *
      * @return String
      */
     public String getColorKey()
@@ -836,7 +836,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Moves this shape one layer up.
-     * 
+     *
      * @return T
      */
     @SuppressWarnings("unchecked")
@@ -859,7 +859,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Moves this shape one layer down.
-     * 
+     *
      * @return T
      */
     @SuppressWarnings("unchecked")
@@ -882,7 +882,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Moves this shape to the top of the layers stack.
-     * 
+     *
      * @return T
      */
     @SuppressWarnings("unchecked")
@@ -905,7 +905,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Moves this shape to the bottomw of the layers stack.
-     * 
+     *
      * @return T
      */
     @SuppressWarnings("unchecked")
@@ -928,7 +928,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Gets the x coordinate for this shape.
-     * 
+     *
      * @return double
      */
     @Override
@@ -939,7 +939,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets the x coordinate for this shape.
-     * 
+     *
      * @param x
      * @return T
      */
@@ -953,7 +953,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Gets the y coordinate for this shape.
-     * 
+     *
      * @return double
      */
     @Override
@@ -964,7 +964,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets the y coordinate for this shape.
-     * 
+     *
      * @param y
      * @return T
      */
@@ -978,7 +978,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets the X and Y attributes to P.x and P.y
-     * 
+     *
      * @param p Point2D
      * @return this Shape
      */
@@ -994,7 +994,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Returns the X and Y attributes as a Point2D
-     * 
+     *
      * @return Point2D
      */
     @Override
@@ -1005,7 +1005,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Returns true if this shape can be dragged; false otherwise.
-     * 
+     *
      * @return boolean
      */
     @Override
@@ -1016,7 +1016,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets if this shape can be dragged or not.
-     * 
+     *
      * @return T
      */
     @Override
@@ -1107,7 +1107,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Gets this shape's scale.
-     * 
+     *
      * @return double
      */
     @Override
@@ -1118,7 +1118,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets this shape's scale, starting at the given point.
-     * 
+     *
      * @param scale
      * @return T
      */
@@ -1132,7 +1132,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets this shape's scale, with the same value for x and y.
-     * 
+     *
      * @param xy
      * @return T
      */
@@ -1146,7 +1146,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets this shape's scale, starting at the given x and y
-     * 
+     *
      * @param x
      * @param y
      * @return T
@@ -1161,7 +1161,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Gets this shape's rotation, in radians.
-     * 
+     *
      * @return double
      */
     @Override
@@ -1172,7 +1172,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets this group's rotation, in radians.
-     * 
+     *
      * @param radians
      * @return T
      */
@@ -1186,7 +1186,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Gets this group's rotation, in degrees.
-     * 
+     *
      * @return double
      */
     @Override
@@ -1197,7 +1197,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets this group's rotation, in degrees.
-     * 
+     *
      * @param degrees
      * @return T
      */
@@ -1211,7 +1211,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Gets this shape's shear as a {@link Point2D}
-     * 
+     *
      * @return Point2D
      */
     @Override
@@ -1222,7 +1222,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets this shape's shear
-     * 
+     *
      * @param offset
      * @return T
      */
@@ -1236,7 +1236,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets this shape's shear
-     * 
+     *
      * @param offset
      * @return T
      */
@@ -1250,7 +1250,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Gets this shape's offset as a {@link Point2D}
-     * 
+     *
      * @return Point2D
      */
     @Override
@@ -1261,7 +1261,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets this shape's offset
-     * 
+     *
      * @param offset
      * @return T
      */
@@ -1275,7 +1275,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets this shape's offset, with the same value for x and y.
-     * 
+     *
      * @param xy
      * @return T
      */
@@ -1289,7 +1289,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets this shape's offset, at the given x and y coordinates.
-     * 
+     *
      * @param x
      * @param y
      * @return T
@@ -1304,7 +1304,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Gets this shape's {@link DragConstraint}
-     * 
+     *
      * @return DragConstraint
      */
     @Override
@@ -1315,7 +1315,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets this shape's drag constraint; e.g., horizontal, vertical or none (default)
-     * 
+     *
      * @param constraint
      * @return T
      */
@@ -1329,7 +1329,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Gets the {@link DragBounds} for this shape.
-     * 
+     *
      * @return DragBounds
      */
     @Override
@@ -1340,7 +1340,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets this shape's drag bounds.
-     * 
+     *
      * @param bounds
      * @return T
      */
@@ -1354,7 +1354,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Gets the {@link DragMode} for this node.
-     * 
+     *
      * @return DragMode
      */
     @Override
@@ -1365,7 +1365,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets this node's drag mode.
-     * 
+     *
      * @param mode
      * @return T
      */
@@ -1379,7 +1379,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Gets the alpha value for this shape.
-     * 
+     *
      * @return double
      */
     @Override
@@ -1390,7 +1390,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets the alpha color on this shape.
-     * 
+     *
      * @param alpha
      * @return T
      */
@@ -1404,7 +1404,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets the alpha color on this shape.
-     * 
+     *
      * @param alpha
      * @return T
      */
@@ -1418,7 +1418,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets the alpha color on this shape.
-     * 
+     *
      * @param alpha
      * @return T
      */
@@ -1432,7 +1432,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Gets the alpha value for this shape.
-     * 
+     *
      * @return double
      */
     @Override
@@ -1443,7 +1443,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Gets the fill color in hex.
-     * 
+     *
      * @return String
      */
     public String getFillColor()
@@ -1453,7 +1453,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets the fill color.
-     * 
+     *
      * @param color in hex
      * @return T
      */
@@ -1466,7 +1466,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets the fill color.
-     * 
+     *
      * @param color ColorName
      * @return T
      */
@@ -1477,7 +1477,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Returns the fill gradient.
-     * 
+     *
      * @return FillGradient i.e. {@link LinearGradient}, {@link RadialGradient}
      *                  or {@link PatternGradient}
      */
@@ -1488,7 +1488,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets the gradient fill.
-     * 
+     *
      * @param gradient a {@link LinearGradient}
      * @return T
      */
@@ -1501,7 +1501,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets the gradient fill.
-     * 
+     *
      * @param gradient a {@link RadialGradient}
      * @return T
      */
@@ -1514,7 +1514,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets the gradient fill.
-     * 
+     *
      * @param gradient a {@link PatternGradient}
      * @return T
      */
@@ -1528,7 +1528,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Gets the stroke color for this shape.
-     * 
+     *
      * @return String color in hex
      */
     public String getStrokeColor()
@@ -1538,7 +1538,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets the stroke color.
-     * 
+     *
      * @param color in hex
      * @return T
      */
@@ -1551,7 +1551,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets the stroke color.
-     * 
+     *
      * @param color Color or ColorName
      * @return T
      */
@@ -1562,7 +1562,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Gets the stroke width.
-     * 
+     *
      * @return double
      */
     public double getStrokeWidth()
@@ -1572,7 +1572,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets the stroke width for this shape.
-     * 
+     *
      * @param width
      * @return T
      */
@@ -1585,7 +1585,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Gets the type of {@link LineJoin} for this shape.
-     * 
+     *
      * @return {@link LineJoin}
      */
     public LineJoin getLineJoin()
@@ -1595,7 +1595,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets the type of {@link LineJoin} for this shape.
-     * 
+     *
      * @param linejoin
      * @return T
      */
@@ -1608,7 +1608,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets the value of Miter Limit for this shape.
-     * 
+     *
      * @param limit
      * @return T
      */
@@ -1622,7 +1622,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Gets the type of Miter Limit for this shape.
-     * 
+     *
      * @return double
      */
 
@@ -1633,7 +1633,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Gets the type of {@link LineCap} for this shape.
-     * 
+     *
      * @return {@link LineCap}
      */
     public LineCap getLineCap()
@@ -1643,7 +1643,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets the type of {@link LineCap} for this shape.
-     * 
+     *
      * @param linecap
      * @return T
      */
@@ -1656,7 +1656,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Gets this shape's {@link Shadow}
-     * 
+     *
      * @return Shadow
      */
     public Shadow getShadow()
@@ -1666,7 +1666,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Sets this shape's {@link Shadow}
-     * 
+     *
      * @param shadow
      * @return T
      */
@@ -1707,7 +1707,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
     /**
      * Serializes this shape as a {@link JSONObject}
-     * 
+     *
      * @return JSONObject
      */
     @Override
@@ -1760,7 +1760,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
         return LienzoCore.STANDARD_TRANSFORMING_ATTRIBUTES;
     }
 
-    protected static abstract class ShapeFactory<S extends Shape<S>>extends NodeFactory<S>
+    protected static abstract class ShapeFactory<S extends Shape<S>> extends NodeFactory<S>
     {
         protected ShapeFactory(final ShapeType type)
         {
@@ -1825,7 +1825,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
         /**
          * Only factories that wish to extend other factories should use this.
-         * 
+         *
          * @param type {@link ShapeType}
          */
         protected void setShapeType(final ShapeType type)
@@ -1847,58 +1847,58 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
 
         protected final native boolean isDragging()
         /*-{
-			return !!this.drag;
+        	return !!this.drag;
         }-*/;
 
         protected final native void setDragging(boolean drag)
         /*-{
-			if (false == drag) {
-				delete this["drag"];
-			} else {
-				this.drag = drag;
-			}
+        	if (false == drag) {
+        		delete this["drag"];
+        	} else {
+        		this.drag = drag;
+        	}
         }-*/;
 
         protected final native boolean isAppliedShadow()
         /*-{
-			return !!this.apsh;
+        	return !!this.apsh;
         }-*/;
 
         protected final native void setAppliedShadow(boolean apsh)
         /*-{
-			if (false == apsh) {
-				delete this["apsh"];
-			} else {
-				this.apsh = apsh;
-			}
+        	if (false == apsh) {
+        		delete this["apsh"];
+        	} else {
+        		this.apsh = apsh;
+        	}
         }-*/;
 
         protected final native DragConstraintEnforcer getDragConstraintEnforcer()
         /*-{
-			return this.denf;
+        	return this.denf;
         }-*/;
 
         protected final native void setDragConstraintEnforcer(DragConstraintEnforcer denf)
         /*-{
-			if (null == denf) {
-				delete this["denf"];
-			} else {
-				this.denf = denf;
-			}
+        	if (null == denf) {
+        		delete this["denf"];
+        	} else {
+        		this.denf = denf;
+        	}
         }-*/;
 
         protected final native IControlHandleFactory getControlHandleFactory()
         /*-{
-			return this.hand;
+        	return this.hand;
         }-*/;
 
         protected final native void setControlHandleFactory(IControlHandleFactory hand)
         /*-{
-			if (null == hand) {
-				delete this["hand"];
-			} else {
-				this.hand = hand;
-			}
+        	if (null == hand) {
+        		delete this["hand"];
+        	} else {
+        		this.hand = hand;
+        	}
         }-*/;
     }
 }

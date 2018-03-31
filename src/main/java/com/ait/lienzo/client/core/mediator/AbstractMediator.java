@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.mediator;
@@ -22,11 +22,11 @@ import com.ait.lienzo.client.core.types.Transform;
 /**
  * AbstractMediator provides common functionality for {@link IMediator}s.
  * See {@link Mediators} for details.
- * 
+ *
  * @see Mediators
  * @see EventFilter
  * @see IEventFilter
- * 
+ *
  * @since 1.1
  */
 public abstract class AbstractMediator implements IMediator
@@ -41,7 +41,7 @@ public abstract class AbstractMediator implements IMediator
 
     private boolean      m_batch        = false;
 
-    private String       m_name         = getClass().getName() + "_" + (s_name_counter++);// Create a default unique name, we don't create alot of Mediators, so... good'nuf
+    private String       m_name         = getClass().getName() + "_" + (s_name_counter++); // Create a default unique name, we don't create alot of Mediators, so... good'nuf
 
     public void setBatchDraw(final boolean batch)
     {
@@ -56,11 +56,11 @@ public abstract class AbstractMediator implements IMediator
     /**
      * Returns the event filter for this mediator.
      * This can be used to restrict which events the mediator should act upon.
-     * 
+     *
      * The default value is EventFilter.ANY, which allows all events.
-     * 
+     *
      * @return {@link IEventFilter}
-     * 
+     *
      * @see EventFilter
      */
     public IEventFilter getEventFilter()
@@ -71,11 +71,11 @@ public abstract class AbstractMediator implements IMediator
     /**
      * Sets the event filter for this mediator.
      * This can be used to restrict which events the mediator should act upon.
-     * 
+     *
      * The default value is EventFilter.ANY, which allows all events.
-     * 
+     *
      * @param eventFilter {@link IEventFilter}
-     * 
+     *
      * @see EventFilter
      */
     public void setEventFilter(final IEventFilter filter)
@@ -85,9 +85,9 @@ public abstract class AbstractMediator implements IMediator
 
     /**
      * Sets the Viewport that this mediator belongs to.
-     * This is set by the framework when the mediator is added to the 
+     * This is set by the framework when the mediator is added to the
      * {@link Mediators} of a {@link Viewport}.
-     * 
+     *
      * @param viewport
      */
     public void setViewport(final Viewport viewport)
@@ -97,9 +97,9 @@ public abstract class AbstractMediator implements IMediator
 
     /**
      * Returns the Viewport that this mediator belongs to.
-     * This is set by the framework when the mediator is added to the 
+     * This is set by the framework when the mediator is added to the
      * {@link Mediators} of a {@link Viewport}.
-     * 
+     *
      * @return {@link Viewport}
      */
     public Viewport getViewport()

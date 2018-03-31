@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.image.filter;
@@ -32,7 +32,7 @@ public class EmbossImageDataFilter extends AbstractImageDataFilter<EmbossImageDa
         super(ImageFilterType.EmbossImageDataFilterType);
     }
 
-    protected EmbossImageDataFilter(JSONObject node, ValidationContext ctx) throws ValidationException
+    protected EmbossImageDataFilter(final JSONObject node, final ValidationContext ctx) throws ValidationException
     {
         super(ImageFilterType.EmbossImageDataFilterType, node, ctx);
     }
@@ -44,7 +44,7 @@ public class EmbossImageDataFilter extends AbstractImageDataFilter<EmbossImageDa
     }
 
     @Override
-    public ImageData filter(ImageData source, boolean copy)
+    public ImageData filter(ImageData source, final boolean copy)
     {
         if (null == source)
         {
@@ -71,25 +71,25 @@ public class EmbossImageDataFilter extends AbstractImageDataFilter<EmbossImageDa
 
     private final native void filter_(JavaScriptObject data, int length, int width, ImageDataFilterCommonOps fops)
     /*-{
-        for(var i = 0; i < length; i++) {
-            if(i < (length - width * 4)) {
-                if(((i + 1) % 4) !== 0) {
-                    if(((i + 4) % (width * 4)) == 0) {
-                        data[  i  ] = data[i - 4];
-                        data[i + 1] = data[i - 3];
-                        data[i + 2] = data[i - 2];
-                        data[i + 3] = data[i - 1];
-                    } else {
-                        data[i] = 255/2 + 2 * data[i] - data[i + 4] - data[i + width * 4];
-                    }
-                }
-            } else {
-                if(((i + 1) % 4) !== 0) {
-                    data[i] = data[i - width * 4];
-                }
-            }
-        }
-        fops.filterLuminosity(data, length);
+		for (var i = 0; i < length; i++) {
+			if (i < (length - width * 4)) {
+				if (((i + 1) % 4) !== 0) {
+					if (((i + 4) % (width * 4)) == 0) {
+						data[i] = data[i - 4];
+						data[i + 1] = data[i - 3];
+						data[i + 2] = data[i - 2];
+						data[i + 3] = data[i - 1];
+					} else {
+						data[i] = (255 / 2 + 2 * data[i] - data[i + 4] - data[i + width * 4]);
+					}
+				}
+			} else {
+				if (((i + 1) % 4) !== 0) {
+					data[i] = data[i - width * 4];
+				}
+			}
+		}
+		fops.filterLuminosity(data, length);
     }-*/;
 
     @Override
@@ -106,7 +106,7 @@ public class EmbossImageDataFilter extends AbstractImageDataFilter<EmbossImageDa
         }
 
         @Override
-        public EmbossImageDataFilter create(JSONObject node, ValidationContext ctx) throws ValidationException
+        public EmbossImageDataFilter create(final JSONObject node, final ValidationContext ctx) throws ValidationException
         {
             return new EmbossImageDataFilter(node, ctx);
         }

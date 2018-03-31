@@ -1,20 +1,22 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.types;
+
+import java.util.HashMap;
 
 import com.ait.lienzo.client.core.Path2D;
 import com.ait.lienzo.client.core.util.Geometry;
@@ -23,8 +25,6 @@ import com.google.gwt.core.client.JsArray;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
-
-import java.util.HashMap;
 
 public final class PathPartList
 {
@@ -59,47 +59,60 @@ public final class PathPartList
 
             m_fin = true;
         }
-
         m_proportions = new HashMap<>();
     }
 
-    public Proportion getProportion(PathPartEntryJSO entry){
+    public Proportion getProportion(final PathPartEntryJSO entry)
+    {
         return m_proportions.get(entry);
     }
 
-    public void refreshProportions() {
-
+    public void refreshProportions()
+    {
         final BoundingBox bb = getBoundingBox();
 
-        if(bb.getHeight() == 0 || bb.getWidth() ==0){
+        if ((bb.getHeight() == 0) || (bb.getWidth() == 0))
+        {
             return;
         }
-
         final double startTopLeftX = bb.getX();
+
         final double startTopLeftY = bb.getY();
+
         final double startW = bb.getWidth();
+
         final double startH = bb.getHeight();
 
-        for (int i = 0; i < m_jso.length(); i++) {
+        for (int i = 0; i < m_jso.length(); i++)
+        {
+            final PathPartEntryJSO entry = m_jso.get(i);
 
-            PathPartEntryJSO entry = m_jso.get(i);
             Proportion proportion = m_proportions.get(entry);
 
-            if (proportion==null){
+            if (proportion == null)
+            {
                 proportion = new Proportion();
+
                 m_proportions.put(entry, proportion);
             }
+            final double x = entry.getPoints().get(0);
 
-            double x = entry.getPoints().get(0);
-            double y = entry.getPoints().get(1);
-            double rightProportion = ((100 / startW) * (x - startTopLeftX)) / 100;
-            double topProportion = ((100 / startH) * ((startTopLeftY + startH) - y)) / 100;
-            double bottomProportion = ((100 / startH) * (y - startTopLeftY)) / 100;
-            double leftProportion = ((100 / startW) * ((startTopLeftX + startW) - x)) / 100;
+            final double y = entry.getPoints().get(1);
+
+            final double rightProportion = ((100 / startW) * (x - startTopLeftX)) / 100;
+
+            final double topProportion = ((100 / startH) * ((startTopLeftY + startH) - y)) / 100;
+
+            final double bottomProportion = ((100 / startH) * (y - startTopLeftY)) / 100;
+
+            final double leftProportion = ((100 / startW) * ((startTopLeftX + startW) - x)) / 100;
 
             proportion.setRight(rightProportion);
+
             proportion.setLeft(leftProportion);
+
             proportion.setBottom(bottomProportion);
+
             proportion.setTop(topProportion);
         }
     }
@@ -221,7 +234,7 @@ public final class PathPartList
         return C(c1.getX(), c1.getY(), c2.getX(), c2.getY(), ep.getX(), ep.getY());
     }
 
-    public PathPartList A(final double x0, final double y0, double x1, final double y1, final double radius)
+    public PathPartList A(final double x0, final double y0, final double x1, final double y1, final double radius)
     {
         push(PathPartEntryJSO.make(PathPartEntryJSO.CANVAS_ARCTO_ABSOLUTE, NFastDoubleArrayJSO.make(x0, y0, m_cpx = x1, m_cpy = y1, radius)));
 
@@ -345,7 +358,7 @@ public final class PathPartList
         return toJSONString();
     }
 
-    public final static NFastDoubleArrayJSO convertEndpointToCenterParameterization(final double x1, final double y1, final double x2, final double y2, final double fa, final double fs, double rx, double ry, final double pv)
+    public final static NFastDoubleArrayJSO convertEndpointToCenterParameterization(final double x1, final double y1, final double x2, final double y2, final double fa, final double fs, final double rx, final double ry, final double pv)
     {
         final NFastDoubleArrayJSO points = NFastDoubleArrayJSO.make();
 
@@ -362,21 +375,21 @@ public final class PathPartList
 
         final double sp = Math.sin(ps);
 
-        final double xp = cp * (x1 - x2) / 2.0 + sp * (y1 - y2) / 2.0;
+        final double xp = ((cp * (x1 - x2)) / 2.0) + ((sp * (y1 - y2)) / 2.0);
 
-        final double yp = -1 * sp * (x1 - x2) / 2.0 + cp * (y1 - y2) / 2.0;
+        final double yp = ((-1 * sp * (x1 - x2)) / 2.0) + ((cp * (y1 - y2)) / 2.0);
 
-        final double lambda = (xp * xp) / (rx * rx) + (yp * yp) / (ry * ry);
+        final double lambda = ((xp * xp) / (rx * rx)) + ((yp * yp) / (ry * ry));
 
         if (lambda > 1)
         {
-            double sq = Math.sqrt(lambda);
+            final double sq = Math.sqrt(lambda);
 
             rx *= sq;
 
             ry *= sq;
         }
-        double f = Math.sqrt((((rx * rx) * (ry * ry)) - ((rx * rx) * (yp * yp)) - ((ry * ry) * (xp * xp))) / ((rx * rx) * (yp * yp) + (ry * ry) * (xp * xp)));
+        double f = Math.sqrt((((rx * rx) * (ry * ry)) - ((rx * rx) * (yp * yp)) - ((ry * ry) * (xp * xp))) / (((rx * rx) * (yp * yp)) + ((ry * ry) * (xp * xp))));
 
         if (fa == fs)
         {
@@ -386,19 +399,19 @@ public final class PathPartList
         {
             f = 0;
         }
-        final double cxp = f * rx * yp / ry;
+        final double cxp = (f * rx * yp) / ry;
 
-        final double cyp = f * -ry * xp / rx;
+        final double cyp = (f * -ry * xp) / rx;
 
-        final double cx = (x1 + x2) / 2.0 + cp * cxp - sp * cyp;
+        final double cx = (((x1 + x2) / 2.0) + (cp * cxp)) - (sp * cyp);
 
-        final double cy = (y1 + y2) / 2.0 + sp * cxp + cp * cyp;
+        final double cy = ((y1 + y2) / 2.0) + (sp * cxp) + (cp * cyp);
 
         final double th = Geometry.getVectorAngle(new double[] { 1, 0 }, new double[] { (xp - cxp) / rx, (yp - cyp) / ry });
 
         final double[] u = new double[] { (xp - cxp) / rx, (yp - cyp) / ry };
 
-        final double[] v = new double[] { (-1 * xp - cxp) / rx, (-1 * yp - cyp) / ry };
+        final double[] v = new double[] { ((-1 * xp) - cxp) / rx, ((-1 * yp) - cyp) / ry };
 
         double dt = Geometry.getVectorAngle(u, v);
 
@@ -410,11 +423,11 @@ public final class PathPartList
         {
             dt = 0;
         }
-        if (fs == 0 && dt > 0)
+        if ((fs == 0) && (dt > 0))
         {
             dt -= Geometry.TWO_PI;
         }
-        if (fs == 1 && dt < 0)
+        if ((fs == 1) && (dt < 0))
         {
             dt += Geometry.TWO_PI;
         }
@@ -469,10 +482,10 @@ public final class PathPartList
                     m_box.add(Geometry.getBoundingBoxOfCurve(new Point2DArray(new Point2D(oldx, oldy), new Point2D(p.get(0), p.get(1)), new Point2D(oldx = p.get(2), oldy = p.get(3)))));
                     break;
                 case PathPartEntryJSO.ARCTO_ABSOLUTE:
-                    double cx = p.get(0);
-                    double cy = p.get(1);
-                    double rx = p.get(2);
-                    double ry = p.get(3);
+                    final double cx = p.get(0);
+                    final double cy = p.get(1);
+                    final double rx = p.get(2);
+                    final double ry = p.get(3);
                     m_box.addX(cx + rx);
                     m_box.addX(cx - rx);
                     m_box.addY(cy + ry);
@@ -481,20 +494,20 @@ public final class PathPartList
                     oldy = p.get(9);
                     break;
                 case PathPartEntryJSO.CANVAS_ARCTO_ABSOLUTE:
-                    double x0 = p.get(0);
-                    double y0 = p.get(1);
-                    double x1 = p.get(2);
-                    double y1 = p.get(3);
-                    double ra = p.get(4);
-                    Point2D p0 = new Point2D(oldx, oldy);
-                    Point2DArray pa = Geometry.getCanvasArcToPoints(p0, new Point2D(x0, y0), new Point2D(x1, y1), ra);
-                    BoundingBox bb = Geometry.getBoundingBoxOfArc(pa.get(0), pa.get(1), pa.get(2), ra);
+                    final double x0 = p.get(0);
+                    final double y0 = p.get(1);
+                    final double x1 = p.get(2);
+                    final double y1 = p.get(3);
+                    final double ra = p.get(4);
+                    final Point2D p0 = new Point2D(oldx, oldy);
+                    final Point2DArray pa = Geometry.getCanvasArcToPoints(p0, new Point2D(x0, y0), new Point2D(x1, y1), ra);
+                    final BoundingBox bb = Geometry.getBoundingBoxOfArc(pa.get(0), pa.get(1), pa.get(2), ra);
                     if (false == pa.get(0).equals(p0))
                     {
                         bb.add(p0);//p0 is always the start point of the path, but not necessary of the arc - depending on the radius
                     }
                     m_box.add(bb);
-                    Point2D ep = pa.get(2);// this is always the end point of the path
+                    final Point2D ep = pa.get(2);// this is always the end point of the path
                     oldx = ep.getX();
                     oldy = ep.getY();
                     break;
@@ -528,7 +541,7 @@ public final class PathPartList
     {
         final int size = size();
 
-        Point2DArray points = new Point2DArray();
+        final Point2DArray points = new Point2DArray();
 
         if (size < 1)
         {
@@ -562,14 +575,14 @@ public final class PathPartList
                     points.push(oldx = p.get(8), oldy = p.get(9));
                     break;
                 case PathPartEntryJSO.CANVAS_ARCTO_ABSOLUTE:
-                    double x0 = p.get(0);
-                    double y0 = p.get(1);
-                    double x1 = p.get(2);
-                    double y1 = p.get(3);
-                    double ra = p.get(4);
-                    Point2D p0 = new Point2D(oldx, oldy);
-                    Point2DArray pa = Geometry.getCanvasArcToPoints(p0, new Point2D(x0, y0), new Point2D(x1, y1), ra);
-                    Point2D ep = pa.get(2);// this is always the end point of the path
+                    final double x0 = p.get(0);
+                    final double y0 = p.get(1);
+                    final double x1 = p.get(2);
+                    final double y1 = p.get(3);
+                    final double ra = p.get(4);
+                    final Point2D p0 = new Point2D(oldx, oldy);
+                    final Point2DArray pa = Geometry.getCanvasArcToPoints(p0, new Point2D(x0, y0), new Point2D(x1, y1), ra);
+                    final Point2D ep = pa.get(2);// this is always the end point of the path
                     points.push(oldx = ep.getX(), oldy = ep.getY());
                     break;
             }
@@ -592,39 +605,50 @@ public final class PathPartList
     public static final class Proportion
     {
         private double m_top;
+
         private double m_bottom;
+
         private double m_left;
+
         private double m_right;
 
-        public double getTop() {
+        public double getTop()
+        {
             return m_top;
         }
 
-        public void setTop(double top) {
+        public void setTop(final double top)
+        {
             this.m_top = top;
         }
 
-        public double getBottom() {
+        public double getBottom()
+        {
             return m_bottom;
         }
 
-        public void setBottom(double bottom) {
+        public void setBottom(final double bottom)
+        {
             this.m_bottom = bottom;
         }
 
-        public double getLeft() {
+        public double getLeft()
+        {
             return m_left;
         }
 
-        public void setLeft(double left) {
+        public void setLeft(final double left)
+        {
             this.m_left = left;
         }
 
-        public double getRight() {
+        public double getRight()
+        {
             return m_right;
         }
 
-        public void setRight(double right) {
+        public void setRight(final double right)
+        {
             this.m_right = right;
         }
     }

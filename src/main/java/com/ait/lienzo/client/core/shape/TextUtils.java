@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.shape;
@@ -32,36 +32,35 @@ import com.google.gwt.canvas.dom.client.CanvasPixelArray;
  */
 public class TextUtils
 {
-
     static ScratchPad                          FORBOUNDS = new ScratchPad(1, 1);
 
-    static NFastStringMap<NFastDoubleArrayJSO> OFFSCACHE = new NFastStringMap<NFastDoubleArrayJSO>();
+    static NFastStringMap<NFastDoubleArrayJSO> OFFSCACHE = new NFastStringMap<>();
 
     static native NFastDoubleArrayJSO getTextOffsets(CanvasPixelArray data, int wide, int high, int base)
     /*-{
-		var top = -1;
-		var bot = -1;
-		for (var y = 0; ((y < high) && (top < 0)); y++) {
-			for (var x = 0; ((x < wide) && (top < 0)); x++) {
-				if (data[(y * wide + x) * 4] != 0) {
-					top = y;
-				}
-			}
-		}
-		if (top < 0) {
-			top = 0;
-		}
-		for (var y = high - 1; ((y > top) && (bot < 0)); y--) {
-			for (var x = 0; ((x < wide) && (bot < 0)); x++) {
-				if (data[(y * wide + x) * 4] != 0) {
-					bot = y;
-				}
-			}
-		}
-		if ((top < 0) || (bot < 0)) {
-			return null;
-		}
-		return [ top - base, bot - base ];
+    	var top = -1;
+    	var bot = -1;
+    	for (var y = 0; ((y < high) && (top < 0)); y++) {
+    		for (var x = 0; ((x < wide) && (top < 0)); x++) {
+    			if (data[(y * wide + x) * 4] != 0) {
+    				top = y;
+    			}
+    		}
+    	}
+    	if (top < 0) {
+    		top = 0;
+    	}
+    	for (var y = high - 1; ((y > top) && (bot < 0)); y--) {
+    		for (var x = 0; ((x < wide) && (bot < 0)); x++) {
+    			if (data[(y * wide + x) * 4] != 0) {
+    				bot = y;
+    			}
+    		}
+    	}
+    	if ((top < 0) || (bot < 0)) {
+    		return null;
+    	}
+    	return [ top - base, bot - base ];
     }-*/;
 
     public static final NFastDoubleArrayJSO getTextOffsets(final String font, final TextBaseLine baseline)
@@ -151,46 +150,49 @@ public class TextUtils
         return style + " " + size + unit.toString() + " " + family;
     }
 
-    public static String padString(String string, int targetSize, char padChar, TextAlign where) {
-        if (string.length() >= targetSize) {
+    public static String padString(final String string, final int targetSize, final char padChar, final TextAlign where)
+    {
+        if (string.length() >= targetSize)
+        {
             return string;
         }
+        final int toPad = targetSize - string.length();
 
-        int toPad = targetSize - string.length();
-        StringBuilder buffer = new StringBuilder(targetSize);
-        switch (where) {
+        final StringBuilder buffer = new StringBuilder(targetSize);
+
+        switch (where)
+        {
             case END:
             case RIGHT:
-                for (int i = 0; i < toPad; i++) {
+                for (int i = 0; i < toPad; i++)
+                {
                     buffer.append(padChar);
                 }
                 buffer.append(string);
                 return buffer.toString();
-
             case START:
             case LEFT:
                 buffer.append(string);
-                for (int i = 0; i < toPad; i++) {
+                for (int i = 0; i < toPad; i++)
+                {
                     buffer.append(padChar);
                 }
                 return buffer.toString();
-
             case CENTER:
-                int leftPad = toPad / 2;
-                int rightPad = toPad - leftPad;
-                for (int i = 0; i < leftPad; i++) {
+                final int leftPad = toPad / 2;
+                final int rightPad = toPad - leftPad;
+                for (int i = 0; i < leftPad; i++)
+                {
                     buffer.append(padChar);
                 }
                 buffer.append(string);
-                for (int i = 0; i < rightPad; i++) {
+                for (int i = 0; i < rightPad; i++)
+                {
                     buffer.append(padChar);
                 }
                 return buffer.toString();
-
             default:
                 return string;
         }
     }
-
-
 }

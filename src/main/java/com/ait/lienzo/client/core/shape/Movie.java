@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.shape;
@@ -64,7 +64,7 @@ import com.google.gwt.user.client.ui.RootPanel;
  * Due to discrepancies in the adoption of the Canvas specification by different vendors,
  * you should provide multiple formats of the video to ensure portability.
  */
-public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
+public class Movie extends Shape<Movie> implements ImageDataFilterable<Movie>
 {
     private static final int           MOVIE_ERROR_HIGH = 360;
 
@@ -94,7 +94,7 @@ public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
 
     /**
      * Constructor. Creates an instance of a movie.
-     * 
+     *
      * @param url
      */
     public Movie(final String url)
@@ -168,20 +168,20 @@ public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
 
     private final native void setErrorHandler(Movie movie, VideoElement element)
     /*-{
-		element.onerror = function(e) {
-			movie.@com.ait.lienzo.client.core.shape.Movie::setErrorCode(I)(e.target.error.code);
-		};
+    	element.onerror = function(e) {
+    		movie.@com.ait.lienzo.client.core.shape.Movie::setErrorCode(I)(e.target.error.code);
+    	};
     }-*/;
 
     private final String getTextBestFit(final Context2D context, final String text, final int wide)
     {
         double pt = LienzoCore.get().getDefaultFontSize();
 
-        String st = LienzoCore.get().getDefaultFontStyle();
+        final String st = LienzoCore.get().getDefaultFontStyle();
 
-        String fm = LienzoCore.get().getDefaultFontFamily();
+        final String fm = LienzoCore.get().getDefaultFontFamily();
 
-        String tf = Text.getFontString(pt, TextUnit.PT, st, fm);
+        String tf = TextUtils.getFontString(pt, TextUnit.PT, st, fm);
 
         context.save();
 
@@ -203,7 +203,7 @@ public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
             {
                 break;
             }
-            tf = Text.getFontString(pt, TextUnit.PT, st, fm);
+            tf = TextUtils.getFontString(pt, TextUnit.PT, st, fm);
         }
         context.restore();
 
@@ -226,7 +226,7 @@ public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
     /**
      * Draws the frames of the video.  If looping has been set, frames are drawn
      * continuously in a loop.
-     * 
+     *
      * @param context
      */
     @Override
@@ -318,7 +318,7 @@ public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
                 }
                 else
                 {
-                    String fill = getFillColor();
+                    final String fill = getFillColor();
 
                     if (null != fill)
                     {
@@ -349,7 +349,7 @@ public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
 
                     context.drawImage(m_canvas.getElement(), 0, 0, wide, high);
                 }
-                catch (Exception e)
+                catch (final Exception e)
                 {
                     // We should only get an exception here if the URL is cross-origin, and getImageData() is basically a security exception.
                     // ...or other unknown bad things, either way, turn off filtering. DSJ 7/18/2014
@@ -371,7 +371,7 @@ public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
     }
 
     @Override
-    public Movie setFilters(ImageDataFilter<?> filter, ImageDataFilter<?>... filters)
+    public Movie setFilters(final ImageDataFilter<?> filter, final ImageDataFilter<?>... filters)
     {
         m_filters.setFilters(filter, filters);
 
@@ -379,7 +379,7 @@ public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
     }
 
     @Override
-    public Movie addFilters(ImageDataFilter<?> filter, ImageDataFilter<?>... filters)
+    public Movie addFilters(final ImageDataFilter<?> filter, final ImageDataFilter<?>... filters)
     {
         m_filters.addFilters(filter, filters);
 
@@ -387,7 +387,7 @@ public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
     }
 
     @Override
-    public Movie removeFilters(ImageDataFilter<?> filter, ImageDataFilter<?>... filters)
+    public Movie removeFilters(final ImageDataFilter<?> filter, final ImageDataFilter<?>... filters)
     {
         m_filters.removeFilters(filter, filters);
 
@@ -409,7 +409,7 @@ public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
     }
 
     @Override
-    public Movie setFiltersActive(boolean active)
+    public Movie setFiltersActive(final boolean active)
     {
         m_filters.setActive(active);
 
@@ -423,7 +423,7 @@ public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
     }
 
     @Override
-    public Movie setFilters(Iterable<ImageDataFilter<?>> filters)
+    public Movie setFilters(final Iterable<ImageDataFilter<?>> filters)
     {
         m_filters.setFilters(filters);
 
@@ -431,7 +431,7 @@ public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
     }
 
     @Override
-    public Movie addFilters(Iterable<ImageDataFilter<?>> filters)
+    public Movie addFilters(final Iterable<ImageDataFilter<?>> filters)
     {
         m_filters.addFilters(filters);
 
@@ -439,7 +439,7 @@ public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
     }
 
     @Override
-    public Movie removeFilters(Iterable<ImageDataFilter<?>> filters)
+    public Movie removeFilters(final Iterable<ImageDataFilter<?>> filters)
     {
         m_filters.removeFilters(filters);
 
@@ -448,11 +448,11 @@ public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
 
     /**
      * Sets the movie's volume
-     * 
+     *
      * @param volume
      * @return this Movie
      */
-    public Movie setVolume(double volume)
+    public Movie setVolume(final double volume)
     {
         getAttributes().setVolume(volume);
 
@@ -465,7 +465,7 @@ public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
 
     /**
      * Gets the value for the volume.
-     * 
+     *
      * @return double
      */
     public double getVolume()
@@ -475,7 +475,7 @@ public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
 
     /**
      * Gets the URL for this movie.
-     * 
+     *
      * @return String
      */
     public String getURL()
@@ -485,7 +485,7 @@ public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
 
     /**
      * Pauses this movie.
-     * 
+     *
      * @return this Movie
      */
     public Movie pause()
@@ -504,7 +504,7 @@ public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
         return m_pause;
     }
 
-    private final void setEnded(boolean ended)
+    private final void setEnded(final boolean ended)
     {
         if (m_ended = ended)
         {
@@ -534,11 +534,11 @@ public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
 
     /**
      * Sets the movie to continuously loop or not.
-     * 
+     *
      * @param loop
      * @return this Movie
      */
-    public Movie setLoop(boolean loop)
+    public Movie setLoop(final boolean loop)
     {
         getAttributes().setLoop(loop);
 
@@ -551,7 +551,7 @@ public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
 
     /**
      * Returns true if this movie is set to loop; false otherwise.
-     * 
+     *
      * @return boolean
      */
     public boolean isLoop()
@@ -561,11 +561,11 @@ public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
 
     /**
      * Sets the width of this movie's display area
-     * 
+     *
      * @param wide
      * @return this Movie
      */
-    public Movie setWidth(int wide)
+    public Movie setWidth(final int wide)
     {
         getAttributes().setWidth(wide);
 
@@ -576,14 +576,14 @@ public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
 
     /**
      * Gets the width of this movie's display area
-     * 
+     *
      * @return int
      */
     public int getWidth()
     {
         if (getAttributes().isDefined(Attribute.WIDTH))
         {
-            int wide = (int) (getAttributes().getWidth() + 0.5);
+            final int wide = (int) (getAttributes().getWidth() + 0.5);
 
             if (wide > 0)
             {
@@ -599,11 +599,11 @@ public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
 
     /**
      * Sets the height of this movie's display area
-     * 
+     *
      * @param high
      * @return this Movie
      */
-    public Movie setHeight(int high)
+    public Movie setHeight(final int high)
     {
         getAttributes().setHeight(high);
 
@@ -614,14 +614,14 @@ public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
 
     /**
      * Gets the height of this movie's display area
-     * 
+     *
      * @return int
      */
     public int getHeight()
     {
         if (getAttributes().isDefined(Attribute.HEIGHT))
         {
-            int high = (int) (getAttributes().getHeight() + 0.5);
+            final int high = (int) (getAttributes().getHeight() + 0.5);
 
             if (high > 0)
             {
@@ -635,7 +635,7 @@ public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
         return 0;
     }
 
-    public final Movie setPlaybackRate(double rate)
+    public final Movie setPlaybackRate(final double rate)
     {
         getAttributes().setPlaybackRate(rate);
 
@@ -651,7 +651,7 @@ public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
         return getAttributes().getPlaybackRate();
     }
 
-    public final Movie setAutoPlay(boolean play)
+    public final Movie setAutoPlay(final boolean play)
     {
         getAttributes().setAutoPlay(play);
 
@@ -663,7 +663,7 @@ public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
         return getAttributes().isAutoPlay();
     }
 
-    public final Movie setShowPoster(boolean show)
+    public final Movie setShowPoster(final boolean show)
     {
         getAttributes().setShowPoster(show);
 
@@ -687,7 +687,7 @@ public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
         }
     }
 
-    private final void setErrorCode(int code)
+    private final void setErrorCode(final int code)
     {
         switch (code)
         {
@@ -715,7 +715,7 @@ public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
     {
         if (null != m_video)
         {
-            MediaError status = m_video.getError();
+            final MediaError status = m_video.getError();
 
             if (status != null)
             {
@@ -738,7 +738,7 @@ public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
                             }
 
                             @Override
-                            public void onImageElementError(String message)
+                            public void onImageElementError(final String message)
                             {
                                 LienzoCore.get().error("ERROR: Getting video poster url[" + url + "] " + message);
                             }
@@ -773,23 +773,23 @@ public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
     @Override
     public JSONObject toJSONObject()
     {
-        JSONObject object = super.toJSONObject();
+        final JSONObject object = super.toJSONObject();
 
-        ImageDataFilterChain chain = m_filters;
+        final ImageDataFilterChain chain = m_filters;
 
         if ((null != chain) && (chain.size() > 0))
         {
-            JSONArray filters = new JSONArray();
+            final JSONArray filters = new JSONArray();
 
-            JSONObject filter = new JSONObject();
+            final JSONObject filter = new JSONObject();
 
             filter.put("active", JSONBoolean.getInstance(chain.isActive()));
 
-            for (ImageDataFilter<?> ifilter : chain.getFilters())
+            for (final ImageDataFilter<?> ifilter : chain.getFilters())
             {
                 if (null != ifilter)
                 {
-                    JSONObject make = ifilter.toJSONObject();
+                    final JSONObject make = ifilter.toJSONObject();
 
                     if (null != make)
                     {
@@ -853,7 +853,7 @@ public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
                 m_watch = m_video.addEndedHandler(new EndedHandler()
                 {
                     @Override
-                    public void onEnded(EndedEvent event)
+                    public void onEnded(final EndedEvent event)
                     {
                         if (false == m_movie.isLoop())
                         {
@@ -943,15 +943,15 @@ public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
         }
 
         @Override
-        public Movie create(JSONObject node, ValidationContext ctx) throws ValidationException
+        public Movie create(final JSONObject node, final ValidationContext ctx) throws ValidationException
         {
-            Movie movie = new Movie(node, ctx);
+            final Movie movie = new Movie(node, ctx);
 
             JSONValue jval = node.get("filter");
 
             if (null != jval)
             {
-                JSONObject object = jval.isObject();
+                final JSONObject object = jval.isObject();
 
                 if (null != object)
                 {
@@ -959,7 +959,7 @@ public class Movie extends Shape<Movie>implements ImageDataFilterable<Movie>
 
                     jval = object.get("active");
 
-                    JSONBoolean active = jval.isBoolean();
+                    final JSONBoolean active = jval.isBoolean();
 
                     if (null != active)
                     {

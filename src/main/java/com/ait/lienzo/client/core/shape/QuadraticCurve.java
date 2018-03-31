@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.shape;
@@ -36,7 +36,7 @@ public class QuadraticCurve extends AbstractMultiPointShape<QuadraticCurve>
 {
     /**
      * Constructor. Creates an instance a quadratic curve.
-     * 
+     *
      * @param sx context point X coordinate
      * @param sy context point Y coordinate
      * @param cx control point X coordinate
@@ -85,7 +85,7 @@ public class QuadraticCurve extends AbstractMultiPointShape<QuadraticCurve>
 
     /**
      * Draws this quadratic curve
-     * 
+     *
      * @param context
      */
     @Override
@@ -114,7 +114,7 @@ public class QuadraticCurve extends AbstractMultiPointShape<QuadraticCurve>
 
     /**
      * Gets all points, which includes the context, control, and end point.
-     * 
+     *
      * @return {@link Point2DArray}
      */
     public Point2DArray getControlPoints()
@@ -125,7 +125,7 @@ public class QuadraticCurve extends AbstractMultiPointShape<QuadraticCurve>
     /**
      * Sets the points for this quadratic curve.  The argument, points, must be a 3-element
      * {@link Point2DArray} containing: context, control, and end point
-     * 
+     *
      * @param points
      * @return this QuadraticCurve
      */
@@ -137,7 +137,7 @@ public class QuadraticCurve extends AbstractMultiPointShape<QuadraticCurve>
     }
 
     @Override
-    public QuadraticCurve setPoint2DArray(Point2DArray points)
+    public QuadraticCurve setPoint2DArray(final Point2DArray points)
     {
         return setControlPoints(points);
     }

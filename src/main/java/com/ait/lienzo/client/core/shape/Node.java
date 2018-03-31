@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.shape;
@@ -104,12 +104,12 @@ import com.google.gwt.json.client.JSONValue;
 /**
  * Node is the base class for {@link ContainerNode} and {@link Shape}.
  * This class provides a lot of the scaffolding for drawable nodes.
- * 
+ *
  * @param <T>
  */
 public abstract class Node<T extends Node<T>> implements IDrawable<T>
 {
-    private static final HashSet<Type<?>> ALL_EVENTS = new HashSet<Type<?>>();
+    private static final HashSet<Type<?>> ALL_EVENTS = new HashSet<>();
 
     private final Attributes              m_attr;
 
@@ -132,7 +132,7 @@ public abstract class Node<T extends Node<T>> implements IDrawable<T>
 
     public static final List<Attribute> asAttributes(final List<Attribute> base, final Attribute... list)
     {
-        final ArrayList<Attribute> make = new ArrayList<Attribute>(base);
+        final ArrayList<Attribute> make = new ArrayList<>(base);
 
         make.addAll(asList(list));
 
@@ -157,7 +157,7 @@ public abstract class Node<T extends Node<T>> implements IDrawable<T>
 
     /**
      * Only sub-classes that wish to extend a Shape should use this.
-     * 
+     *
      * @param type
      */
     protected void setNodeType(final NodeType type)
@@ -167,7 +167,7 @@ public abstract class Node<T extends Node<T>> implements IDrawable<T>
 
     /**
      * Constructor used by de-serialization code.
-     * 
+     *
      * @param type
      * @param node
      */
@@ -254,7 +254,7 @@ public abstract class Node<T extends Node<T>> implements IDrawable<T>
 
     private final native <M> M shade(Node<T> self)
     /*-{
-		return self;
+    	return self;
     }-*/;
 
     protected final Node<?> copyUnchecked()
@@ -270,9 +270,9 @@ public abstract class Node<T extends Node<T>> implements IDrawable<T>
 
     /**
      * Serializes this Node as a JSON string.
-     * The JSON string can be deserialized with 
+     * The JSON string can be deserialized with
      * {@link JSONDeserializer#fromString(String)}.
-     * 
+     *
      * @return JSON string
      */
     @Override
@@ -327,7 +327,7 @@ public abstract class Node<T extends Node<T>> implements IDrawable<T>
 
     /**
      * Returns the collection of {@link Attribute} for this object.
-     * 
+     *
      * @return Collection&lt;Attribute&gt;
      */
     @Override
@@ -338,7 +338,7 @@ public abstract class Node<T extends Node<T>> implements IDrawable<T>
 
     /**
      * Returns the collection of required {@link Attribute} for this object.
-     * 
+     *
      * @return Collection&lt;Attribute&gt;
      */
     @Override
@@ -375,7 +375,7 @@ public abstract class Node<T extends Node<T>> implements IDrawable<T>
 
     /**
      * Returns the Layer that this Node is on.
-     * 
+     *
      * @return {@link Layer}
      */
     @Override
@@ -392,7 +392,7 @@ public abstract class Node<T extends Node<T>> implements IDrawable<T>
 
     /**
      * Returns the Scene that this Node is on.
-     * 
+     *
      * @return Scene
      */
     @Override
@@ -424,7 +424,7 @@ public abstract class Node<T extends Node<T>> implements IDrawable<T>
 
     /**
      * Gets the viewport's Over Layer {@link Layer}
-     * 
+     *
      * @return Layer
      */
     @Override
@@ -441,7 +441,7 @@ public abstract class Node<T extends Node<T>> implements IDrawable<T>
 
     /**
      * Gets the object's {@link ScratchPad}
-     * 
+     *
      * @return ScratchPad
      */
     @Override
@@ -502,13 +502,13 @@ public abstract class Node<T extends Node<T>> implements IDrawable<T>
 
     /**
      * Used internally. Draws the node in the current Context2D
-     * without applying the transformation-related attributes 
+     * without applying the transformation-related attributes
      * (e.g. X, Y, ROTATION, SCALE, SHEAR, OFFSET and TRANSFORM.)
-     * <p> 
+     * <p>
      * Shapes should apply the non-Transform related attributes (such a colors, strokeWidth etc.)
-     * and draw the Shape's details (such as the the actual lines and fills) 
+     * and draw the Shape's details (such as the the actual lines and fills)
      * and Groups should draw their children.
-     * 
+     *
      * @param context
      */
     abstract protected void drawWithoutTransforms(Context2D context, double alpha, BoundingBox bounds);
@@ -547,7 +547,7 @@ public abstract class Node<T extends Node<T>> implements IDrawable<T>
     /**
      * Returns the absolute transform by concatenating the transforms
      * of all its ancestors from the Viewport down to this node's parent.
-     * 
+     *
      * @return {@link Transform}
      */
 
@@ -668,16 +668,19 @@ public abstract class Node<T extends Node<T>> implements IDrawable<T>
     public BoundingPoints getComputedBoundingPoints()
     {
         double computedXOffset = 0;
+
         double computedYOffset = 0;
-        Node parent = getParent();
+
+        final Node<?> parent = getParent();
+
         if (parent != null)
         {
-            Point2D computedLocation = parent.getComputedLocation();
+            final Point2D computedLocation = parent.getComputedLocation();
+
             computedXOffset = computedLocation.getX();
+
             computedYOffset = computedLocation.getY();
-
         }
-
         return getBoundingPoints(computedXOffset, computedYOffset);
     }
 
@@ -720,7 +723,7 @@ public abstract class Node<T extends Node<T>> implements IDrawable<T>
 
     /**
      * Sets whether the node is visible.
-     * 
+     *
      * @param visible
      * @return this Node
      */
@@ -740,7 +743,7 @@ public abstract class Node<T extends Node<T>> implements IDrawable<T>
 
     /**
      * Sets whether this node is listening for events.
-     * 
+     *
      * @param listening
      * @return this Node
      */
@@ -760,7 +763,7 @@ public abstract class Node<T extends Node<T>> implements IDrawable<T>
 
     /**
      * Sets the name of this Node.
-     * 
+     *
      * @param name
      * @return this Node
      */
@@ -784,7 +787,7 @@ public abstract class Node<T extends Node<T>> implements IDrawable<T>
 
     /**
      * Sets the ID of this node.
-     * 
+     *
      * @param id
      * @return
      */
@@ -1086,7 +1089,7 @@ public abstract class Node<T extends Node<T>> implements IDrawable<T>
         return m_opts.hashCode();
     }
 
-    public static abstract class NodeFactory<N extends IJSONSerializable<N>>extends AbstractFactory<N>
+    public static abstract class NodeFactory<N extends IJSONSerializable<N>> extends AbstractFactory<N>
     {
         protected NodeFactory(final NodeType type)
         {
@@ -1108,7 +1111,7 @@ public abstract class Node<T extends Node<T>> implements IDrawable<T>
 
         /**
          * Only factories that wish to extend other factories should use this.
-         * 
+         *
          * @param type {@link NodeType}
          */
         protected void setNodeType(final NodeType type)
@@ -1162,87 +1165,87 @@ public abstract class Node<T extends Node<T>> implements IDrawable<T>
 
         private final native String uuid_0()
         /*-{
-			return this.uuid;
+        	return this.uuid;
         }-*/;
 
         private final native String uuid_0(String uuid)
         /*-{
-			if (null == uuid) {
-				delete this["uuid"];
-			} else {
-				this.uuid = uuid;
-			}
-			return uuid;
+        	if (null == uuid) {
+        		delete this["uuid"];
+        	} else {
+        		this.uuid = uuid;
+        	}
+        	return uuid;
         }-*/;
 
         private final native MetaData meta_0()
         /*-{
-			return this.meta;
+        	return this.meta;
         }-*/;
 
         private final native MetaData meta_0(MetaData meta)
         /*-{
-			if (null == meta) {
-				delete this["meta"];
-			} else {
-				this.meta = meta;
-			}
-			return meta;
+        	if (null == meta) {
+        		delete this["meta"];
+        	} else {
+        		this.meta = meta;
+        	}
+        	return meta;
         }-*/;
 
         protected final native Object getUserData()
         /*-{
-			return this.data;
+        	return this.data;
         }-*/;
 
         protected final native void setUserData(Object data)
         /*-{
-			if (null == data) {
-				delete this["data"];
-			} else {
-				this.data = data;
-			}
+        	if (null == data) {
+        		delete this["data"];
+        	} else {
+        		this.data = data;
+        	}
         }-*/;
 
         protected final native HandlerManager getHandlerManager()
         /*-{
-			return this.hand;
+        	return this.hand;
         }-*/;
 
         protected final native void setHandlerManager(HandlerManager hand)
         /*-{
-			if (null == hand) {
-				delete this["hand"];
-			} else {
-				this.hand = hand;
-			}
+        	if (null == hand) {
+        		delete this["hand"];
+        	} else {
+        		this.hand = hand;
+        	}
         }-*/;
 
         protected final native boolean isAnimating()
         /*-{
-			if (this.anim !== undefined) {
-				return (this.anim > 0);
-			}
-			return false;
+        	if (this.anim !== undefined) {
+        		return (this.anim > 0);
+        	}
+        	return false;
         }-*/;
 
         protected final native void doAnimating()
         /*-{
-			if (this.anim !== undefined) {
-				this.anim = this.anim + 1;
-			} else {
-				this.anim = 1;
-			}
+        	if (this.anim !== undefined) {
+        		this.anim = this.anim + 1;
+        	} else {
+        		this.anim = 1;
+        	}
         }-*/;
 
         protected final native void unAnimating()
         /*-{
-			if (this.anim !== undefined) {
-				this.anim = this.anim - 1;
-				if (this.anim < 1) {
-					delete this["anim"];
-				}
-			}
+        	if (this.anim !== undefined) {
+        		this.anim = this.anim - 1;
+        		if (this.anim < 1) {
+        			delete this["anim"];
+        		}
+        	}
         }-*/;
     }
 }

@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.util;
@@ -34,10 +34,10 @@ public final class StringFormatter
     /**
      * Simple formatter. Replaces strings of the form "{0}", "{1}" etc. with the
      * corresponding parameters.
-     * 
+     *
      * @param format String with "{0}", "{1}" placeholders.
      * @param params First parameter will be placed in "{0}" placeholder.
-     * 
+     *
      * @return Formatted string
      */
     public static final String format(final String format, final Object... params)
@@ -48,13 +48,13 @@ public final class StringFormatter
 
         while (true)
         {
-            int i = format.indexOf('{', p);
+            final int i = format.indexOf('{', p);
 
             if (i == -1)
             {
                 break;// done
             }
-            int i2 = format.indexOf('}', i + 1);
+            final int i2 = format.indexOf('}', i + 1);
 
             if (i2 == -1)
             {
@@ -68,9 +68,9 @@ public final class StringFormatter
 
             try
             {
-                int n = Integer.parseInt(nstr);
+                final int n = Integer.parseInt(nstr);
 
-                if (n >= 0 && n < params.length)
+                if ((n >= 0) && (n < params.length))
                 {
                     b.append(params[n]);
                 }
@@ -79,7 +79,7 @@ public final class StringFormatter
                     b.append('{').append(nstr).append('}');
                 }
             }
-            catch (NumberFormatException e)
+            catch (final NumberFormatException e)
             {
                 b.append('{').append(nstr).append('}');
             }

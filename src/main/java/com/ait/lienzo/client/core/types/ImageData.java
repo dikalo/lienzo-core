@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.types;
@@ -64,7 +64,7 @@ public final class ImageData extends JavaScriptObject
 
     /**
      * Returns the alpha value at position (x,y).
-     * 
+     *
      * @param x the x coordinate
      * @param y the y coordinate
      * @return the alpha value at position (x,y), or 0 if not in the image
@@ -78,7 +78,7 @@ public final class ImageData extends JavaScriptObject
 
     /**
      * Returns the blue value at position (x,y).
-     * 
+     *
      * @param x the x coordinate
      * @param y the y coordinate
      * @return the blue value at position (x,y), or 0 if not in the image
@@ -102,7 +102,7 @@ public final class ImageData extends JavaScriptObject
 
     /**
      * Returns the green value at position (x,y).
-     * 
+     *
      * @param x the x coordinate
      * @param y the y coordinate
      * @return the green value at position (x,y), or 0 if not in the image
@@ -126,7 +126,7 @@ public final class ImageData extends JavaScriptObject
 
     /**
      * Returns the red value at position (x,y).
-     * 
+     *
      * @param x the x coordinate
      * @param y the y coordinate
      * @return the red value at position (x,y), or 0 if not in the image
@@ -150,7 +150,7 @@ public final class ImageData extends JavaScriptObject
 
     /**
      * Sets the alpha value at position (x,y).
-     * 
+     *
      * @param alpha the alpha value
      * @param x the x coordinate
      * @param y the y coordinate
@@ -164,7 +164,7 @@ public final class ImageData extends JavaScriptObject
 
     /**
      * Sets the blue value at position (x,y).
-     * 
+     *
      * @param blue the blue value
      * @param x the x coordinate
      * @param y the y coordinate
@@ -178,7 +178,7 @@ public final class ImageData extends JavaScriptObject
 
     /**
      * Sets the green value at position (x,y).
-     * 
+     *
      * @param green the green value
      * @param x the x coordinate
      * @param y the y coordinate
@@ -192,7 +192,7 @@ public final class ImageData extends JavaScriptObject
 
     /**
      * Sets the red value at position (x,y).
-     * 
+     *
      * @param red the red value
      * @param x the x coordinate
      * @param y the y coordinate
@@ -206,11 +206,11 @@ public final class ImageData extends JavaScriptObject
 
     /**
      * Returns the color value at position (x,y) with the specified offset.
-     * 
+     *
      * Colors are stored in RGBA format, where the offset determines the color
      * channel (R, G, B, or A). The values are stored in row-major order. If the
      * specified location is not in the image, 0 is returned.
-     * 
+     *
      * @param x the x coordinate
      * @param y the y coordinate
      * @param offset the color offset
@@ -224,10 +224,10 @@ public final class ImageData extends JavaScriptObject
 
     /**
      * Sets the color value at position (x,y) with the specified offset.
-     * 
+     *
      * Colors are stored in RGBA format, where the offset determines the color
      * (R, G, B, or A.) The values are stored in row-major order.
-     * 
+     *
      * @param color the color (in the range 0...255)
      * @param x the x coordinate
      * @param y the y coordinate

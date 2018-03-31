@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.mediator;
@@ -24,9 +24,9 @@ import com.google.gwt.event.shared.GwtEvent;
 
 /**
  * MouseWheelZoomMediator zooms in or out when the mouse wheel is moved.
- * 
+ *
  * @see Mediators
- * 
+ *
  * @since 1.1
  */
 public class MouseWheelZoomMediator extends AbstractMediator
@@ -46,6 +46,8 @@ public class MouseWheelZoomMediator extends AbstractMediator
 
     public MouseWheelZoomMediator(final IEventFilter... filters)
     {
+        this();
+
         setEventFilter(EventFilter.and(filters));
     }
 
@@ -74,9 +76,9 @@ public class MouseWheelZoomMediator extends AbstractMediator
 
     /**
      * Sets the minimum scale of the viewport.
-     * 
+     *
      * The default value is 0 (unlimited.)
-     * 
+     *
      * @return double
      */
     public double getMinScale()
@@ -86,9 +88,9 @@ public class MouseWheelZoomMediator extends AbstractMediator
 
     /**
      * Sets the minimum scale of the viewport.
-     * 
+     *
      * The default value is 0 (unlimited.)
-     * 
+     *
      * @param minScale
      * @return MouseWheelZoomMediator
      */
@@ -101,9 +103,9 @@ public class MouseWheelZoomMediator extends AbstractMediator
 
     /**
      * Sets the maximum scale of the viewport.
-     * 
+     *
      * The default value is Double.MAX_VALUE (unlimited.)
-     * 
+     *
      * @return double
      */
     public double getMaxScale()
@@ -113,9 +115,9 @@ public class MouseWheelZoomMediator extends AbstractMediator
 
     /**
      * Sets the maximum scale of the viewport.
-     * 
+     *
      * The default value is Double.MAX_VALUE (unlimited.)
-     * 
+     *
      * @param maxScale double
      * @return MouseWheelZoomMediator
      */
@@ -128,9 +130,9 @@ public class MouseWheelZoomMediator extends AbstractMediator
 
     /**
      * Returns whether rolling the mouse wheel down will zoom out.
-     * 
+     *
      * The default value is true.
-     * 
+     *
      * @return boolean
      */
     public boolean isDownZoomOut()
@@ -140,9 +142,9 @@ public class MouseWheelZoomMediator extends AbstractMediator
 
     /**
      * Sets whether rolling the mouse wheel down will zoom out.
-     * 
+     *
      * The default value is true.
-     * 
+     *
      * @param downZoomOut
      */
     public MouseWheelZoomMediator setDownZoomOut(final boolean downZoomOut)
@@ -154,9 +156,9 @@ public class MouseWheelZoomMediator extends AbstractMediator
 
     /**
      * Returns the zoom factor by which we zoom in or out when the mouse wheel is moved.
-     * 
+     *
      * The default value is 0.1 (10%)
-     *   
+     *
      * @return double
      */
     public double getZoomFactor()
@@ -166,9 +168,9 @@ public class MouseWheelZoomMediator extends AbstractMediator
 
     /**
      * Sets the zoom factor by which we zoom in or out when the mouse wheel is moved.
-     * 
+     *
      * The default value is 0.1 (10%)
-     * 
+     *
      * @param zoomFactor double
      * @return MouseSwipeZoomMediator
      */
@@ -201,9 +203,9 @@ public class MouseWheelZoomMediator extends AbstractMediator
         }
         // ASSUMPTION: scaleX == scaleY
 
-        double currentScale = transform.getScaleX();
+        final double currentScale = transform.getScaleX();
 
-        double newScale = currentScale * scaleDelta;
+        final double newScale = currentScale * scaleDelta;
 
         if (newScale < m_minScale)
         {
@@ -213,7 +215,7 @@ public class MouseWheelZoomMediator extends AbstractMediator
         {
             scaleDelta = m_maxScale / currentScale;
         }
-        Point2D p = new Point2D(event.getX(), event.getY());
+        final Point2D p = new Point2D(event.getX(), event.getY());
 
         transform.getInverse().transform(p, p);
 

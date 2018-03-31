@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.image;
@@ -40,7 +40,7 @@ import com.google.gwt.resources.client.ImageResource;
  */
 public class ImageProxy<T extends AbstractImageShape<T>> implements ImageDataFilterable<ImageProxy<T>>
 {
-    private T                          m_image;
+    private final T                    m_image;
 
     private ImageElement               m_jsimg;
 
@@ -82,7 +82,7 @@ public class ImageProxy<T extends AbstractImageShape<T>> implements ImageDataFil
 
     /**
      * Creates an ImageProxy for the specified {@link AbstractImageShape}.
-     * 
+     *
      * @param image {@link AbstractImageShape}
      */
     public ImageProxy(final T image)
@@ -214,7 +214,7 @@ public class ImageProxy<T extends AbstractImageShape<T>> implements ImageDataFil
     /**
      * Returns whether the image has been loaded and whether the
      * selection layer image has been prepared (if needed.)
-     * 
+     *
      * @return
      */
     public boolean isLoaded()
@@ -273,7 +273,7 @@ public class ImageProxy<T extends AbstractImageShape<T>> implements ImageDataFil
     /**
      * Sets the {@link ImageShapeLoadedHandler} that will be notified when the image is loaded.
      * If the image is already loaded, the handler will be invoked immediately.
-     * 
+     *
      * @param handler {@link ImageShapeLoadedHandler}
      */
     public void setImageShapeLoadedHandler(final ImageShapeLoadedHandler<T> handler)
@@ -310,7 +310,7 @@ public class ImageProxy<T extends AbstractImageShape<T>> implements ImageDataFil
 
                 m_fastout = false;
             }
-            boolean did_xform = m_x_forms;
+            final boolean did_xform = m_x_forms;
 
             m_x_forms = m_filters.isTransforming();
 
@@ -454,7 +454,7 @@ public class ImageProxy<T extends AbstractImageShape<T>> implements ImageDataFil
 
     private final void doUpdateCheck()
     {
-        ImageClipBounds bounds = m_image.getImageClipBounds();
+        final ImageClipBounds bounds = m_image.getImageClipBounds();
 
         if (m_obounds.isDifferent(bounds))
         {
@@ -539,7 +539,7 @@ public class ImageProxy<T extends AbstractImageShape<T>> implements ImageDataFil
 
     /**
      * Draws the image in the {@link Context2D}.
-     * 
+     *
      * @param context {@link Context2D}
      */
     public void drawImage(final Context2D context)
@@ -589,7 +589,7 @@ public class ImageProxy<T extends AbstractImageShape<T>> implements ImageDataFil
     /**
      * Returns an ImageData object that can be used for further image processing
      * e.g. by image filters.
-     * 
+     *
      * @return ImageData
      */
     public ImageData getImageData()
@@ -600,7 +600,7 @@ public class ImageProxy<T extends AbstractImageShape<T>> implements ImageDataFil
         }
         if (m_fastout)
         {
-            ScratchPad temp = new ScratchPad(m_dest_wide, m_dest_high);
+            final ScratchPad temp = new ScratchPad(m_dest_wide, m_dest_high);
 
             temp.getContext().drawImage(m_jsimg, m_clip_xpos, m_clip_ypos, m_clip_wide, m_clip_high, 0, 0, m_dest_wide, m_dest_high);
 
@@ -614,7 +614,7 @@ public class ImageProxy<T extends AbstractImageShape<T>> implements ImageDataFil
 
     /**
      * Returns the "data:" URL
-     * 
+     *
      * @param mimeType If null, defaults to DataURLType.PNG
      * @return String
      */
@@ -691,7 +691,7 @@ public class ImageProxy<T extends AbstractImageShape<T>> implements ImageDataFil
         }
 
         @Override
-        public ImageData filter(ImageData source, boolean copy)
+        public ImageData filter(final ImageData source, final boolean copy)
         {
             return source;
         }
@@ -709,7 +709,7 @@ public class ImageProxy<T extends AbstractImageShape<T>> implements ImageDataFil
         }
 
         @Override
-        public void setActive(boolean active)
+        public void setActive(final boolean active)
         {
         }
 

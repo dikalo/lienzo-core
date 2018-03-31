@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.shape;
@@ -59,7 +59,7 @@ public class SVGPath extends Shape<SVGPath>
     }
 
     @Override
-    protected void drawWithoutTransforms(final Context2D context, double alpha, BoundingBox bounds)
+    protected void drawWithoutTransforms(final Context2D context, double alpha, final BoundingBox bounds)
     {
         if (m_list.size() < 1)
         {
@@ -107,7 +107,7 @@ public class SVGPath extends Shape<SVGPath>
     }
 
     @Override
-    protected boolean prepare(final Context2D context, Attributes attr, double alpha)
+    protected boolean prepare(final Context2D context, final Attributes attr, final double alpha)
     {
         if (m_list.size() < 1)
         {
@@ -131,15 +131,15 @@ public class SVGPath extends Shape<SVGPath>
         {
             partlist.setPath2D(new Path2D(path));
         }
-        for (int n = 0; n < COMMANDS.length; n++)
+        for (final String element : COMMANDS)
         {
-            path = path.replaceAll(COMMANDS[n] + " ", COMMANDS[n]);
+            path = path.replaceAll(element + " ", element);
         }
         path = path.replaceAll(" ", ",");
 
-        for (int n = 0; n < COMMANDS.length; n++)
+        for (final String element : COMMANDS)
         {
-            path = path.replaceAll(COMMANDS[n], "#" + COMMANDS[n]);
+            path = path.replaceAll(element, "#" + element);
         }
         final String[] list = path.split("#");
 
@@ -214,7 +214,7 @@ public class SVGPath extends Shape<SVGPath>
 
                         final int size = partlist.size();
 
-                        if (size > 2 && partlist.get(size - 1).getCommand() == PathPartEntryJSO.CLOSE_PATH_PART)
+                        if ((size > 2) && (partlist.get(size - 1).getCommand() == PathPartEntryJSO.CLOSE_PATH_PART))
                         {
                             for (int idx = size - 2; idx >= 0; idx--)
                             {

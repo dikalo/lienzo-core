@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.mediator;
@@ -29,35 +29,35 @@ import com.google.gwt.event.shared.GwtEvent;
 /**
  * MouseBoxZoomMediator zooms in when the user drags a rectangular area.
  * <p>
- * The visual style of the drag box can be modified by changing the 
+ * The visual style of the drag box can be modified by changing the
  * attributes of the Rectangle primitive.
- * The default drag box uses a black outline of 1 pixel wide and 
+ * The default drag box uses a black outline of 1 pixel wide and
  * an opacity (alpha value) of 0.5.
  * <p>
  * The dimensions of the zoom box will be adjusted to match the aspect ratio
  * of the viewport, thus maintaining the same scale in the X and Y axes.
- * 
+ *
  * @see Mediators
- * 
+ *
  * @since 1.1
  */
 public class MouseBoxZoomMediator extends AbstractMediator
 {
-    private double    m_maxScale         = Double.MAX_VALUE;
+    private double        m_maxScale         = Double.MAX_VALUE;
 
-    private Point2D   m_start            = null;
+    private Point2D       m_start            = null;
 
-    private Point2D   m_end              = new Point2D();
+    private final Point2D m_end              = new Point2D();
 
-    private Transform m_inverseTransform = null;
+    private Transform     m_inverseTransform = null;
 
-    private boolean   m_dragging         = false;
+    private boolean       m_dragging         = false;
 
-    private Layer     m_dragLayer        = null;
+    private Layer         m_dragLayer        = null;
 
-    private Rectangle m_rectangle        = null;
+    private Rectangle     m_rectangle        = null;
 
-    private boolean   m_addedRectangle   = false;
+    private boolean       m_addedRectangle   = false;
 
     public MouseBoxZoomMediator()
     {
@@ -73,9 +73,9 @@ public class MouseBoxZoomMediator extends AbstractMediator
 
     /**
      * Sets the maximum scale of the viewport.
-     * 
+     *
      * The default value is Double.MAX_VALUE (unlimited.)
-     * 
+     *
      * @return double
      */
     public double getMaxScale()
@@ -85,9 +85,9 @@ public class MouseBoxZoomMediator extends AbstractMediator
 
     /**
      * Sets the maximum scale of the viewport.
-     * 
+     *
      * The default value is Double.MAX_VALUE (unlimited.)
-     * 
+     *
      * @param maxScale double
      * @return MouseBoxZoomMediator
      */
@@ -100,7 +100,7 @@ public class MouseBoxZoomMediator extends AbstractMediator
 
     /**
      * Returns the {@link Rectangle} that is used to draw the zoom box.
-     * 
+     *
      * @return {@link Rectangle}
      */
     public Rectangle getRectangle()
@@ -261,11 +261,11 @@ public class MouseBoxZoomMediator extends AbstractMediator
             dy = -dy;
         }
         // prevent zooming in too far
-        double scaleX = getViewport().getWidth() / dx;
+        final double scaleX = getViewport().getWidth() / dx;
 
-        double scaleY = getViewport().getHeight() / dy;
+        final double scaleY = getViewport().getHeight() / dy;
 
-        double scale = (scaleX > scaleY) ? scaleY : scaleX;
+        final double scale = (scaleX > scaleY) ? scaleY : scaleX;
 
         if (scale > m_maxScale)
         {

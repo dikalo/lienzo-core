@@ -1,30 +1,30 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.util;
 
 /**
  * Matrix class with basic matrix operations.
- * 
+ *
  * @see http://introcs.cs.princeton.edu/java/95linear/Matrix.java.html
- * 
+ *
  * Do not try to bend the spoon, that's impossible. Instead, only try to realize the truth: there is no spoon.
- * 
+ *
  */
-final public class Matrix
+public final class Matrix
 {
     private final int        m_rows;
 
@@ -34,11 +34,11 @@ final public class Matrix
 
     /**
      * Creates a matrix with zeroes.
-     * 
+     *
      * @param rows
      * @param columns
      */
-    public Matrix(int rows, int columns)
+    public Matrix(final int rows, final int columns)
     {
         m_rows = rows;
 
@@ -49,10 +49,10 @@ final public class Matrix
 
     /**
      * Creates a matrix from 2-dimensional array
-     * 
+     *
      * @param data
      */
-    public Matrix(double[][] data)
+    public Matrix(final double[][] data)
     {
         m_rows = data.length;
 
@@ -73,7 +73,7 @@ final public class Matrix
      * Copy constructor
      * @param A
      */
-    private Matrix(Matrix A)
+    private Matrix(final Matrix A)
     {
         this(A.m_data);
     }
@@ -83,9 +83,9 @@ final public class Matrix
      * @param N
      * @return
      */
-    public static Matrix identity(int N)
+    public static Matrix identity(final int N)
     {
-        Matrix I = new Matrix(N, N);
+        final Matrix I = new Matrix(N, N);
 
         for (int i = 0; i < N; i++)
         {
@@ -99,9 +99,9 @@ final public class Matrix
      * @param i
      * @param j
      */
-    private void swap(int i, int j)
+    private void swap(final int i, final int j)
     {
-        double[] temp = m_data[i];
+        final double[] temp = m_data[i];
 
         m_data[i] = m_data[j];
 
@@ -114,7 +114,7 @@ final public class Matrix
      */
     public Matrix transpose()
     {
-        Matrix A = new Matrix(m_columns, m_rows);
+        final Matrix A = new Matrix(m_columns, m_rows);
 
         for (int i = 0; i < m_rows; i++)
         {
@@ -128,20 +128,20 @@ final public class Matrix
 
     /**
      * Returns C = A + B
-     * 
+     *
      * @param B
      * @return new Matrix C
      * @throws GeometryException if the matrix dimensions don't match
      */
-    public Matrix plus(Matrix B)
+    public Matrix plus(final Matrix B)
     {
-        Matrix A = this;
+        final Matrix A = this;
 
-        if (B.m_rows != A.m_rows || B.m_columns != A.m_columns)
+        if ((B.m_rows != A.m_rows) || (B.m_columns != A.m_columns))
         {
             throw new GeometryException("Illegal matrix dimensions");
         }
-        Matrix C = new Matrix(m_rows, m_columns);
+        final Matrix C = new Matrix(m_rows, m_columns);
 
         for (int i = 0; i < m_rows; i++)
         {
@@ -155,20 +155,20 @@ final public class Matrix
 
     /**
      * Returns C = A - B
-     * 
+     *
      * @param B
      * @return new Matrix C
      * @throws GeometryException if the matrix dimensions don't match
      */
-    public Matrix minus(Matrix B)
+    public Matrix minus(final Matrix B)
     {
-        Matrix A = this;
+        final Matrix A = this;
 
-        if (B.m_rows != A.m_rows || B.m_columns != A.m_columns)
+        if ((B.m_rows != A.m_rows) || (B.m_columns != A.m_columns))
         {
             throw new GeometryException("Illegal matrix dimensions");
         }
-        Matrix C = new Matrix(m_rows, m_columns);
+        final Matrix C = new Matrix(m_rows, m_columns);
 
         for (int i = 0; i < m_rows; i++)
         {
@@ -182,15 +182,15 @@ final public class Matrix
 
     /**
      * Returns whether the matrix is the same as this matrix.
-     * 
+     *
      * @param B
      * @return
      */
-    public boolean eq(Matrix B)
+    public boolean eq(final Matrix B)
     {
-        Matrix A = this;
+        final Matrix A = this;
 
-        if (B.m_rows != A.m_rows || B.m_columns != A.m_columns)
+        if ((B.m_rows != A.m_rows) || (B.m_columns != A.m_columns))
         {
             return false;
         }
@@ -209,20 +209,20 @@ final public class Matrix
 
     /**
      * Returns C = A * B
-     * 
+     *
      * @param B
      * @return new Matrix C
      * @throws GeometryException if the matrix dimensions don't match
      */
-    public Matrix times(Matrix B)
+    public Matrix times(final Matrix B)
     {
-        Matrix A = this;
+        final Matrix A = this;
 
         if (A.m_columns != B.m_rows)
         {
             throw new GeometryException("Illegal matrix dimensions");
         }
-        Matrix C = new Matrix(A.m_rows, B.m_columns);
+        final Matrix C = new Matrix(A.m_rows, B.m_columns);
 
         for (int i = 0; i < C.m_rows; i++)
         {
@@ -239,22 +239,22 @@ final public class Matrix
 
     /**
      * Returns x = A^-1 b, assuming A is square and has full rank
-     * 
+     *
      * @param rhs
      * @return Matrix x
      * @throws GeometryException if the matrix dimensions don't match
      */
-    public Matrix solve(Matrix rhs)
+    public Matrix solve(final Matrix rhs)
     {
-        if (m_rows != m_columns || rhs.m_rows != m_columns || rhs.m_columns != 1)
+        if ((m_rows != m_columns) || (rhs.m_rows != m_columns) || (rhs.m_columns != 1))
         {
             throw new GeometryException("Illegal matrix dimensions");
         }
         // create copies of the data
 
-        Matrix A = new Matrix(this);
+        final Matrix A = new Matrix(this);
 
-        Matrix b = new Matrix(rhs);
+        final Matrix b = new Matrix(rhs);
 
         // Gaussian elimination with partial pivoting
 
@@ -285,13 +285,13 @@ final public class Matrix
 
             for (int j = i + 1; j < m_columns; j++)
             {
-                b.m_data[j][0] -= b.m_data[i][0] * A.m_data[j][i] / A.m_data[i][i];
+                b.m_data[j][0] -= (b.m_data[i][0] * A.m_data[j][i]) / A.m_data[i][i];
             }
             // pivot within A
 
             for (int j = i + 1; j < m_columns; j++)
             {
-                double m = A.m_data[j][i] / A.m_data[i][i];
+                final double m = A.m_data[j][i] / A.m_data[i][i];
 
                 for (int k = i + 1; k < m_columns; k++)
                 {
@@ -302,7 +302,7 @@ final public class Matrix
         }
         // back substitution
 
-        Matrix x = new Matrix(m_columns, 1);
+        final Matrix x = new Matrix(m_columns, 1);
 
         for (int j = m_columns - 1; j >= 0; j--)
         {
@@ -320,9 +320,10 @@ final public class Matrix
     /**
      * Formats the matrix data as a multi-line string for debugging purposes.
      */
+    @Override
     public String toString()
     {
-        StringBuilder b = new StringBuilder();
+        final StringBuilder b = new StringBuilder();
 
         for (int i = 0; i < m_rows; i++)
         {
@@ -337,15 +338,5 @@ final public class Matrix
             b.append("\n");
         }
         return b.toString();
-    }
-
-    /**
-     * Returns the matrix data as a 2-dimensional array with [rows][columns].
-     * 
-     * @return double[][]
-     */
-    public double[][] getData()
-    {
-        return m_data;
     }
 }

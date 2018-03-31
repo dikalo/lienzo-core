@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.shape;
@@ -43,7 +43,7 @@ public abstract class AbstractPathClipper implements IPathClipper
     }
 
     @Override
-    public boolean setActive(boolean active)
+    public boolean setActive(final boolean active)
     {
         if (active == isActive())
         {
@@ -182,52 +182,52 @@ public abstract class AbstractPathClipper implements IPathClipper
 
         final native void setType_0(String type)
         /*-{
-			this.type = type;
+        	this.type = type;
         }-*/;
 
         final native void setX_0(double x)
         /*-{
-			this.x = x;
+        	this.x = x;
         }-*/;
 
         final native double getX_0()
         /*-{
-			return this.x;
+        	return this.x;
         }-*/;
 
         final native void setY_0(double y)
         /*-{
-			this.y = y;
+        	this.y = y;
         }-*/;
 
         final native double getY_0()
         /*-{
-			return this.y;
+        	return this.y;
         }-*/;
 
         final native void setValue_0(JavaScriptObject value)
         /*-{
-			this.value = value;
+        	this.value = value;
         }-*/;
 
         final native JavaScriptObject getValue_0()
         /*-{
-			return this.value;
+        	return this.value;
         }-*/;
 
         final native String getType_0()
         /*-{
-			return this.type;
+        	return this.type;
         }-*/;
 
         final native void setActive_0(boolean active)
         /*-{
-			this.active = active;
+        	this.active = active;
         }-*/;
 
         final native boolean isActive_0()
         /*-{
-			return (!!this.active);
+        	return (!!this.active);
         }-*/;
     }
 }

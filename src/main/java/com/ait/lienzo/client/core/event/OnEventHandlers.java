@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.ait.lienzo.client.core.event;
 
 import com.google.gwt.event.dom.client.MouseEvent;
@@ -5,22 +21,22 @@ import com.google.gwt.event.shared.EventHandler;
 
 public class OnEventHandlers
 {
-    private OnMouseEventHandler m_onMouseDownEventHandle = DefaultOnMouseEventHandler.INSTANCE;
+    private OnMouseEventHandler m_onMouseDownEventHandle        = DefaultOnMouseEventHandler.INSTANCE;
 
-    private OnMouseEventHandler m_onMouseUpEventHandle = DefaultOnMouseEventHandler.INSTANCE;;
+    private OnMouseEventHandler m_onMouseUpEventHandle          = DefaultOnMouseEventHandler.INSTANCE;
 
-    private OnMouseEventHandler m_onMouseMoveEventHandle = DefaultOnMouseEventHandler.INSTANCE;;
+    private OnMouseEventHandler m_onMouseMoveEventHandle        = DefaultOnMouseEventHandler.INSTANCE;
 
-    private OnMouseEventHandler m_onMouseClickEventHandle = DefaultOnMouseEventHandler.INSTANCE;;
+    private OnMouseEventHandler m_onMouseClickEventHandle       = DefaultOnMouseEventHandler.INSTANCE;
 
-    private OnMouseEventHandler m_onMouseDoubleClickEventHandle = DefaultOnMouseEventHandler.INSTANCE;;
+    private OnMouseEventHandler m_onMouseDoubleClickEventHandle = DefaultOnMouseEventHandler.INSTANCE;
 
     public OnMouseEventHandler getOnMouseDownEventHandle()
     {
         return m_onMouseDownEventHandle;
     }
 
-    public void setOnMouseDownEventHandle(OnMouseEventHandler onMouseDownEventHandle)
+    public void setOnMouseDownEventHandle(final OnMouseEventHandler onMouseDownEventHandle)
     {
         m_onMouseDownEventHandle = onMouseDownEventHandle;
     }
@@ -30,7 +46,7 @@ public class OnEventHandlers
         return m_onMouseUpEventHandle;
     }
 
-    public void setOnMouseUpEventHandle(OnMouseEventHandler onMouseUpEventHandle)
+    public void setOnMouseUpEventHandle(final OnMouseEventHandler onMouseUpEventHandle)
     {
         m_onMouseUpEventHandle = onMouseUpEventHandle;
     }
@@ -40,7 +56,7 @@ public class OnEventHandlers
         return m_onMouseMoveEventHandle;
     }
 
-    public void setOnMouseMoveEventHandle(OnMouseEventHandler onMouseMoveEventHandle)
+    public void setOnMouseMoveEventHandle(final OnMouseEventHandler onMouseMoveEventHandle)
     {
         m_onMouseMoveEventHandle = onMouseMoveEventHandle;
     }
@@ -50,7 +66,7 @@ public class OnEventHandlers
         return m_onMouseClickEventHandle;
     }
 
-    public void setOnMouseClickEventHandle(OnMouseEventHandler onMouseClickEventHandle)
+    public void setOnMouseClickEventHandle(final OnMouseEventHandler onMouseClickEventHandle)
     {
         m_onMouseClickEventHandle = onMouseClickEventHandle;
     }
@@ -60,7 +76,7 @@ public class OnEventHandlers
         return m_onMouseDoubleClickEventHandle;
     }
 
-    public void setOnMouseDoubleClickEventHandle(OnMouseEventHandler onMouseDoubleClickEventHandle)
+    public void setOnMouseDoubleClickEventHandle(final OnMouseEventHandler onMouseDoubleClickEventHandle)
     {
         m_onMouseDoubleClickEventHandle = onMouseDoubleClickEventHandle;
     }
@@ -70,15 +86,14 @@ public class OnEventHandlers
         static DefaultOnMouseEventHandler INSTANCE = new DefaultOnMouseEventHandler();
 
         @Override
-        public boolean onMouseEventBefore(MouseEvent<? extends EventHandler> event)
+        public boolean onMouseEventBefore(final MouseEvent<? extends EventHandler> event)
         {
             return true;
         }
 
         @Override
-        public void onMouseEventAfter(MouseEvent<? extends EventHandler> event)
+        public void onMouseEventAfter(final MouseEvent<? extends EventHandler> event)
         {
-
         }
     }
 }

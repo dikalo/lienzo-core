@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.image.filter;
@@ -20,8 +20,8 @@ import com.ait.lienzo.client.core.shape.json.IFactory;
 import com.ait.lienzo.client.core.shape.json.validators.ValidationContext;
 import com.ait.lienzo.client.core.shape.json.validators.ValidationException;
 import com.ait.lienzo.client.core.types.ImageData;
-import com.ait.lienzo.shared.core.types.ImageFilterType;
 import com.ait.lienzo.shared.core.types.IColor;
+import com.ait.lienzo.shared.core.types.ImageFilterType;
 import com.google.gwt.canvas.dom.client.CanvasPixelArray;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONObject;
@@ -31,28 +31,28 @@ import com.google.gwt.json.client.JSONObject;
  */
 public class ColorLuminosityImageDataFilter extends AbstractRGBImageDataFilter<ColorLuminosityImageDataFilter>
 {
-    public ColorLuminosityImageDataFilter(int r, int g, int b)
+    public ColorLuminosityImageDataFilter(final int r, final int g, final int b)
     {
         super(ImageFilterType.ColorLuminosityImageDataFilterType, r, g, b);
     }
 
-    public ColorLuminosityImageDataFilter(IColor color)
+    public ColorLuminosityImageDataFilter(final IColor color)
     {
         super(ImageFilterType.ColorLuminosityImageDataFilterType, color);
     }
 
-    public ColorLuminosityImageDataFilter(String color)
+    public ColorLuminosityImageDataFilter(final String color)
     {
         super(ImageFilterType.ColorLuminosityImageDataFilterType, color);
     }
 
-    protected ColorLuminosityImageDataFilter(JSONObject node, ValidationContext ctx) throws ValidationException
+    protected ColorLuminosityImageDataFilter(final JSONObject node, final ValidationContext ctx) throws ValidationException
     {
         super(ImageFilterType.ColorLuminosityImageDataFilterType, node, ctx);
     }
 
     @Override
-    public ImageData filter(ImageData source, boolean copy)
+    public ImageData filter(ImageData source, final boolean copy)
     {
         if (null == source)
         {
@@ -79,12 +79,12 @@ public class ColorLuminosityImageDataFilter extends AbstractRGBImageDataFilter<C
 
     private final native void filter_(JavaScriptObject data, int length, int r, int g, int b)
     /*-{
-    	for (var i = 0; i < length; i += 4) {
-            var v = (((data[  i  ] * 0.21) + (data[i + 1] * 0.72) + (data[i + 2] * 0.07)) / 255.0);
-    		data[  i  ] = ((r * v) + 0.5) | 0;
-    		data[i + 1] = ((g * v) + 0.5) | 0;
-    		data[i + 2] = ((b * v) + 0.5) | 0;
-    	}
+		for (var i = 0; i < length; i += 4) {
+			var v = (((data[i] * 0.21) + (data[i + 1] * 0.72) + (data[i + 2] * 0.07)) / 255.0);
+			data[i] = ((r * v) + 0.5) | 0;
+			data[i + 1] = ((g * v) + 0.5) | 0;
+			data[i + 2] = ((b * v) + 0.5) | 0;
+		}
     }-*/;
 
     @Override
@@ -101,7 +101,7 @@ public class ColorLuminosityImageDataFilter extends AbstractRGBImageDataFilter<C
         }
 
         @Override
-        public ColorLuminosityImageDataFilter create(JSONObject node, ValidationContext ctx) throws ValidationException
+        public ColorLuminosityImageDataFilter create(final JSONObject node, final ValidationContext ctx) throws ValidationException
         {
             return new ColorLuminosityImageDataFilter(node, ctx);
         }

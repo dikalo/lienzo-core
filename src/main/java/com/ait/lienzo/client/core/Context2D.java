@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core;
@@ -38,7 +38,7 @@ import com.google.gwt.dom.client.Element;
 
 /**
  * Wrapper around a JSO that serves as a proxy to access the native capabilities of Canvas 2D.
- * @see {@link NativeContext2D} 
+ * @see {@link NativeContext2D}
  */
 public class Context2D
 {
@@ -62,14 +62,16 @@ public class Context2D
     /**
      * Save and push a new container context to the stack
      */
-    public void saveContainer(){
+    public void saveContainer()
+    {
         m_jso.saveContainer();
     }
 
     /**
      * Restore and pop the current container context from the stack returning to the previous context
      */
-    public void restoreContainer(){
+    public void restoreContainer()
+    {
         m_jso.restoreContainer();
     }
 
@@ -126,9 +128,9 @@ public class Context2D
 
     /**
      * Sets the fill color
-     * 
+     *
      * @param color {@link ColorName} or {@link Color}
-     * 
+     *
      * @return this Context2D
      */
     public void setFillColor(final IColor color)
@@ -168,9 +170,9 @@ public class Context2D
 
     /**
      * Sets the stroke color
-     * 
+     *
      * @param color {@link ColorName} or {@link Color}
-     * 
+     *
      * @return this Context2D
      */
     public void setStrokeColor(final IColor color)

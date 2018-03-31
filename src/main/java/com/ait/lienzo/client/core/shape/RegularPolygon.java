@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.shape;
@@ -30,7 +30,7 @@ import com.ait.lienzo.shared.core.types.ShapeType;
 import com.google.gwt.json.client.JSONObject;
 
 /**
- * In Euclidean geometry, a regular polygon is a polygon that is equiangular (all angles are equal in measure) 
+ * In Euclidean geometry, a regular polygon is a polygon that is equiangular (all angles are equal in measure)
  * and equilateral (all sides have the same length).  All regular polygons fit perfectly inside a circle.
  */
 public class RegularPolygon extends Shape<RegularPolygon>
@@ -39,7 +39,7 @@ public class RegularPolygon extends Shape<RegularPolygon>
 
     /**
      * Constructor. Creates an instance of a regular polygon.
-     * 
+     *
      * @param sides number of sides
      * @param radius size of the encompassing circle
      */
@@ -85,9 +85,9 @@ public class RegularPolygon extends Shape<RegularPolygon>
 
             for (int n = 1; n < s; n++)
             {
-                double x = (r * Math.sin(n * 2 * Math.PI / s));
+                final double x = (r * Math.sin((n * 2 * Math.PI) / s));
 
-                double y = (-1 * r * Math.cos(n * 2 * Math.PI / s));
+                final double y = (-1 * r * Math.cos((n * 2 * Math.PI) / s));
 
                 minx = Math.min(minx, x);
 
@@ -103,7 +103,7 @@ public class RegularPolygon extends Shape<RegularPolygon>
 
     /**
      * Draws this regular polygon
-     * 
+     *
      * @context
      */
     @Override
@@ -141,7 +141,7 @@ public class RegularPolygon extends Shape<RegularPolygon>
             {
                 for (int n = 1; n < sides; n++)
                 {
-                    final double theta = (n * 2 * Math.PI / sides);
+                    final double theta = ((n * 2 * Math.PI) / sides);
 
                     m_list.L(radius * Math.sin(theta), -1 * radius * Math.cos(theta));
                 }
@@ -153,7 +153,7 @@ public class RegularPolygon extends Shape<RegularPolygon>
 
                 for (int n = 1; n < sides; n++)
                 {
-                    final double theta = (n * 2 * Math.PI / sides);
+                    final double theta = ((n * 2 * Math.PI) / sides);
 
                     list.push(radius * Math.sin(theta), -1 * radius * Math.cos(theta));
                 }
@@ -174,7 +174,7 @@ public class RegularPolygon extends Shape<RegularPolygon>
 
     /**
      * Gets this regular polygon's encompassing circle's radius.
-     * 
+     *
      * @return double
      */
     public double getRadius()
@@ -184,7 +184,7 @@ public class RegularPolygon extends Shape<RegularPolygon>
 
     /**
      * Sets the size of this regular polygon, expressed by the radius of the enclosing circle.
-     * 
+     *
      * @param radius
      * @return this RegularPolygon
      */
@@ -197,7 +197,7 @@ public class RegularPolygon extends Shape<RegularPolygon>
 
     /**
      * Gets the number of sides this regular polygon has.
-     * 
+     *
      * @return int
      */
     public int getSides()
@@ -207,7 +207,7 @@ public class RegularPolygon extends Shape<RegularPolygon>
 
     /**
      * Sets the number of sides this regular polygon has.
-     * 
+     *
      * @param sides
      * @return this RegularPolygon
      */

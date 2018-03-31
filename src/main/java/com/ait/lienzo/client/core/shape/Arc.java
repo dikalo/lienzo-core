@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.shape;
@@ -33,14 +33,14 @@ public class Arc extends Shape<Arc>
 {
     /**
      * Constructor. Creates an instance of an arc.
-     * 
+     *
      * @param radius radius of the circle
      * @param startAngle starting angle (in radians) of this arc
      * @param endAngle end angle (in radians) of this arc
-     * @param counterClockwise 
+     * @param counterClockwise
      *            direction in which the arc is drawn.  True draws the arc counter clockwise;
      *            false draws the arc clockwise.
-     *          
+     *
      */
     public Arc(final double radius, final double startAngle, final double endAngle, final boolean counterClockwise)
     {
@@ -51,7 +51,7 @@ public class Arc extends Shape<Arc>
 
     /**
      * Constructor. Creates an instance of an arc, drawn clockwise.
-     * 
+     *
      * @param radius radius of the circle
      * @param startAngle starting angle (in radians) of this arc
      * @param endAngle end angle (in radians) of this arc
@@ -78,7 +78,7 @@ public class Arc extends Shape<Arc>
 
     /**
      * Draws this arc.
-     * 
+     *
      * @param context the {@link Context2D} used to draw this arc.
      */
     @Override
@@ -99,7 +99,7 @@ public class Arc extends Shape<Arc>
 
     /**
      * Gets this arc's radius.
-     * 
+     *
      * @return double
      */
     public double getRadius()
@@ -109,7 +109,7 @@ public class Arc extends Shape<Arc>
 
     /**
      * Sets this arc's radius.
-     * 
+     *
      * @param radius
      * @return this Arc
      */
@@ -122,7 +122,7 @@ public class Arc extends Shape<Arc>
 
     /**
      * Gets the starting angle of this arc.
-     * 
+     *
      * @return double (in radians)
      */
     public double getStartAngle()
@@ -132,7 +132,7 @@ public class Arc extends Shape<Arc>
 
     /**
      * Sets the starting angle of this arc.
-     * 
+     *
      * @param angle (in radians)
      * @return this Arc
      */
@@ -145,7 +145,7 @@ public class Arc extends Shape<Arc>
 
     /**
      * Gets the end angle of this arc.
-     * 
+     *
      * @return double (in radians)
      */
     public double getEndAngle()
@@ -155,7 +155,7 @@ public class Arc extends Shape<Arc>
 
     /**
      * Sets the end angle of this arc.
-     * 
+     *
      * @param angle (in radians)
      * @return this Arc
      */
@@ -168,7 +168,7 @@ public class Arc extends Shape<Arc>
 
     /**
      * Returns whether the drawing direction of this arc is counter clockwise.
-     * 
+     *
      * @return boolean
      */
     public boolean isCounterClockwise()
@@ -178,7 +178,7 @@ public class Arc extends Shape<Arc>
 
     /**
      * Sets the drawing direction for this arc.
-     * 
+     *
      * @param counterClockwise If true, it's drawn counter clockwise.
      * @return this Arc
      */

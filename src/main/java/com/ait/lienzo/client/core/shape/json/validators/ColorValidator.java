@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.shape.json.validators;
@@ -23,10 +23,10 @@ import com.google.gwt.regexp.shared.RegExp;
 
 /**
  * Validates CSS3 color attributes.
- * 
+ *
  * Note that the CSS3 color spec allows values outside the nominal range.
  * E.g. RGB integer values of -10 and 310 will be "clipped" to 0 and 255 respectively.
- * 
+ *
  * @see <a href="http://www.w3.org/TR/css3-color/">CSS Color Module Level 3</a>
  */
 public class ColorValidator extends AbstractAttributeTypeValidator
@@ -62,11 +62,10 @@ public class ColorValidator extends AbstractAttributeTypeValidator
     public ColorValidator()
     {
         super("Color");
-
     }
 
     @Override
-    public void validate(JSONValue jval, ValidationContext ctx) throws ValidationException
+    public void validate(final JSONValue jval, final ValidationContext ctx) throws ValidationException
     {
         if (null == jval)
         {
@@ -74,7 +73,7 @@ public class ColorValidator extends AbstractAttributeTypeValidator
 
             return;
         }
-        JSONString s = jval.isString();
+        final JSONString s = jval.isString();
 
         if (null == s)
         {
@@ -102,43 +101,43 @@ public class ColorValidator extends AbstractAttributeTypeValidator
     /**
      * Checks whether the colorName is a valid CSS color.
      * This includes the "special" colors: "transparent", "inherit" or "currentcolor".
-     * Color names are case-insensitive. 
-     * 
+     * Color names are case-insensitive.
+     *
      * <br/><br/>
      * Here are some examples of valid colors:
-     * "#00f", "#0f0f0f", "#00F", "#0F0F0F", "rgb(255,0,0)", "rgba(0,0,0,0)", "red", 
-     * "rgb(100%, 0%, 0%)", "hsl(0, 100%, 50%)", "hsla(120, 100%, 50%, 1)", 
+     * "#00f", "#0f0f0f", "#00F", "#0F0F0F", "rgb(255,0,0)", "rgba(0,0,0,0)", "red",
+     * "rgb(100%, 0%, 0%)", "hsl(0, 100%, 50%)", "hsla(120, 100%, 50%, 1)",
      * "transparent", "inherit", "currentcolor".
-     * 
+     *
      * @param colorName
-     * 
-     * @return Whether the colorName is a valid CSS color. 
-     *   
+     *
+     * @return Whether the colorName is a valid CSS color.
+     *
      * @see <a href="http://www.w3.org/TR/css3-color/">CSS Color Module Level 3</a>
      */
 
-    public static boolean isValidColorName(String colorName)
+    public static boolean isValidColorName(final String colorName)
     {
         if (null == colorName)
         {
             return false;
         }
-        String str = colorName.toLowerCase();
+        final String str = colorName.toLowerCase();
 
-        return (isSpecialColorName(str) || ColorName.lookup(str) != null || COLOR_RE.test(str));
+        return (isSpecialColorName(str) || (ColorName.lookup(str) != null) || COLOR_RE.test(str));
     }
 
     /**
      * The test is case-sensitive. It assumes the value was already converted to lower-case.
-     * 
+     *
      * @param colorName
-     * 
+     *
      * @return Whether the colorName is one of the "special" color names that are allowed as color values,
      *   but are not actually colors, i.e. "transparent", "inherit" or "currentcolor".
      */
-    public static boolean isSpecialColorName(String colorName)
+    public static boolean isSpecialColorName(final String colorName)
     {
-        for (String name : SPECIAL_COLOR_NAMES)
+        for (final String name : SPECIAL_COLOR_NAMES)
         {
             if (name.equalsIgnoreCase(colorName))
             {

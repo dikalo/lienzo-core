@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.shape;
@@ -62,10 +62,10 @@ public class Spline extends AbstractMultiPointShape<Spline>
     }
 
     /**
-    * Draws this Spline
-    * 
-    * @param context the {@link Context2D} used to draw this spline.
-    */
+     * Draws this Spline
+     *
+     * @param context the {@link Context2D} used to draw this spline.
+     */
     @Override
     protected boolean prepare(final Context2D context, final Attributes attr, final double alpha)
     {
@@ -83,7 +83,7 @@ public class Spline extends AbstractMultiPointShape<Spline>
     }
 
     @Override
-    protected boolean fill(Context2D context, Attributes attr, double alpha)
+    protected boolean fill(final Context2D context, final Attributes attr, final double alpha)
     {
         if (m_fill)
         {
@@ -136,7 +136,7 @@ public class Spline extends AbstractMultiPointShape<Spline>
         {
             closed = false;
         }
-        final NFastArrayList<PathPoint[]> carray = new NFastArrayList<PathPoint[]>();
+        final NFastArrayList<PathPoint[]> carray = new NFastArrayList<>();
 
         for (int i = begindex; i < endindex; i++)
         {
@@ -204,9 +204,9 @@ public class Spline extends AbstractMultiPointShape<Spline>
             {
                 final double c = Math.max(PathPoint.distance(p0, p2), 0.001);
 
-                cdist *= ((1 - angleFactor) + angleFactor * (Math.acos(Math.min(Math.max((b * b + a * a - c * c) / (2 * b * a), -1), 1)) / Math.PI));
+                cdist *= ((1 - angleFactor) + (angleFactor * (Math.acos(Math.min(Math.max((((b * b) + (a * a)) - (c * c)) / (2 * b * a), -1), 1)) / Math.PI)));
             }
-            final double cangl = Math.atan2(ry, rx) + Math.PI / 2;
+            final double cangl = Math.atan2(ry, rx) + (Math.PI / 2);
 
             final PathPoint cp2 = PathPoint.polar(cdist, cangl);
 
@@ -239,7 +239,7 @@ public class Spline extends AbstractMultiPointShape<Spline>
 
         for (i = begindex; i < (endindex - 1); i++)
         {
-            boolean line = lineFlatten && ((i > 0 && Math.atan2(points[i].y - points[i - 1].y, points[i].x - points[i - 1].x) == Math.atan2(points[i + 1].y - points[i].y, points[i + 1].x - points[i].x)) || (i < size - 2 && Math.atan2(points[i + 2].y - points[i + 1].y, points[i + 2].x - points[i + 1].x) == Math.atan2(points[i + 1].y - points[i].y, points[i + 1].x - points[i].x)));
+            final boolean line = lineFlatten && (((i > 0) && (Math.atan2(points[i].y - points[i - 1].y, points[i].x - points[i - 1].x) == Math.atan2(points[i + 1].y - points[i].y, points[i + 1].x - points[i].x))) || ((i < (size - 2)) && (Math.atan2(points[i + 2].y - points[i + 1].y, points[i + 2].x - points[i + 1].x) == Math.atan2(points[i + 1].y - points[i].y, points[i + 1].x - points[i].x))));
 
             if (line)
             {
@@ -293,7 +293,7 @@ public class Spline extends AbstractMultiPointShape<Spline>
 
     /**
      * Gets this spline's control points.
-     * 
+     *
      * @return {@link Point2DArray}
      */
     public Point2DArray getControlPoints()
@@ -303,10 +303,10 @@ public class Spline extends AbstractMultiPointShape<Spline>
 
     /**
      * Sets the control points for this curve.
-     * 
+     *
      * @param points
      *            A {@link Point2DArray} containing the control points
-     *       
+     *
      * @return this Spline
      */
     public Spline setControlPoints(final Point2DArray points)
@@ -317,7 +317,7 @@ public class Spline extends AbstractMultiPointShape<Spline>
     }
 
     @Override
-    public Spline setPoint2DArray(Point2DArray points)
+    public Spline setPoint2DArray(final Point2DArray points)
     {
         return setControlPoints(points);
     }
@@ -398,7 +398,7 @@ public class Spline extends AbstractMultiPointShape<Spline>
 
         public double y;
 
-        PathPoint(double x, double y)
+        PathPoint(final double x, final double y)
         {
             this.x = x;
 

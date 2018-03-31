@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.event;
@@ -26,7 +26,7 @@ import com.google.gwt.core.client.GWT;
 
 public class AttributesChangedEvent extends AbstractNodeEvent<AttributesChangedHandler>
 {
-    private static final Type<AttributesChangedHandler> TYPE = new Type<AttributesChangedHandler>();
+    private static final Type<AttributesChangedHandler> TYPE = new Type<>();
 
     private final long                                  m_begtime;
 
@@ -75,7 +75,7 @@ public class AttributesChangedEvent extends AbstractNodeEvent<AttributesChangedH
         {
             return ((T) getSource());
         }
-        catch (Exception e)
+        catch (final Exception e)
         {
             GWT.log("AttributesChangedEvent cast error: ", e);
         }
@@ -89,7 +89,7 @@ public class AttributesChangedEvent extends AbstractNodeEvent<AttributesChangedH
 
     public final boolean any(final Attribute... attributes)
     {
-        for (Attribute attribute : attributes)
+        for (final Attribute attribute : attributes)
         {
             if (m_changed.contains(attribute.getProperty()))
             {
@@ -99,9 +99,9 @@ public class AttributesChangedEvent extends AbstractNodeEvent<AttributesChangedH
         return false;
     }
 
-    public final boolean any(List<Attribute> attributes)
+    public final boolean any(final List<Attribute> attributes)
     {
-        for (Attribute attribute : attributes)
+        for (final Attribute attribute : attributes)
         {
             if (m_changed.contains(attribute.getProperty()))
             {
@@ -113,7 +113,7 @@ public class AttributesChangedEvent extends AbstractNodeEvent<AttributesChangedH
 
     public final boolean none(final Attribute... attributes)
     {
-        for (Attribute attribute : attributes)
+        for (final Attribute attribute : attributes)
         {
             if (m_changed.contains(attribute.getProperty()))
             {
@@ -125,7 +125,7 @@ public class AttributesChangedEvent extends AbstractNodeEvent<AttributesChangedH
 
     public final boolean none(final List<Attribute> attributes)
     {
-        for (Attribute attribute : attributes)
+        for (final Attribute attribute : attributes)
         {
             if (m_changed.contains(attribute.getProperty()))
             {
@@ -141,7 +141,7 @@ public class AttributesChangedEvent extends AbstractNodeEvent<AttributesChangedH
 
         final NFastStringSet seen = new NFastStringSet();
 
-        for (Attribute attribute : attributes)
+        for (final Attribute attribute : attributes)
         {
             final String name = attribute.getProperty();
 
@@ -166,7 +166,7 @@ public class AttributesChangedEvent extends AbstractNodeEvent<AttributesChangedH
 
         final NFastStringSet seen = new NFastStringSet();
 
-        for (Attribute attribute : attributes)
+        for (final Attribute attribute : attributes)
         {
             final String name = attribute.getProperty();
 
@@ -191,7 +191,7 @@ public class AttributesChangedEvent extends AbstractNodeEvent<AttributesChangedH
 
         final NFastStringSet seen = new NFastStringSet();
 
-        for (Attribute attribute : attributes)
+        for (final Attribute attribute : attributes)
         {
             final String name = attribute.getProperty();
 
@@ -214,7 +214,7 @@ public class AttributesChangedEvent extends AbstractNodeEvent<AttributesChangedH
 
         final NFastStringSet seen = new NFastStringSet();
 
-        for (Attribute attribute : attributes)
+        for (final Attribute attribute : attributes)
         {
             final String name = attribute.getProperty();
 
@@ -235,7 +235,7 @@ public class AttributesChangedEvent extends AbstractNodeEvent<AttributesChangedH
     {
         boolean seen = false;
 
-        for (Attribute attribute : attributes)
+        for (final Attribute attribute : attributes)
         {
             if (false == m_changed.contains(attribute.getProperty()))
             {
@@ -250,7 +250,7 @@ public class AttributesChangedEvent extends AbstractNodeEvent<AttributesChangedH
     {
         boolean seen = false;
 
-        for (Attribute attribute : attributes)
+        for (final Attribute attribute : attributes)
         {
             if (false == m_changed.contains(attribute.getProperty()))
             {

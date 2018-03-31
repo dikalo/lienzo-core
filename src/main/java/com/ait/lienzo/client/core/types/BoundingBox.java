@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.types;
@@ -207,7 +207,7 @@ public final class BoundingBox
 
     public final double getMaxX()
     {
-        return  getX() + getWidth();
+        return getX() + getWidth();
     }
 
     public final double getMinY()
@@ -220,7 +220,7 @@ public final class BoundingBox
         return getY() + getHeight();
     }
 
-    public final boolean intersects(BoundingBox other)
+    public final boolean intersects(final BoundingBox other)
     {
         if (getMaxX() < other.getMinX())
         {
@@ -241,9 +241,9 @@ public final class BoundingBox
         return true; // boxes overlap
     }
 
-    public final boolean contains(BoundingBox other)
+    public final boolean contains(final BoundingBox other)
     {
-        if (getMinX() <= other.getMinX() && getMaxX() >= other.getMaxX() && getMinY() <= other.getMinY() && getMaxY() >= other.getMaxY())
+        if ((getMinX() <= other.getMinX()) && (getMaxX() >= other.getMaxX()) && (getMinY() <= other.getMinY()) && (getMaxY() >= other.getMaxY()))
         {
             return true;
         }
@@ -253,10 +253,9 @@ public final class BoundingBox
         }
     }
 
-    public final boolean contains(Point2D p)
+    public final boolean contains(final Point2D p)
     {
-        return getMinX() <= p.getX() && getMaxX() >= p.getX() &&
-               getMinY() <= p.getY() && getMaxY() >= p.getY();
+        return (getMinX() <= p.getX()) && (getMaxX() >= p.getX()) && (getMinY() <= p.getY()) && (getMaxY() >= p.getY());
     }
 
     public final BoundingBoxJSO getJSO()
@@ -266,7 +265,7 @@ public final class BoundingBox
 
     public final String toJSONString()
     {
-        JSONObject object = new JSONObject();
+        final JSONObject object = new JSONObject();
 
         object.put("x", new JSONNumber(getX()));
 
@@ -307,7 +306,7 @@ public final class BoundingBox
         return toJSONString().hashCode();
     }
 
-    public void offset(int dx, int dy)
+    public void offset(final int dx, final int dy)
     {
         m_jso.offset(dx, dy);
     }
@@ -367,12 +366,13 @@ public final class BoundingBox
 				this.maxy = y;
 			}
         }-*/;
+
         final native void offset(double dx, double dy)
         /*-{
-            this.minx = this.minx + dx;
-            this.maxx = this.maxx + dx;
-            this.miny = this.miny + dy;
-            this.maxy = this.maxy + dy;
+			this.minx = this.minx + dx;
+			this.maxx = this.maxx + dx;
+			this.miny = this.miny + dy;
+			this.maxy = this.maxy + dy;
         }-*/;
     }
 }

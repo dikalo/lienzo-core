@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.ait.lienzo.client.core.shape.wires.handlers.impl;
 
 import com.ait.lienzo.client.core.event.NodeDragEndEvent;
@@ -22,163 +38,181 @@ import com.ait.lienzo.client.widget.DragContext;
  * - Delegate some mouse interactions for a single wires shape to its wires shape control instance
  * - Displays some highlights to provide feedback for containment and docking operations.
  */
-public class WiresShapeHandler
-        extends WiresManager.WiresDragHandler
-        implements NodeMouseDownHandler,
-                   NodeMouseUpHandler,
-                   NodeMouseClickHandler {
+public class WiresShapeHandler extends WiresManager.WiresDragHandler implements NodeMouseDownHandler, NodeMouseUpHandler, NodeMouseClickHandler
+{
+    private final WiresShapeControl                         control;
 
-    private final WiresShapeControl control;
     private final WiresShapeHighlight<PickerPart.ShapePart> highlight;
 
-    public WiresShapeHandler(final WiresShapeControl control,
-                             final WiresShapeHighlight<PickerPart.ShapePart> highlight,
-                             final WiresManager manager) {
+    public WiresShapeHandler(final WiresShapeControl control, final WiresShapeHighlight<PickerPart.ShapePart> highlight, final WiresManager manager)
+    {
         super(manager);
+
         this.control = control;
+
         this.highlight = highlight;
     }
 
     @Override
-    public void startDrag(DragContext dragContext) {
+    public void startDrag(final DragContext dragContext)
+    {
         super.startDrag(dragContext);
 
         // Delegate start dragging to shape control.
-        control.onMoveStart(dragContext.getDragStartX(),
-                            dragContext.getDragStartY());
+
+        control.onMoveStart(dragContext.getDragStartX(), dragContext.getDragStartY());
 
         // Highlights.
+
         final WiresShape parent = getParentShape();
-        if (null != parent) {
-            if (isDocked(getShape())) {
-                highlight.highlight(getParentShape(),
-                                    PickerPart.ShapePart.BORDER);
-            } else {
-                highlight.highlight(getParentShape(),
-                                    PickerPart.ShapePart.BODY);
+
+        if (null != parent)
+        {
+            if (isDocked(getShape()))
+            {
+                highlight.highlight(getParentShape(), PickerPart.ShapePart.BORDER);
+            }
+            else
+            {
+                highlight.highlight(getParentShape(), PickerPart.ShapePart.BODY);
             }
         }
         batch();
     }
 
     @Override
-    protected boolean doAdjust(Point2D dxy) {
-
+    protected boolean doAdjust(final Point2D dxy)
+    {
         // Keep parent shape and part instances before moving to another location.
+
         final WiresShape parent = getParentShape();
+
         final PickerPart.ShapePart parentPart = getParentShapePart();
 
         boolean adjusted = false;
+
         // Delegate drag adjustments to shape control.
-        if (control.onMove(dxy.getX(),
-                           dxy.getY())) {
+
+        if (control.onMove(dxy.getX(), dxy.getY()))
+        {
             dxy.set(control.getAdjust());
+
             adjusted = true;
         }
-
         // Check acceptors' allow methods.
-        final boolean isDockAllowed = null != getControl().getDockingControl() &&
-                getControl().getDockingControl().isAllow();
-        final boolean isContAllow = null != getControl().getContainmentControl() &&
-                getControl().getContainmentControl().isAllow();
+
+        final boolean isDockAllowed = (null != getControl().getDockingControl()) && getControl().getDockingControl().isAllow();
+
+        final boolean isContAllow = (null != getControl().getContainmentControl()) && getControl().getContainmentControl().isAllow();
 
         // Highlights.
+
         final WiresShape newParent = getParentShape();
+
         final PickerPart.ShapePart newParentPart = getParentShapePart();
-        if (parent != newParent || parentPart != newParentPart) {
+
+        if ((parent != newParent) || (parentPart != newParentPart))
+        {
             highlight.restore();
         }
-        if (null != newParent) {
-            if (isDockAllowed) {
-                highlight.highlight(newParent,
-                                    PickerPart.ShapePart.BORDER);
-            } else if (isContAllow) {
-                highlight.highlight(newParent,
-                                    PickerPart.ShapePart.BODY);
+        if (null != newParent)
+        {
+            if (isDockAllowed)
+            {
+                highlight.highlight(newParent, PickerPart.ShapePart.BORDER);
+            }
+            else if (isContAllow)
+            {
+                highlight.highlight(newParent, PickerPart.ShapePart.BODY);
             }
         }
-
         batch();
 
         return adjusted;
     }
 
     @Override
-    protected void doOnNodeDragEnd(NodeDragEndEvent event) {
+    protected void doOnNodeDragEnd(final NodeDragEndEvent event)
+    {
         final int dx = event.getDragContext().getDx();
+
         final int dy = event.getDragContext().getDy();
-        control.onMove(dx,
-                        dy);
+
+        control.onMove(dx, dy);
 
         // Complete the control operation.
-        if (control.onMoveComplete() && control.accept()) {
+
+        if (control.onMoveComplete() && control.accept())
+        {
             control.execute();
-        } else {
+        }
+        else
+        {
             reset();
         }
-
         // Restore highlights, if any.
+
         highlight.restore();
 
         batch();
     }
 
     @Override
-    protected void doReset() {
+    protected void doReset()
+    {
         super.doReset();
+
         highlight.restore();
     }
 
     @Override
-    public void onNodeMouseClick(NodeMouseClickEvent event) {
-        control.onMouseClick(new MouseEvent(event.getX(),
-                                            event.getY(),
-                                            event.isShiftKeyDown(),
-                                            event.isAltKeyDown(),
-                                            event.isControlKeyDown()));
+    public void onNodeMouseClick(final NodeMouseClickEvent event)
+    {
+        control.onMouseClick(new MouseEvent(event.getX(), event.getY(), event.isShiftKeyDown(), event.isAltKeyDown(), event.isControlKeyDown()));
     }
 
     @Override
-    public void onNodeMouseDown(NodeMouseDownEvent event) {
-        control.onMouseDown(new MouseEvent(event.getX(),
-                                           event.getY(),
-                                           event.isShiftKeyDown(),
-                                           event.isAltKeyDown(),
-                                           event.isControlKeyDown()));
+    public void onNodeMouseDown(final NodeMouseDownEvent event)
+    {
+        control.onMouseDown(new MouseEvent(event.getX(), event.getY(), event.isShiftKeyDown(), event.isAltKeyDown(), event.isControlKeyDown()));
     }
 
     @Override
-    public void onNodeMouseUp(NodeMouseUpEvent event) {
-        control.onMouseUp(new MouseEvent(event.getX(),
-                                         event.getY(),
-                                         event.isShiftKeyDown(),
-                                         event.isAltKeyDown(),
-                                         event.isControlKeyDown()));
+    public void onNodeMouseUp(final NodeMouseUpEvent event)
+    {
+        control.onMouseUp(new MouseEvent(event.getX(), event.getY(), event.isShiftKeyDown(), event.isAltKeyDown(), event.isControlKeyDown()));
     }
 
     @Override
-    public WiresShapeControl getControl() {
+    public WiresShapeControl getControl()
+    {
         return control;
     }
 
-    private WiresShape getShape() {
+    private WiresShape getShape()
+    {
         return getControl().getParentPickerControl().getShape();
     }
 
-    private WiresShape getParentShape() {
+    private WiresShape getParentShape()
+    {
         final WiresContainer parent = getControl().getParentPickerControl().getParent();
-        return null != parent && parent instanceof WiresShape ? (WiresShape) parent : null;
+
+        return (null != parent) && (parent instanceof WiresShape) ? (WiresShape) parent : null;
     }
 
-    private PickerPart.ShapePart getParentShapePart() {
+    private PickerPart.ShapePart getParentShapePart()
+    {
         return getControl().getParentPickerControl().getParentShapePart();
     }
 
-    private boolean isDocked(final WiresShape shape) {
+    private boolean isDocked(final WiresShape shape)
+    {
         return null != shape.getDockedTo();
     }
 
-    private void batch() {
+    private void batch()
+    {
         getShape().getGroup().getLayer().batch();
     }
 }

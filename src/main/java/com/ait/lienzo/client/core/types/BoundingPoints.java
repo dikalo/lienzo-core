@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.types;
@@ -27,13 +27,13 @@ public final class BoundingPoints implements Iterable<Point2D>
 
     public BoundingPoints(final BoundingBox bbox)
     {
-        double x = bbox.getX();
+        final double x = bbox.getX();
 
-        double y = bbox.getY();
+        final double y = bbox.getY();
 
-        double w = bbox.getWidth();
+        final double w = bbox.getWidth();
 
-        double h = bbox.getHeight();
+        final double h = bbox.getHeight();
 
         m_array.push(new Point2D(x + 0, y + 0));
 
@@ -63,7 +63,9 @@ public final class BoundingPoints implements Iterable<Point2D>
             for (int i = 0; i < leng; i++)
             {
                 final Point2D p = m_array.get(i);
+
                 transform.transform(p, p);
+
                 p.offset(computedOffsetX, computedOffsetY);
             }
         }
@@ -79,7 +81,7 @@ public final class BoundingPoints implements Iterable<Point2D>
     {
         final int leng = m_array.size();
 
-        final ArrayList<Point2D> list = new ArrayList<Point2D>(leng);
+        final ArrayList<Point2D> list = new ArrayList<>(leng);
 
         for (int i = 0; i < leng; i++)
         {

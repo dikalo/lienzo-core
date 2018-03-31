@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.widget;
@@ -28,15 +28,15 @@ import com.ait.lienzo.shared.core.types.NodeType;
  * DragContext maintains information during a Drag operation of a Node.
  * <p>
  * Some values are defined in "global coordinates" (a.k.a. "canvas coordinates"
- * or "viewport coordinates"), 
+ * or "viewport coordinates"),
  * e.g. the raw canvas event (x,y) values are defined in pixels relative to the top-left corner of the canvas.
- * <p> 
+ * <p>
  * On the other hand, "local coordinates" are specific to a node's parent.
  * E.g. the X,Y position of a node is defined relative to the top-left corner of the parent node.
  * <p>
  * To convert between local and global coordinates, you'd need to concatenate the Transform
  * of the nodes ancestors, all the way down to the parent node (see {@link #getLocalToGlobal()}).
- * Converting from global to local coordinates requires the inverse of that Transform 
+ * Converting from global to local coordinates requires the inverse of that Transform
  * (see {@link #getGlobalToLocal()}.)
  */
 public class DragContext
@@ -57,7 +57,7 @@ public class DragContext
 
     private final Transform              m_ltog;
 
-    private final Transform m_vtog;
+    private final Transform              m_vtog;
 
     private final IPrimitive<?>          m_prim;
 
@@ -77,11 +77,12 @@ public class DragContext
 
     /**
      * Starts a drag operation for the specified node.
-     * 
+     *
      * @param event the first drag event
      * @param prim the node that is being dragged
      */
-    public DragContext(final INodeXYEvent event, final IPrimitive<?> prim) {
+    public DragContext(final INodeXYEvent event, final IPrimitive<?> prim)
+    {
         this(event, prim, new Transform());
     }
 
@@ -127,7 +128,7 @@ public class DragContext
     /**
      * Draws the node during a drag operation.
      * Used internally.
-     * 
+     *
      * @param context
      */
     public void drawNodeWithTransforms(final Context2D context)
@@ -143,7 +144,7 @@ public class DragContext
 
     /**
      * Returns global alpha value.
-     * 
+     *
      * @return double
      */
     private final double getNodeParentsAlpha(Node<?> node)
@@ -169,7 +170,7 @@ public class DragContext
     /**
      * Updates the context for the specified Drag Move event.
      * Used internally.
-     * 
+     *
      * @param event Drag Move event
      */
     public void dragUpdate(final INodeXYEvent event)
@@ -213,7 +214,7 @@ public class DragContext
     /**
      * Called when the Drag operation is done.
      * It basically updates the node's new (X,Y) attributes.
-     * 
+     *
      * Used internally.
      */
     public void dragDone()
@@ -245,7 +246,7 @@ public class DragContext
 
     /**
      * Returns x0 in global coordinates - i.e. event(x,y) at start of drag operation
-     * 
+     *
      * @return int
      */
     public int getDragStartX()
@@ -255,7 +256,7 @@ public class DragContext
 
     /**
      * Returns y0 in global coordinates - i.e. event(x,y) at start of drag operation
-     * 
+     *
      * @return int
      */
     public int getDragStartY()
@@ -283,7 +284,7 @@ public class DragContext
 
     /**
      * Returns dx (i.e. eventX - dragstartX) in global coordinates
-     * 
+     *
      * @return int
      */
     public int getDx()
@@ -293,7 +294,7 @@ public class DragContext
 
     /**
      * Returns dy (i.e. eventY - dragStartY) in global coordinates
-     * 
+     *
      * @return int
      */
     public int getDy()
@@ -306,7 +307,7 @@ public class DragContext
      * coordinates (i.e. canvas coordinates) to local coordinates
      * (i.e. within the context of the node's parent.)
      * This is the inverse of the localToGlobal transform.
-     * 
+     *
      * @return
      */
     public Transform getGlobalToLocal()
@@ -319,7 +320,7 @@ public class DragContext
      * (i.e. within the context of the node's parent) to global
      * coordinates (i.e. canvas coordinates).
      * This is the inverse of the globalToLocal transform.
-     * 
+     *
      * @return
      */
     public Transform getLocalToGlobal()
@@ -327,14 +328,15 @@ public class DragContext
         return m_ltog;
     }
 
-    public Transform getViewportToGlobal() {
+    public Transform getViewportToGlobal()
+    {
         return m_vtog;
     }
 
     /**
-     * Returns (dx,dy) in local coordinates, adjusted by the 
+     * Returns (dx,dy) in local coordinates, adjusted by the
      * {@link DragConstraintEnforcer}
-     * 
+     *
      * @return Point2D
      */
     public Point2D getLocalAdjusted()
@@ -347,9 +349,12 @@ public class DragContext
      *
      * @return
      */
-    public Point2D getStartAdjusted() {
-        Point2D viewportLoc = new Point2D(getDragStartX(), getDragStartY());
+    public Point2D getStartAdjusted()
+    {
+        final Point2D viewportLoc = new Point2D(getDragStartX(), getDragStartY());
+
         m_vtog.transform(viewportLoc, viewportLoc);
+
         return viewportLoc;
     }
 
@@ -358,9 +363,12 @@ public class DragContext
      *
      * @return
      */
-    public Point2D getEventAdjusted() {
-        Point2D viewportLoc = new Point2D(getEventX(), getEventY());
+    public Point2D getEventAdjusted()
+    {
+        final Point2D viewportLoc = new Point2D(getEventX(), getEventY());
+
         m_vtog.transform(viewportLoc, viewportLoc);
+
         return viewportLoc;
     }
 
@@ -369,13 +377,14 @@ public class DragContext
      *
      * @return
      */
-    public Point2D getDistanceAdjusted() {
+    public Point2D getDistanceAdjusted()
+    {
         return getEventAdjusted().minus(getStartAdjusted());
     }
 
     /**
      * Returns the node being dragged as an IPrimitive.
-     * 
+     *
      * @return IPrimitive
      */
     public IPrimitive<?> getNode()
@@ -386,7 +395,7 @@ public class DragContext
     /**
      * Returns the {@link DragConstraintEnforcer} that adjusts the node
      * location during a drag operation.
-     * 
+     *
      * @return {@link DragConstraintEnforcer}
      */
     public DragConstraintEnforcer getDragConstraints()

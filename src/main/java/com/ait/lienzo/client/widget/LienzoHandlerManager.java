@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.widget;
@@ -118,9 +118,9 @@ final class LienzoHandlerManager
 
     private boolean           m_mouse_button_left      = false;
 
-    private boolean           m_mouse_button_middle      = false;
+    private boolean           m_mouse_button_middle    = false;
 
-    private boolean           m_mouse_button_right      = false;
+    private boolean           m_mouse_button_right     = false;
 
     private DragMode          m_drag_mode              = null;
 
@@ -153,7 +153,7 @@ final class LienzoHandlerManager
         {
             final int size = jsarray.length();
 
-            final ArrayList<TouchPoint> touches = new ArrayList<TouchPoint>(size);
+            final ArrayList<TouchPoint> touches = new ArrayList<>(size);
 
             for (int i = 0; i < size; i++)
             {
@@ -165,9 +165,9 @@ final class LienzoHandlerManager
         }
         else
         {
-            int x = event.getNativeEvent().getClientX() - element.getAbsoluteLeft() + element.getScrollLeft() + element.getOwnerDocument().getScrollLeft();
+            final int x = (event.getNativeEvent().getClientX() - element.getAbsoluteLeft()) + element.getScrollLeft() + element.getOwnerDocument().getScrollLeft();
 
-            int y = event.getNativeEvent().getClientY() - element.getAbsoluteTop() + element.getScrollTop() + element.getOwnerDocument().getScrollTop();
+            final int y = (event.getNativeEvent().getClientY() - element.getAbsoluteTop()) + element.getScrollTop() + element.getOwnerDocument().getScrollTop();
 
             return Arrays.asList(new TouchPoint(x, y));
         }
@@ -660,7 +660,7 @@ final class LienzoHandlerManager
 
                 if (null == list)
                 {
-                    list = new NFastArrayList<IPrimitive<?>>();
+                    list = new NFastArrayList<>();
                 }
                 list.add(prim);
 
@@ -726,11 +726,10 @@ final class LienzoHandlerManager
         {
             doDragCancel(event);
         }
-        if (m_lienzo.getDragMouseButtons().allowDrag(m_mouse_button_left,m_mouse_button_middle,m_mouse_button_right))
+        if (m_lienzo.getDragMouseButtons().allowDrag(m_mouse_button_left, m_mouse_button_middle, m_mouse_button_right))
         {
             m_dragging_mouse_pressed = true;
         }
-
         fireEventForPrimitive(findPrimitiveForEventType(event, event.getNodeEvent().getAssociatedType()), event);
     }
 
@@ -852,7 +851,7 @@ final class LienzoHandlerManager
 
     private final void onNodeMouseOut(final INodeXYEvent event)
     {
-        m_dragging_mouse_pressed = false;// in case someone does a pop up ( Window.alert() ), this causes technically a MouseDown cancel
+        m_dragging_mouse_pressed = false; // in case someone does a pop up ( Window.alert() ), this causes technically a MouseDown cancel
 
         if (m_dragging)
         {

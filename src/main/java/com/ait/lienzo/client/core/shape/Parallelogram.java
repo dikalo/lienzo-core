@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.shape;
@@ -40,7 +40,7 @@ public class Parallelogram extends Shape<Parallelogram>
 
     /**
      * Constructor. Creates an instance of a parallelogram.
-     * 
+     *
      * @param width
      * @param height
      * @param skew a skew of 0 draws sides that form a 90 degree angle
@@ -66,7 +66,7 @@ public class Parallelogram extends Shape<Parallelogram>
 
     /**
      * Draws this parallelogram.
-     * 
+     *
      * @param context
      */
     @Override
@@ -161,7 +161,7 @@ public class Parallelogram extends Shape<Parallelogram>
 
     /**
      * Gets the width of this parallelogram
-     * 
+     *
      * @return double
      */
     public double getWidth()
@@ -171,7 +171,7 @@ public class Parallelogram extends Shape<Parallelogram>
 
     /**
      * Sets the width of this parallelogram
-     * 
+     *
      * @param width
      * @return this Parallelogram
      */
@@ -184,7 +184,7 @@ public class Parallelogram extends Shape<Parallelogram>
 
     /**
      * Gets the height of this parallelogram
-     * 
+     *
      * @return double
      */
     public double getHeight()
@@ -194,7 +194,7 @@ public class Parallelogram extends Shape<Parallelogram>
 
     /**
      * Sets the height of this parallelogram
-     * 
+     *
      * @param height
      * @return this Parallelogram
      */
@@ -207,7 +207,7 @@ public class Parallelogram extends Shape<Parallelogram>
 
     /**
      * Gets the skew of this parallelogram.
-     * 
+     *
      * @return double
      */
     public double getSkew()
@@ -217,7 +217,7 @@ public class Parallelogram extends Shape<Parallelogram>
 
     /**
      * Sets the skew of this parallelogram
-     * 
+     *
      * @param skew
      * @return this Parallelogram
      */

@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.shape;
@@ -71,7 +71,7 @@ public interface IDrawable<T extends IDrawable<T>> extends NObjectOnWire, IJSONS
     public T draw();
 
     public T batch();
-    
+
     public boolean hasMetaData();
 
     public MetaData getMetaData();
@@ -87,7 +87,7 @@ public interface IDrawable<T extends IDrawable<T>> extends NObjectOnWire, IJSONS
     public Attributes getAttributes();
 
     public List<Attribute> getBoundingBoxAttributes();
-    
+
     public T refresh();
 
     public T setName(String name);
@@ -97,9 +97,9 @@ public interface IDrawable<T extends IDrawable<T>> extends NObjectOnWire, IJSONS
     public T setID(String id);
 
     public String getID();
-    
+
     public T setUserData(Object data);
-    
+
     public Object getUserData();
 
     public T setAttributesChangedBatcher(IAttributesChangedBatcher batcher);
@@ -111,11 +111,11 @@ public interface IDrawable<T extends IDrawable<T>> extends NObjectOnWire, IJSONS
     public BoundingPoints getBoundingPoints();
 
     public BoundingPoints getComputedBoundingPoints();
-    
+
     public Point2D getComputedLocation();
 
     public Point2D getAbsoluteLocation();
-    
+
     public Transform getAbsoluteTransform();
 
     public HandlerRegistration addAttributesChangedHandler(Attribute attribute, AttributesChangedHandler handler);
@@ -161,43 +161,43 @@ public interface IDrawable<T extends IDrawable<T>> extends NObjectOnWire, IJSONS
     public HandlerRegistration addNodeDragStartHandler(NodeDragStartHandler handler);
 
     /**
-     * Gets the object's {@link Layer} 
-     * 
+     * Gets the object's {@link Layer}
+     *
      * @return Layer
      */
     public Layer getLayer();
 
     /**
      * Gets the object's {@link Scene}
-     * 
+     *
      * @return Scene
      */
     public Scene getScene();
 
     /**
      * Gets the object's {@link Viewport}
-     * 
+     *
      * @return Viewport
      */
     public Viewport getViewport();
 
     /**
      * Gets the viewport's Over Layer {@link Layer}
-     * 
+     *
      * @return Layer
      */
     public Layer getOverLayer();
 
     /**
      * Gets the object's {@link ScratchPad}
-     * 
+     *
      * @return ScratchPad
      */
     public ScratchPad getScratchPad();
 
     /**
      * Returns this object as a {@link Node}
-     * 
+     *
      * @return Node
      */
     public Node<?> asNode();
@@ -205,7 +205,7 @@ public interface IDrawable<T extends IDrawable<T>> extends NObjectOnWire, IJSONS
     /**
      * Returns this object as a {@link Scene}
      * or null if it not a Scene.
-     * 
+     *
      * @return Scene
      */
     public Viewport asViewport();
@@ -213,7 +213,7 @@ public interface IDrawable<T extends IDrawable<T>> extends NObjectOnWire, IJSONS
     /**
      * Returns this object as a {@link Scene}
      * or null if it not a Scene.
-     * 
+     *
      * @return Scene
      */
     public Scene asScene();
@@ -221,7 +221,7 @@ public interface IDrawable<T extends IDrawable<T>> extends NObjectOnWire, IJSONS
     /**
      * Returns this object as a {@link Scene}
      * or null if it not a Scene.
-     * 
+     *
      * @return Scene
      */
     public Layer asLayer();
@@ -229,7 +229,7 @@ public interface IDrawable<T extends IDrawable<T>> extends NObjectOnWire, IJSONS
     /**
      * Returns this object as a {@link Scene}
      * or null if it not a Scene.
-     * 
+     *
      * @return Scene
      */
     public GroupOf<IPrimitive<?>, ?> asGroupOf();
@@ -237,7 +237,7 @@ public interface IDrawable<T extends IDrawable<T>> extends NObjectOnWire, IJSONS
     /**
      * Returns this object as a {@link Scene}
      * or null if it not a Scene.
-     * 
+     *
      * @return Scene
      */
     public Group asGroup();
@@ -245,7 +245,7 @@ public interface IDrawable<T extends IDrawable<T>> extends NObjectOnWire, IJSONS
     /**
      * Returns this object as a {@link Scene}
      * or null if it not a Scene.
-     * 
+     *
      * @return Scene
      */
     public Shape<?> asShape();
@@ -255,7 +255,7 @@ public interface IDrawable<T extends IDrawable<T>> extends NObjectOnWire, IJSONS
     /**
      * Returns this object as an {@link IContainer}
      * or null if it is not an IContainer.
-     * 
+     *
      * @return IContainer
      */
     public IContainer<?, ?> asContainer();
@@ -265,7 +265,7 @@ public interface IDrawable<T extends IDrawable<T>> extends NObjectOnWire, IJSONS
     /**
      * Returns this object as an {@link IPrimitive}
      * or null if it is not an IPrimitive.
-     * 
+     *
      * @return IPrimitive
      */
     public IPrimitive<?> asPrimitive();
@@ -276,7 +276,7 @@ public interface IDrawable<T extends IDrawable<T>> extends NObjectOnWire, IJSONS
 
     /**
      * Returns whether the object is visible.
-     * 
+     *
      * @return boolean
      */
     public boolean isVisible();
@@ -285,7 +285,7 @@ public interface IDrawable<T extends IDrawable<T>> extends NObjectOnWire, IJSONS
 
     /**
      * Returns whether the object is listening (i.e. not ignoring) for events
-     * 
+     *
      * @return boolean
      */
     public boolean isListening();
@@ -293,7 +293,7 @@ public interface IDrawable<T extends IDrawable<T>> extends NObjectOnWire, IJSONS
     /**
      * Returns whether the given event type has a handler implementation in this
      * object.
-     * 
+     *
      * @param type the event type
      * @return boolean
      */
@@ -301,42 +301,42 @@ public interface IDrawable<T extends IDrawable<T>> extends NObjectOnWire, IJSONS
 
     /**
      * Fires off the given GWT event.
-     * 
+     *
      * @param event
      */
     public void fireEvent(GwtEvent<?> event);
 
     /**
      * Applies transformations to the object and draws it.
-     * 
+     *
      * @param context
      */
     public void drawWithTransforms(Context2D context, double alpha, BoundingBox bounds);
 
     /**
      * Move the object's {@link Layer} one level up
-     * 
+     *
      * @return T instance of the drawn object
      */
     public T moveUp();
 
     /**
      * Move the object's {@link Layer} one level down
-     * 
+     *
      * @return T instance of the drawn object
      */
     public T moveDown();
 
     /**
      * Move the object's {@link Layer} to the top of the layer stack
-     * 
+     *
      * @return T instance of the drawn object
      */
     public T moveToTop();
 
     /**
      * Move the object's {@link Layer} to the bottom of the layer stack
-     * 
+     *
      * @return T instance of the drawn object
      */
     public T moveToBottom();
@@ -348,7 +348,7 @@ public interface IDrawable<T extends IDrawable<T>> extends NObjectOnWire, IJSONS
      * <p>
      * Basically invokes {@link #animate(AnimationTweener, AnimationProperties, int, IAnimationCallback)} with a callback of <code>null</code>
      * See that method for more details.
-     * 
+     *
      * @param tweener {@link AnimationTweener} - determines how the attributes will be changed over time
      * @param properties {@link AnimationProperties} - attributes that will be modified over time
      * @param duration in milliseconds
@@ -358,18 +358,18 @@ public interface IDrawable<T extends IDrawable<T>> extends NObjectOnWire, IJSONS
 
     /**
      * Animates this node using a tweening animation that runs for the specified duration.
-     * The attributes of this node are gradually modified over time. 
+     * The attributes of this node are gradually modified over time.
      * The tweener defines how the attributes are changed over time, e.g. LINEAR or not.
-     * See {@link AttributeTweener} for the various non-linear transitions. 
+     * See {@link AttributeTweener} for the various non-linear transitions.
      * <p>
      * If a callback is specified, it is called whenever the animation starts, ends and once for every animation frame.
-     * 
+     *
      * @param tweener {@link AnimationTweener} - determines how the attributes will be changed over time
      * @param properties {@link AnimationProperties} - attributes that will be modified over time
      * @param duration in milliseconds
      * @param callback {@link IAnimationCallback}
      * @return {@link IAnimationHandle}
-     * 
+     *
      * @see {@link AnimationManager#add(IPrimitive, AnimationTweener, AnimationProperties, int, IAnimationCallback)}
      */
     public IAnimationHandle animate(AnimationTweener tweener, AnimationProperties properties, double duration /* milliseconds */, IAnimationCallback callback);

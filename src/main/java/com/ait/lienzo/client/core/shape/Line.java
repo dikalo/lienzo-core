@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.shape;
@@ -101,19 +101,19 @@ public class Line extends AbstractOffsetMultiPointShape<Line>
             {
                 if (false == LienzoCore.get().isNativeLineDashSupported())
                 {
-                    DashArray dash = attr.getDashArray();
+                    final DashArray dash = attr.getDashArray();
 
                     if (dash != null)
                     {
-                        double[] data = dash.getNormalizedArray();
+                        final double[] data = dash.getNormalizedArray();
 
                         if (data.length > 0)
                         {
                             if (setStrokeParams(context, attr, alpha, false))
                             {
-                                Point2D p0 = list.get(0);
+                                final Point2D p0 = list.get(0);
 
-                                Point2D p1 = list.get(1);
+                                final Point2D p1 = list.get(1);
 
                                 context.beginPath();
 
@@ -242,15 +242,15 @@ public class Line extends AbstractOffsetMultiPointShape<Line>
 
         context.moveTo(x, y);
 
-        double distRemaining = Math.sqrt(dx * dx + dy * dy) + plus;
+        double distRemaining = Math.sqrt((dx * dx) + (dy * dy)) + plus;
 
         int dashIndex = 0;
 
         while (distRemaining >= 0.1)
         {
-            double dashLength = Math.min(distRemaining, da[dashIndex % dashCount]);
+            final double dashLength = Math.min(distRemaining, da[dashIndex % dashCount]);
 
-            double step = Math.sqrt(dashLength * dashLength / (1 + slope * slope));
+            double step = Math.sqrt((dashLength * dashLength) / (1 + (slope * slope)));
 
             if (xbig)
             {
@@ -272,7 +272,7 @@ public class Line extends AbstractOffsetMultiPointShape<Line>
 
                 y += step;
             }
-            if (dashIndex % 2 == 0)
+            if ((dashIndex % 2) == 0)
             {
                 context.lineTo(x, y);
             }

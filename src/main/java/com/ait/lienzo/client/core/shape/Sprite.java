@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.shape;
@@ -60,7 +60,7 @@ public class Sprite extends Shape<Sprite>
 
     private Timer               m_ticker = null;
 
-    public Sprite(final String url, double rate, SpriteBehaviorMap bmap, String behavior)
+    public Sprite(final String url, final double rate, final SpriteBehaviorMap bmap, final String behavior)
     {
         super(ShapeType.SPRITE);
 
@@ -80,14 +80,14 @@ public class Sprite extends Shape<Sprite>
             }
 
             @Override
-            public void onImageElementError(String message)
+            public void onImageElementError(final String message)
             {
                 LienzoCore.get().error("Sprite could not load URL " + url + " " + message);
             }
         };
     }
 
-    public Sprite(final ImageResource resource, double rate, SpriteBehaviorMap bmap, String behavior)
+    public Sprite(final ImageResource resource, final double rate, final SpriteBehaviorMap bmap, final String behavior)
     {
         super(ShapeType.SPRITE);
 
@@ -107,14 +107,14 @@ public class Sprite extends Shape<Sprite>
             }
 
             @Override
-            public void onImageElementError(String message)
+            public void onImageElementError(final String message)
             {
                 LienzoCore.get().error("Sprite could not load resource " + resource.getName() + " " + message);
             }
         };
     }
 
-    public Sprite(ImageElement sprite, double rate, SpriteBehaviorMap bmap, String behavior)
+    public Sprite(final ImageElement sprite, final double rate, final SpriteBehaviorMap bmap, final String behavior)
     {
         super(ShapeType.SPRITE);
 
@@ -128,7 +128,7 @@ public class Sprite extends Shape<Sprite>
         }
     }
 
-    public Sprite(JSONObject node, ValidationContext ctx) throws ValidationException
+    public Sprite(final JSONObject node, final ValidationContext ctx) throws ValidationException
     {
         super(ShapeType.SPRITE, node, ctx);
     }
@@ -160,7 +160,7 @@ public class Sprite extends Shape<Sprite>
                 }
 
                 @Override
-                public void onImageElementError(String message)
+                public void onImageElementError(final String message)
                 {
                     LienzoCore.get().error("Sprite could not load URL " + url + " " + message);
                 }
@@ -176,10 +176,8 @@ public class Sprite extends Shape<Sprite>
 
         double high = 0;
 
-        for (int i = 0; i < m_frames.length; i++)
+        for (final BoundingBox bbox : m_frames)
         {
-            BoundingBox bbox = m_frames[i];
-
             wide = Math.max(wide, bbox.getWidth());
 
             high = Math.max(high, bbox.getHeight());
@@ -192,7 +190,7 @@ public class Sprite extends Shape<Sprite>
         return getAttributes().getURL();
     }
 
-    public final Sprite setURL(String url)
+    public final Sprite setURL(final String url)
     {
         if ((null == url) || (url.trim().isEmpty()))
         {
@@ -208,7 +206,7 @@ public class Sprite extends Shape<Sprite>
         return getAttributes().getTickRate();
     }
 
-    public final Sprite setTickRate(double rate)
+    public final Sprite setTickRate(final double rate)
     {
         getAttributes().setTickRate(rate);
 
@@ -226,7 +224,7 @@ public class Sprite extends Shape<Sprite>
         return getAttributes().getSpriteBehaviorMap();
     }
 
-    public final Sprite setSpriteBehaviorMap(SpriteBehaviorMap bmap)
+    public final Sprite setSpriteBehaviorMap(final SpriteBehaviorMap bmap)
     {
         if (bmap == null)
         {
@@ -234,7 +232,7 @@ public class Sprite extends Shape<Sprite>
         }
         getAttributes().setSpriteBehaviorMap(bmap);
 
-        String behavior = getSpriteBehavior();
+        final String behavior = getSpriteBehavior();
 
         if ((null != behavior) && (false == behavior.trim().isEmpty()))
         {
@@ -250,7 +248,7 @@ public class Sprite extends Shape<Sprite>
         return getAttributes().getSpriteBehavior();
     }
 
-    public final Sprite setSpriteBehavior(String behavior)
+    public final Sprite setSpriteBehavior(final String behavior)
     {
         if ((null == behavior) || (behavior.trim().isEmpty()))
         {
@@ -258,7 +256,7 @@ public class Sprite extends Shape<Sprite>
         }
         getAttributes().setSpriteBehavior(behavior);
 
-        SpriteBehaviorMap bmap = getSpriteBehaviorMap();
+        final SpriteBehaviorMap bmap = getSpriteBehaviorMap();
 
         if (null != bmap)
         {
@@ -269,7 +267,7 @@ public class Sprite extends Shape<Sprite>
         return this;
     }
 
-    public final Sprite setSerializationMode(ImageSerializationMode mode)
+    public final Sprite setSerializationMode(final ImageSerializationMode mode)
     {
         getAttributes().setSerializationMode(mode);
 
@@ -281,7 +279,7 @@ public class Sprite extends Shape<Sprite>
         return getAttributes().getSerializationMode();
     }
 
-    public final Sprite setAutoPlay(boolean play)
+    public final Sprite setAutoPlay(final boolean play)
     {
         getAttributes().setAutoPlay(play);
 
@@ -345,14 +343,14 @@ public class Sprite extends Shape<Sprite>
         return this;
     }
 
-    public final Sprite onTick(SpriteOnTickHandler handler)
+    public final Sprite onTick(final SpriteOnTickHandler handler)
     {
         m_ontick = handler;
 
         return this;
     }
 
-    public final Sprite onRoll(SpriteOnRollHandler handler)
+    public final Sprite onRoll(final SpriteOnRollHandler handler)
     {
         m_onroll = handler;
 
@@ -376,7 +374,7 @@ public class Sprite extends Shape<Sprite>
     }
 
     @Override
-    protected boolean prepare(Context2D context, Attributes attr, double alpha)
+    protected boolean prepare(final Context2D context, final Attributes attr, final double alpha)
     {
         if ((null != m_frames) && (null != m_sprite) && (m_index < m_frames.length))
         {
@@ -423,7 +421,7 @@ public class Sprite extends Shape<Sprite>
         return false;
     }
 
-    public final Sprite onLoaded(SpriteLoadedHandler handler)
+    public final Sprite onLoaded(final SpriteLoadedHandler handler)
     {
         m_loaded = handler;
 
@@ -447,18 +445,18 @@ public class Sprite extends Shape<Sprite>
     @Override
     public JSONObject toJSONObject()
     {
-        JSONObject attr = new JSONObject(getAttributes().getJSO());
+        final JSONObject attr = new JSONObject(getAttributes().getJSO());
 
         if (getSerializationMode() == ImageSerializationMode.DATA_URL)
         {
-            String url = getURL();
+            final String url = getURL();
 
             if (false == url.startsWith("data:"))
             {
                 attr.put("url", new JSONString(ScratchPad.toDataURL(m_sprite)));
             }
         }
-        JSONObject object = new JSONObject();
+        final JSONObject object = new JSONObject();
 
         object.put("type", new JSONString(getShapeType().getValue()));
 
@@ -502,7 +500,7 @@ public class Sprite extends Shape<Sprite>
         }
 
         @Override
-        public Sprite create(JSONObject node, ValidationContext ctx) throws ValidationException
+        public Sprite create(final JSONObject node, final ValidationContext ctx) throws ValidationException
         {
             return new Sprite(node, ctx);
         }
@@ -514,13 +512,13 @@ public class Sprite extends Shape<Sprite>
         }
 
         @Override
-        public void process(IJSONSerializable<?> node, ValidationContext ctx) throws ValidationException
+        public void process(final IJSONSerializable<?> node, final ValidationContext ctx) throws ValidationException
         {
             if (false == (node instanceof Sprite))
             {
                 return;
             }
-            Sprite self = (Sprite) node;
+            final Sprite self = (Sprite) node;
 
             if (false == self.isLoaded())
             {
@@ -529,11 +527,11 @@ public class Sprite extends Shape<Sprite>
                 self.onLoaded(new SpriteLoadedHandler()
                 {
                     @Override
-                    public void onSpriteLoaded(Sprite sprite)
+                    public void onSpriteLoaded(final Sprite sprite)
                     {
                         if (sprite.isLoaded() && sprite.isVisible())
                         {
-                            Layer layer = sprite.getLayer();
+                            final Layer layer = sprite.getLayer();
 
                             if ((null != layer) && (null != layer.getViewport()))
                             {

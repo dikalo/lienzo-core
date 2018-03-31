@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.image.filter;
@@ -35,13 +35,13 @@ public class LightnessGrayScaleImageDataFilter extends AbstractImageDataFilter<L
         super(ImageFilterType.LightnessGrayScaleImageDataFilterType);
     }
 
-    protected LightnessGrayScaleImageDataFilter(JSONObject node, ValidationContext ctx) throws ValidationException
+    protected LightnessGrayScaleImageDataFilter(final JSONObject node, final ValidationContext ctx) throws ValidationException
     {
         super(ImageFilterType.LightnessGrayScaleImageDataFilterType, node, ctx);
     }
 
     @Override
-    public ImageData filter(ImageData source, boolean copy)
+    public ImageData filter(ImageData source, final boolean copy)
     {
         if (null == source)
         {
@@ -68,12 +68,12 @@ public class LightnessGrayScaleImageDataFilter extends AbstractImageDataFilter<L
 
     private final native void filter_(JavaScriptObject data, int length)
     /*-{
-    	for (var i = 0; i < length; i += 4) {
-    		var r = data[  i  ];
-    		var g = data[i + 1];
-    		var b = data[i + 2];
-    		data[  i  ] = data[i + 1] = data[i + 2] = ((((Math.max(Math.max(r, g), b) + Math.min(Math.min(r, g), b))) / 2.0) + 0.5) | 0;
-    	}
+		for (var i = 0; i < length; i += 4) {
+			var r = data[i];
+			var g = data[i + 1];
+			var b = data[i + 2];
+			data[i] = data[i + 1] = data[i + 2] = ((((Math.max(Math.max(r, g), b) + Math.min(Math.min(r, g), b))) / 2.0) + 0.5) | 0;
+		}
     }-*/;
 
     @Override
@@ -90,7 +90,7 @@ public class LightnessGrayScaleImageDataFilter extends AbstractImageDataFilter<L
         }
 
         @Override
-        public LightnessGrayScaleImageDataFilter create(JSONObject node, ValidationContext ctx) throws ValidationException
+        public LightnessGrayScaleImageDataFilter create(final JSONObject node, final ValidationContext ctx) throws ValidationException
         {
             return new LightnessGrayScaleImageDataFilter(node, ctx);
         }

@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.animation;
@@ -25,12 +25,12 @@ import com.ait.lienzo.shared.core.types.Color.HSL;
 import com.ait.lienzo.shared.core.types.IColor;
 
 /**
- * AnimationProperty defines what node attribute is modified during a "tweening" animation 
+ * AnimationProperty defines what node attribute is modified during a "tweening" animation
  * and what its ultimate target value is.
  * Several can be animated in parallel, by adding them to an {@link AnimationProperties}.
  * <p>
  * See {@link Properties} for convenience methods to create animations for common node attributes.
- * 
+ *
  * @see Properties
  * @see AnimationProperties
  * @see AnimationTweener
@@ -49,12 +49,12 @@ public interface AnimationProperty
     public AnimationProperty copy();
 
     /**
-     * Properties provides convenience methods for defining which attributes of an IPrimitive node 
+     * Properties provides convenience methods for defining which attributes of an IPrimitive node
      * will be animated during a "tweening" animation.
      * <p>
      * The resulting {@link AnimationProperty} objects should be grouped together in
      * an {@link AnimationProperties} object.
-     * 
+     *
      * @see AnimationProperty
      * @see AnimationProperties
      * @see AnimationTweener
@@ -187,19 +187,19 @@ public interface AnimationProperty
             return new DoubleAnimationProperty(rotation, Attribute.ROTATION);
         }
 
-        public static final AnimationProperty ROTATION(final double origin, double target)
+        public static final AnimationProperty ROTATION(final double origin, final double target)
         {
             return new DoubleRangeAnimationProperty(origin, target, Attribute.ROTATION);
         }
 
         public static final AnimationProperty ROTATION_DEGREES(final double degrees)
         {
-            return new DoubleAnimationProperty(degrees * Math.PI / 180, Attribute.ROTATION);
+            return new DoubleAnimationProperty((degrees * Math.PI) / 180, Attribute.ROTATION);
         }
 
         public static final AnimationProperty ROTATION_DEGREES(final double origin, final double target)
         {
-            return new DoubleRangeAnimationProperty(origin * Math.PI / 180, target * Math.PI / 180, Attribute.ROTATION);
+            return new DoubleRangeAnimationProperty((origin * Math.PI) / 180, (target * Math.PI) / 180, Attribute.ROTATION);
         }
 
         public static final AnimationProperty START_ANGLE(final double rotation)
@@ -214,12 +214,12 @@ public interface AnimationProperty
 
         public static final AnimationProperty START_ANGLE_DEGREES(final double degrees)
         {
-            return new DoubleAnimationProperty(degrees * Math.PI / 180, Attribute.START_ANGLE);
+            return new DoubleAnimationProperty((degrees * Math.PI) / 180, Attribute.START_ANGLE);
         }
 
         public static final AnimationProperty START_ANGLE_DEGREES(final double origin, final double target)
         {
-            return new DoubleRangeAnimationProperty(origin * Math.PI / 180, target * Math.PI / 180, Attribute.START_ANGLE);
+            return new DoubleRangeAnimationProperty((origin * Math.PI) / 180, (target * Math.PI) / 180, Attribute.START_ANGLE);
         }
 
         public static final AnimationProperty END_ANGLE(final double rotation)
@@ -234,12 +234,12 @@ public interface AnimationProperty
 
         public static final AnimationProperty END_ANGLE_DEGREES(final double degrees)
         {
-            return new DoubleAnimationProperty(degrees * Math.PI / 180, Attribute.END_ANGLE);
+            return new DoubleAnimationProperty((degrees * Math.PI) / 180, Attribute.END_ANGLE);
         }
 
         public static final AnimationProperty END_ANGLE_DEGREES(final double origin, final double target)
         {
-            return new DoubleRangeAnimationProperty(origin * Math.PI / 180, target * Math.PI / 180, Attribute.END_ANGLE);
+            return new DoubleRangeAnimationProperty((origin * Math.PI) / 180, (target * Math.PI) / 180, Attribute.END_ANGLE);
         }
 
         public static final AnimationProperty STROKE_WIDTH(final double stroke)
@@ -396,7 +396,7 @@ public interface AnimationProperty
 
             private double          m_target_a;
 
-            public AbstractStringColorAnimationProperty(final String target, final Attribute attribute)
+            protected AbstractStringColorAnimationProperty(final String target, final Attribute attribute)
             {
                 m_target = target;
 
@@ -428,7 +428,7 @@ public interface AnimationProperty
             {
                 if ((node != null) && (m_attribute != null) && (m_attribute.isAnimatable()) && (node.getAttributeSheet().contains(m_attribute)))
                 {
-                    Color cend = ColorExtractor.extract(m_target);
+                    final Color cend = ColorExtractor.extract(m_target);
 
                     String color = getColorString(node);
 
@@ -446,9 +446,9 @@ public interface AnimationProperty
                     {
                         cbeg = ColorExtractor.extract(color);
                     }
-                    HSL hbeg = cbeg.getHSL();
+                    final HSL hbeg = cbeg.getHSL();
 
-                    HSL hend = cend.getHSL();
+                    final HSL hend = cend.getHSL();
 
                     m_origin_h = hbeg.getH();
 

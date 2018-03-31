@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.shape;
@@ -38,7 +38,7 @@ public abstract class AbstractImageShape<T extends AbstractImageShape<T>> extend
     {
         super(type, node, ctx);
 
-        m_proxy = new ImageProxy<T>(upcast());
+        m_proxy = new ImageProxy<>(upcast());
     }
 
     protected AbstractImageShape(final ShapeType type, final String url, final boolean listening, final ImageSelectionMode mode)
@@ -51,7 +51,7 @@ public abstract class AbstractImageShape<T extends AbstractImageShape<T>> extend
 
         setImageSelectionMode(mode);
 
-        m_proxy = new ImageProxy<T>(upcast());
+        m_proxy = new ImageProxy<>(upcast());
     }
 
     protected AbstractImageShape(final ShapeType type, final ImageResource resource, final boolean listening, final ImageSelectionMode mode)
@@ -81,7 +81,7 @@ public abstract class AbstractImageShape<T extends AbstractImageShape<T>> extend
     /**
      * Returns the URL of the image. For ImageResources, this return the
      * value of ImageResource.getSafeUri().asString().
-     * 
+     *
      * @return String
      */
     public String getURL()
@@ -92,7 +92,7 @@ public abstract class AbstractImageShape<T extends AbstractImageShape<T>> extend
     /**
      * Sets the URL of the image. For ImageResources, this should be the
      * value of ImageResource.getSafeUri().asString().
-     * 
+     *
      * @param url
      * @return Picture
      */

@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.image.filter;
@@ -20,9 +20,9 @@ import com.ait.lienzo.client.core.Attribute;
 import com.ait.lienzo.client.core.shape.json.validators.ValidationContext;
 import com.ait.lienzo.client.core.shape.json.validators.ValidationException;
 import com.ait.lienzo.shared.core.types.Color;
+import com.ait.lienzo.shared.core.types.IColor;
 import com.ait.lienzo.shared.core.types.ImageFilterType;
 import com.ait.tooling.common.api.java.util.StringOps;
-import com.ait.lienzo.shared.core.types.IColor;
 import com.google.gwt.json.client.JSONObject;
 
 public abstract class AbstractRGBImageDataFilter<T extends AbstractRGBImageDataFilter<T>> extends AbstractImageDataFilter<T>
@@ -33,7 +33,7 @@ public abstract class AbstractRGBImageDataFilter<T extends AbstractRGBImageDataF
 
     private int m_b;
 
-    public AbstractRGBImageDataFilter(final ImageFilterType type)
+    protected AbstractRGBImageDataFilter(final ImageFilterType type)
     {
         super(type);
 
@@ -46,7 +46,7 @@ public abstract class AbstractRGBImageDataFilter<T extends AbstractRGBImageDataF
         doUpdateColorFromRGB();
     }
 
-    public AbstractRGBImageDataFilter(final ImageFilterType type, final int r, final int g, final int b)
+    protected AbstractRGBImageDataFilter(final ImageFilterType type, final int r, final int g, final int b)
     {
         super(type);
 
@@ -66,12 +66,12 @@ public abstract class AbstractRGBImageDataFilter<T extends AbstractRGBImageDataF
         doUpdateRGBFromColor();
     }
 
-    public AbstractRGBImageDataFilter(final ImageFilterType type, final IColor color)
+    protected AbstractRGBImageDataFilter(final ImageFilterType type, final IColor color)
     {
         this(type, color.getR(), color.getG(), color.getB());
     }
 
-    public AbstractRGBImageDataFilter(final ImageFilterType type, final String color)
+    protected AbstractRGBImageDataFilter(final ImageFilterType type, final String color)
     {
         this(type, Color.fromColorString(color));
     }

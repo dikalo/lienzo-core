@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.types;
@@ -131,14 +131,14 @@ public class Point2DArray implements IBoundedList<Point2D>
     }
 
     /**
-     * Creates a Point2DArray from an array of X coordinates and an array of correspondng 
+     * Creates a Point2DArray from an array of X coordinates and an array of correspondng
      * Y coordinates. The arrays should be of the same length.
      * <code>
      * double[] x = {0, 5, 0, -5};
      * double[] y = {10, -6, -2, -6};
      * Point2DArray a = new Point2DArray(x, y);
      * </code>
-     * 
+     *
      * @param x double[]
      * @param y double[]
      */
@@ -167,7 +167,7 @@ public class Point2DArray implements IBoundedList<Point2D>
      * double[][] points = {{0, 10}, {5, -6}, {0, -2}, {-5, -6}};
      * Point2DArray a = new Point2DArray(points);
      * </code>
-     * 
+     *
      * @param points Array with double[] arrays of length 2
      */
     public Point2DArray(final double[][] points)
@@ -295,7 +295,7 @@ public class Point2DArray implements IBoundedList<Point2D>
     {
         final int size = size();
 
-        final ArrayList<Point2D> list = new ArrayList<Point2D>(size);
+        final ArrayList<Point2D> list = new ArrayList<>(size);
 
         for (int i = 0; i < size; i++)
         {
@@ -331,7 +331,7 @@ public class Point2DArray implements IBoundedList<Point2D>
         {
             return true;
         }
-        Point2DArray that = ((Point2DArray) other);
+        final Point2DArray that = ((Point2DArray) other);
 
         final int size = size();
 
@@ -358,7 +358,7 @@ public class Point2DArray implements IBoundedList<Point2D>
     @Override
     public Iterator<Point2D> iterator()
     {
-        return new BoundedListIterator<Point2D>(this);
+        return new BoundedListIterator<>(this);
     }
 
     public static final class Point2DArrayJSO extends JsArray<Point2DJSO>

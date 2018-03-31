@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.shape;
@@ -43,10 +43,10 @@ import com.google.gwt.json.client.JSONString;
 
 /**
  * Scene serves as a container for {@link Layer}<
- * 
+ *
  * <ul>
  * <li>A {@link Scene} can contain more than one {@link Layer}</li>
- * </ul> 
+ * </ul>
  */
 public class Scene extends ContainerNode<Layer, Scene>
 {
@@ -96,7 +96,7 @@ public class Scene extends ContainerNode<Layer, Scene>
 
     /**
      * Returns the {@link DivElement}
-     * 
+     *
      * @return {@link DivElement}
      */
     public DivElement getElement()
@@ -106,7 +106,7 @@ public class Scene extends ContainerNode<Layer, Scene>
 
     /**
      * Returns this scene's width, in pixels.
-     * 
+     *
      * @return int
      */
     public int getWidth()
@@ -116,7 +116,7 @@ public class Scene extends ContainerNode<Layer, Scene>
 
     /**
      * Returns this scene's height, in pixels
-     * 
+     *
      * @return int
      */
     public int getHeight()
@@ -126,7 +126,7 @@ public class Scene extends ContainerNode<Layer, Scene>
 
     /**
      * Sets this scene's width, in pixels
-     * 
+     *
      * @param wide
      * @return this Scene
      */
@@ -139,7 +139,7 @@ public class Scene extends ContainerNode<Layer, Scene>
 
     /**
      * Sets this scene's height, in pixels
-     * 
+     *
      * @param high
      * @return this Scene
      */
@@ -152,7 +152,7 @@ public class Scene extends ContainerNode<Layer, Scene>
 
     /**
      * Sets this scene's size (width and height) in pixels.
-     * 
+     *
      * @param wide
      * @param high
      * @return this Scene
@@ -188,7 +188,7 @@ public class Scene extends ContainerNode<Layer, Scene>
 
     /**
      * Returns this scene.
-     * 
+     *
      * @return Scene
      */
     @Override
@@ -199,7 +199,7 @@ public class Scene extends ContainerNode<Layer, Scene>
 
     /**
      * Convenience method to return an instance of itself.
-     * 
+     *
      * @return Scene
      */
     @Override
@@ -210,7 +210,7 @@ public class Scene extends ContainerNode<Layer, Scene>
 
     /**
      * Returns an instance of this scene cast to {@link IContainer}
-     * 
+     *
      * @return Scene
      */
     @Override
@@ -221,7 +221,7 @@ public class Scene extends ContainerNode<Layer, Scene>
 
     /**
      * Returns the top layer (which is drawn last)
-     * 
+     *
      * @return Layer
      */
     public final Layer getTopLayer()
@@ -287,7 +287,7 @@ public class Scene extends ContainerNode<Layer, Scene>
      * Given a set of (x,y) coordinates, returns the {@link Shape} that is matched.
      * The {@link Shape} returned will be the one found in the upper {@link Layer}
      * Return null if no {@link Shape} is detected or found.
-     * 
+     *
      * @param x
      * @param y
      * @return Shape
@@ -300,7 +300,7 @@ public class Scene extends ContainerNode<Layer, Scene>
 
             if (null != layers)
             {
-                int size = layers.size();
+                final int size = layers.size();
 
                 for (int i = size - 1; i >= 0; i--)
                 {
@@ -324,6 +324,7 @@ public class Scene extends ContainerNode<Layer, Scene>
     /**
      * Fires the given GWT event.
      */
+    @Override
     public final void fireEvent(final GwtEvent<?> event)
     {
         final NFastArrayList<Layer> layers = getChildNodes();
@@ -342,12 +343,11 @@ public class Scene extends ContainerNode<Layer, Scene>
                 }
             }
         }
-
     }
 
     /**
      * Returns a {@link JSONObject} representation containing the object type, attributes and its respective children.
-     * 
+     *
      * @return JSONObject
      */
     @Override
@@ -425,7 +425,7 @@ public class Scene extends ContainerNode<Layer, Scene>
     {
         add(layer);
 
-        for (Layer node : children)
+        for (final Layer node : children)
         {
             add(node);
         }
@@ -488,7 +488,7 @@ public class Scene extends ContainerNode<Layer, Scene>
 
     /**
      * Moves the layer one level down in this scene.
-     * 
+     *
      * @param layer
      */
     @Override
@@ -533,7 +533,7 @@ public class Scene extends ContainerNode<Layer, Scene>
 
     /**
      * Moves the layer one level up in this scene.
-     * 
+     *
      * @param layer
      */
     @Override
@@ -578,7 +578,7 @@ public class Scene extends ContainerNode<Layer, Scene>
 
     /**
      * Moves the layer to the top of the layers stack in this scene.
-     * 
+     *
      * @param layer
      */
     @Override
@@ -610,7 +610,7 @@ public class Scene extends ContainerNode<Layer, Scene>
 
     /**
      * Moves the layer to the bottom of the layers stack in this scene.
-     * 
+     *
      * @param layer
      */
     @Override
@@ -642,7 +642,7 @@ public class Scene extends ContainerNode<Layer, Scene>
 
     /**
      * No-op, but must implement.
-     * 
+     *
      * @return this Scene
      */
     @Override
@@ -653,7 +653,7 @@ public class Scene extends ContainerNode<Layer, Scene>
 
     /**
      * No-op, but must implement.
-     * 
+     *
      * @return this Scene
      */
     @Override
@@ -664,7 +664,7 @@ public class Scene extends ContainerNode<Layer, Scene>
 
     /**
      * No-op, but must implement.
-     * 
+     *
      * @return this Scene
      */
     @Override
@@ -675,7 +675,7 @@ public class Scene extends ContainerNode<Layer, Scene>
 
     /**
      * No-op, but must implement.
-     * 
+     *
      * @return this Scene
      */
     @Override
@@ -698,7 +698,7 @@ public class Scene extends ContainerNode<Layer, Scene>
 
             if (null == bbox)
             {
-                Viewport viewport = getViewport();
+                final Viewport viewport = getViewport();
 
                 if (null != viewport)
                 {
@@ -755,7 +755,7 @@ public class Scene extends ContainerNode<Layer, Scene>
 
             if (null == bbox)
             {
-                Viewport viewport = getViewport();
+                final Viewport viewport = getViewport();
 
                 if (null != viewport)
                 {
@@ -814,7 +814,7 @@ public class Scene extends ContainerNode<Layer, Scene>
 
             if (null == bbox)
             {
-                Viewport viewport = getViewport();
+                final Viewport viewport = getViewport();
 
                 if (null != viewport)
                 {
@@ -871,7 +871,7 @@ public class Scene extends ContainerNode<Layer, Scene>
 
             if (null == bbox)
             {
-                Viewport viewport = getViewport();
+                final Viewport viewport = getViewport();
 
                 if (null != viewport)
                 {
@@ -970,7 +970,7 @@ public class Scene extends ContainerNode<Layer, Scene>
                 {
                     ctx.addBadTypeError(node.getClass().getName() + " is not a Layer");
                 }
-                catch (ValidationException e)
+                catch (final ValidationException e)
                 {
                     return false;
                 }

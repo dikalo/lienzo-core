@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.image.filter;
@@ -33,12 +33,12 @@ public class GammaImageDataFilter extends AbstractValueTableImageDataFilter<Gamm
         super(ImageFilterType.GammaImageDataFilterType, 1);
     }
 
-    public GammaImageDataFilter(double value)
+    public GammaImageDataFilter(final double value)
     {
         super(ImageFilterType.GammaImageDataFilterType, value);
     }
 
-    protected GammaImageDataFilter(JSONObject node, ValidationContext ctx) throws ValidationException
+    protected GammaImageDataFilter(final JSONObject node, final ValidationContext ctx) throws ValidationException
     {
         super(ImageFilterType.GammaImageDataFilterType, node, ctx);
     }
@@ -62,7 +62,7 @@ public class GammaImageDataFilter extends AbstractValueTableImageDataFilter<Gamm
     }
 
     @Override
-    protected final FilterTableArray getTable(double value)
+    protected final FilterTableArray getTable(final double value)
     {
         if (value != m_value)
         {
@@ -72,7 +72,7 @@ public class GammaImageDataFilter extends AbstractValueTableImageDataFilter<Gamm
     }
 
     private final native FilterTableArray getTable_(double value)
-    /*-{        
+    /*-{
         var table = [];
         for(var i = 0; i < 256; i++) {
             table[i] = 255 * Math.pow(i / 255, 1 / value) + 0.5;
@@ -94,7 +94,7 @@ public class GammaImageDataFilter extends AbstractValueTableImageDataFilter<Gamm
         }
 
         @Override
-        public GammaImageDataFilter create(JSONObject node, ValidationContext ctx) throws ValidationException
+        public GammaImageDataFilter create(final JSONObject node, final ValidationContext ctx) throws ValidationException
         {
             return new GammaImageDataFilter(node, ctx);
         }

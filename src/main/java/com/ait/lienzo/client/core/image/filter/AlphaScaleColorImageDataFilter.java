@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.image.filter;
@@ -29,48 +29,48 @@ import com.google.gwt.json.client.JSONObject;
 
 public class AlphaScaleColorImageDataFilter extends AbstractRGBImageDataFilter<AlphaScaleColorImageDataFilter>
 {
-    public AlphaScaleColorImageDataFilter(int r, int g, int b)
+    public AlphaScaleColorImageDataFilter(final int r, final int g, final int b)
     {
         super(ImageFilterType.AlphaScaleColorImageDataFilterType, r, g, b);
     }
 
-    public AlphaScaleColorImageDataFilter(int r, int g, int b, boolean invert)
+    public AlphaScaleColorImageDataFilter(final int r, final int g, final int b, final boolean invert)
     {
         super(ImageFilterType.AlphaScaleColorImageDataFilterType, r, g, b);
 
         setInverted(invert);
     }
 
-    public AlphaScaleColorImageDataFilter(IColor color)
+    public AlphaScaleColorImageDataFilter(final IColor color)
     {
         super(ImageFilterType.AlphaScaleColorImageDataFilterType, color);
     }
 
-    public AlphaScaleColorImageDataFilter(IColor color, boolean invert)
-    {
-        super(ImageFilterType.AlphaScaleColorImageDataFilterType, color);
-
-        setInverted(invert);
-    }
-
-    public AlphaScaleColorImageDataFilter(String color)
-    {
-        super(ImageFilterType.AlphaScaleColorImageDataFilterType, color);
-    }
-
-    public AlphaScaleColorImageDataFilter(String color, boolean invert)
+    public AlphaScaleColorImageDataFilter(final IColor color, final boolean invert)
     {
         super(ImageFilterType.AlphaScaleColorImageDataFilterType, color);
 
         setInverted(invert);
     }
 
-    protected AlphaScaleColorImageDataFilter(JSONObject node, ValidationContext ctx) throws ValidationException
+    public AlphaScaleColorImageDataFilter(final String color)
+    {
+        super(ImageFilterType.AlphaScaleColorImageDataFilterType, color);
+    }
+
+    public AlphaScaleColorImageDataFilter(final String color, final boolean invert)
+    {
+        super(ImageFilterType.AlphaScaleColorImageDataFilterType, color);
+
+        setInverted(invert);
+    }
+
+    protected AlphaScaleColorImageDataFilter(final JSONObject node, final ValidationContext ctx) throws ValidationException
     {
         super(ImageFilterType.AlphaScaleColorImageDataFilterType, node, ctx);
     }
 
-    public AlphaScaleColorImageDataFilter setInverted(boolean inverted)
+    public AlphaScaleColorImageDataFilter setInverted(final boolean inverted)
     {
         getAttributes().setInverted(inverted);
 
@@ -83,7 +83,7 @@ public class AlphaScaleColorImageDataFilter extends AbstractRGBImageDataFilter<A
     }
 
     @Override
-    public ImageData filter(ImageData source, boolean copy)
+    public ImageData filter(ImageData source, final boolean copy)
     {
         if (null == source)
         {
@@ -110,17 +110,17 @@ public class AlphaScaleColorImageDataFilter extends AbstractRGBImageDataFilter<A
 
     private final native void filter_(JavaScriptObject data, int length, int r, int g, int b, boolean invert)
     /*-{
-        for (var i = 0; i < length; i += 4) {
-            var v = ((data[i] * 0.21) + (data[i + 1] * 0.72) + (data[i + 2] * 0.07));
-            data[  i  ] = r;
-            data[i + 1] = g;
-            data[i + 2] = b;
-            if (true == invert) {
-                data[i + 3] = (v + 0.5) | 0;
-            } else {
-                data[i + 3] = 255 - ((v + 0.5) | 0);
-            }
-        }
+		for (var i = 0; i < length; i += 4) {
+			var v = ((data[i] * 0.21) + (data[i + 1] * 0.72) + (data[i + 2] * 0.07));
+			data[i] = r;
+			data[i + 1] = g;
+			data[i + 2] = b;
+			if (true == invert) {
+				data[i + 3] = (v + 0.5) | 0;
+			} else {
+				data[i + 3] = 255 - ((v + 0.5) | 0);
+			}
+		}
     }-*/;
 
     @Override
@@ -139,7 +139,7 @@ public class AlphaScaleColorImageDataFilter extends AbstractRGBImageDataFilter<A
         }
 
         @Override
-        public AlphaScaleColorImageDataFilter create(JSONObject node, ValidationContext ctx) throws ValidationException
+        public AlphaScaleColorImageDataFilter create(final JSONObject node, final ValidationContext ctx) throws ValidationException
         {
             return new AlphaScaleColorImageDataFilter(node, ctx);
         }

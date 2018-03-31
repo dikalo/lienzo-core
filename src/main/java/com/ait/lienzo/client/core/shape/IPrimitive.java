@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.shape;
@@ -25,20 +25,20 @@ import com.ait.lienzo.shared.core.types.DragMode;
 import com.ait.lienzo.shared.core.types.EventPropagationMode;
 
 /**
- * A common interface for all primitives, i.e. {@link Shape} and {@link Group}. 
+ * A common interface for all primitives, i.e. {@link Shape} and {@link Group}.
  */
 public interface IPrimitive<T extends IPrimitive<T>> extends IDrawable<T>, IControlHandleFactory
 {
     /**
      * Gets the X coordinate.
-     * 
+     *
      * @return double
      */
     public double getX();
 
     /**
      * Sets the X coordinate.
-     * 
+     *
      * @param x
      * @return this IPrimitive
      */
@@ -46,14 +46,14 @@ public interface IPrimitive<T extends IPrimitive<T>> extends IDrawable<T>, ICont
 
     /**
      * Gets the Y coordinate.
-     * 
+     *
      * @return double
      */
     public double getY();
 
     /**
      * Sets the Y coordinate.
-     * 
+     *
      * @param y
      * @return this IPrimitive
      */
@@ -61,7 +61,7 @@ public interface IPrimitive<T extends IPrimitive<T>> extends IDrawable<T>, ICont
 
     /**
      * Sets the X and Y attributes to P.x and P.y
-     * 
+     *
      * @param p Point2D
      * @return this IPrimitive
      */
@@ -69,14 +69,14 @@ public interface IPrimitive<T extends IPrimitive<T>> extends IDrawable<T>, ICont
 
     /**
      * Returns the X and Y attributes as a Point2D
-     * 
+     *
      * @return Point2D
      */
     public Point2D getLocation();
 
     /**
      * Returns whether this node can be dragged.
-     * 
+     *
      * @return boolean
      */
     public boolean isDraggable();
@@ -87,7 +87,7 @@ public interface IPrimitive<T extends IPrimitive<T>> extends IDrawable<T>, ICont
 
     /**
      * Sets whether this node can be dragged.
-     * 
+     *
      * @param draggable
      * @return this IPrimitive
      */
@@ -95,14 +95,14 @@ public interface IPrimitive<T extends IPrimitive<T>> extends IDrawable<T>, ICont
 
     /**
      * Gets this node's scale as a Point2D
-     * 
+     *
      * @return Point2D
      */
     public Point2D getScale();
 
     /**
      * Sets the node's scale
-     * 
+     *
      * @param scale Point2D
      * @return this IPrimitive
      */
@@ -110,7 +110,7 @@ public interface IPrimitive<T extends IPrimitive<T>> extends IDrawable<T>, ICont
 
     /**
      * Sets the node's scale, with the same value for x and y
-     * 
+     *
      * @param xy
      * @return this IPrimitive
      */
@@ -118,7 +118,7 @@ public interface IPrimitive<T extends IPrimitive<T>> extends IDrawable<T>, ICont
 
     /**
      * Sets the node's scale, with the given x and y coordinates
-     * 
+     *
      * @param x
      * @param y
      * @return this IPrimitive
@@ -127,14 +127,14 @@ public interface IPrimitive<T extends IPrimitive<T>> extends IDrawable<T>, ICont
 
     /**
      * Gets this node's rotation, in radians.
-     * 
+     *
      * @return double
      */
     public double getRotation();
 
     /**
      * Sets this node's rotation, in radians.
-     * 
+     *
      * @param radians
      * @return this IPrimitive
      */
@@ -142,14 +142,14 @@ public interface IPrimitive<T extends IPrimitive<T>> extends IDrawable<T>, ICont
 
     /**
      * Gets this node's rotation, in degrees.
-     * 
+     *
      * @return double
      */
     public double getRotationDegrees();
 
     /**
      * Sets this node's rotation, in degrees.
-     * 
+     *
      * @param degrees
      * @return this IPrimitive
      */
@@ -157,14 +157,14 @@ public interface IPrimitive<T extends IPrimitive<T>> extends IDrawable<T>, ICont
 
     /**
      * Gets this node's shear as a {@link Point2D}
-     * 
+     *
      * @return Point2D
      */
     public Point2D getShear();
 
     /**
      * Sets this node's shear
-     * 
+     *
      * @param shear
      * @return this IPrimitive
      */
@@ -172,7 +172,7 @@ public interface IPrimitive<T extends IPrimitive<T>> extends IDrawable<T>, ICont
 
     /**
      * Sets this node's shear
-     * 
+     *
      * @param shear
      * @return this IPrimitive
      */
@@ -180,14 +180,14 @@ public interface IPrimitive<T extends IPrimitive<T>> extends IDrawable<T>, ICont
 
     /**
      * Gets this node's offset as a {@link Point2D}
-     * 
+     *
      * @return Point2D
      */
     public Point2D getOffset();
 
     /**
      * Sets this node's offset
-     * 
+     *
      * @param offset
      * @return this IPrimitive
      */
@@ -195,7 +195,7 @@ public interface IPrimitive<T extends IPrimitive<T>> extends IDrawable<T>, ICont
 
     /**
      * Sets this node's offset, with the same value for x and y.
-     * 
+     *
      * @param xy
      * @return this IPrimitive
      */
@@ -203,7 +203,7 @@ public interface IPrimitive<T extends IPrimitive<T>> extends IDrawable<T>, ICont
 
     /**
      * Sets this node's offset, at the given x and y coordinates.
-     * 
+     *
      * @param x
      * @param y
      * @return this IPrimitive
@@ -212,14 +212,14 @@ public interface IPrimitive<T extends IPrimitive<T>> extends IDrawable<T>, ICont
 
     /**
      * Gets this node's {@link DragConstraint}
-     * 
+     *
      * @return DragConstraint
      */
     public DragConstraint getDragConstraint();
 
     /**
      * Sets this node's drag constraint; e.g., horizontal, vertical or none (default)
-     * 
+     *
      * @param constraint
      * @return this IPrimitive
      */
@@ -227,14 +227,14 @@ public interface IPrimitive<T extends IPrimitive<T>> extends IDrawable<T>, ICont
 
     /**
      * Gets the {@link DragBounds} for this node.
-     * 
+     *
      * @return DragBounds
      */
     public DragBounds getDragBounds();
 
     /**
      * Sets this node's drag bounds.
-     * 
+     *
      * @param bounds
      * @return this IPrimitive
      */
@@ -242,14 +242,14 @@ public interface IPrimitive<T extends IPrimitive<T>> extends IDrawable<T>, ICont
 
     /**
      * Gets the {@link DragMode} for this node.
-     * 
+     *
      * @return DragMode
      */
     public DragMode getDragMode();
 
     /**
      * Sets this node's drag mode.
-     * 
+     *
      * @param mode
      * @return this IPrimitive
      */
@@ -257,14 +257,14 @@ public interface IPrimitive<T extends IPrimitive<T>> extends IDrawable<T>, ICont
 
     /**
      * Gets the alpha for this node.
-     * 
+     *
      * @return double
      */
     public double getAlpha();
 
     /**
      * Sets alpha
-     * 
+     *
      * @param alpha
      * @return this IPrimitive
      */
@@ -272,29 +272,29 @@ public interface IPrimitive<T extends IPrimitive<T>> extends IDrawable<T>, ICont
 
     /**
      * Gets the alpha for this node.
-     * 
+     *
      * @return double
      */
     public double getStrokeAlpha();
 
     /**
      * Sets alpha
-     * 
+     *
      * @param alpha
      * @return this IPrimitive
      */
     public T setStrokeAlpha(double alpha);
 
     /**
-    * Gets the alpha for this node.
-    * 
-    * @return double
-    */
+     * Gets the alpha for this node.
+     *
+     * @return double
+     */
     public double getFillAlpha();
 
     /**
      * Sets alpha
-     * 
+     *
      * @param alpha
      * @return this IPrimitive
      */
@@ -305,7 +305,7 @@ public interface IPrimitive<T extends IPrimitive<T>> extends IDrawable<T>, ICont
      * This may adjust the node's location during drag operations.
      * The default implementation enforces the constraints defined by
      * the dragConstraint and dragBounds properties.
-     * 
+     *
      * @return DragConstraintEnforcer
      */
     public DragConstraintEnforcer getDragConstraints();
@@ -315,7 +315,7 @@ public interface IPrimitive<T extends IPrimitive<T>> extends IDrawable<T>, ICont
      * This may adjust the node's location during drag operations.
      * The default implementation enforces the constraints defined by
      * the dragConstraint and dragBounds properties.
-     * 
+     *
      * @param enforcer DragConstraintEnforcer
      */
     public T setDragConstraints(DragConstraintEnforcer enforcer);

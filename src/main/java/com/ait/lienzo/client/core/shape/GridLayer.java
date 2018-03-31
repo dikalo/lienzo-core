@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.shape;
@@ -37,17 +37,17 @@ import com.google.gwt.json.client.JSONValue;
  * For each direction (X for vertical lines) and (Y for horizontal lines)
  * you may define a primary line and a secondary line.
  * <p>
- * For instance, you could draw a primary line every 100 pixels 
- * and a secondary line every 10 pixels. 
+ * For instance, you could draw a primary line every 100 pixels
+ * and a secondary line every 10 pixels.
  * <p>
- * We're assuming that the primary cell size is a multiple of the secondary cell size 
+ * We're assuming that the primary cell size is a multiple of the secondary cell size
  * (in the same direction.)
  * <p>
  * The strokeWidth of the lines is impervious to any transforms defined on the Layer or its Viewport,
  * i.e. a 1 pixel line will always show as a 1 pixel line, regardless of how far you zoomed in or out.
  * <p>
  * Note that the empty GridLayer constructor does not add any Lines, so you will not see a grid unless you add some Lines.
- * 
+ *
  * @since 1.1
  */
 public class GridLayer extends Layer
@@ -72,7 +72,7 @@ public class GridLayer extends Layer
 
     /**
      * Creates an empty GridLayer with no lines.
-     * Horizontal and/or vertical lines can be added with 
+     * Horizontal and/or vertical lines can be added with
      * {@link #setPrimaryLineX(Line)}, {@link #setPrimaryLineY(Line)},
      * {@link #setSecondaryLineX(Line)} and {@link #setSecondaryLineY(Line)}.
      */
@@ -83,11 +83,11 @@ public class GridLayer extends Layer
 
     /**
      * Creates a GridLayer with primary lines only.
-     * 
+     *
      * @param size Width/height of the primary grid cells
      * @param line Defines how primary lines are drawn
      */
-    public GridLayer(double size, Line line)
+    public GridLayer(final double size, final Line line)
     {
         setNodeType(NodeType.GRID_LAYER);
 
@@ -103,13 +103,13 @@ public class GridLayer extends Layer
     /**
      * Creates a GridLayer with primary and secondary lines.
      * The lines look the same in the vertical and horizontal directions.
-     * 
+     *
      * @param primarySize Width/height of the primary grid cells
      * @param primaryLine Defines how primary lines are drawn
      * @param secondarySize Width/height of the secondary grid cells
      * @param secondaryLine Defines how secondary lines are drawn
      */
-    public GridLayer(double primarySize, Line primaryLine, double secondarySize, Line secondaryLine)
+    public GridLayer(final double primarySize, final Line primaryLine, final double secondarySize, final Line secondaryLine)
     {
         this(primarySize, primaryLine);
 
@@ -122,7 +122,7 @@ public class GridLayer extends Layer
         setSecondaryLineY(secondaryLine);
     }
 
-    protected GridLayer(JSONObject node, ValidationContext ctx, Line[] lines, double[] sizes) throws ValidationException
+    protected GridLayer(final JSONObject node, final ValidationContext ctx, final Line[] lines, final double[] sizes) throws ValidationException
     {
         super(node, ctx);
 
@@ -136,7 +136,7 @@ public class GridLayer extends Layer
     /**
      * Returns the width of the primary grid cells.
      * The default value is 10.
-     * 
+     *
      * @return double
      */
     public double getPrimarySizeX()
@@ -147,11 +147,11 @@ public class GridLayer extends Layer
     /**
      * Sets the width of the primary grid cells.
      * The default value is 10.
-     * 
+     *
      * @param primaryX
      * @return this GridLayer
      */
-    public GridLayer setPrimarySizeX(double primaryX)
+    public GridLayer setPrimarySizeX(final double primaryX)
     {
         m_sizes[PRIMARY_X] = primaryX;
 
@@ -161,7 +161,7 @@ public class GridLayer extends Layer
     /**
      * Returns the height of the primary grid cells.
      * The default value is 10.
-     * 
+     *
      * @return double
      */
     public double getPrimarySizeY()
@@ -172,11 +172,11 @@ public class GridLayer extends Layer
     /**
      * Sets the width of the primary grid cells.
      * The default value is 10.
-     * 
+     *
      * @param primaryY
      * @return this GridLayer
      */
-    public GridLayer setPrimarySizeY(double primaryY)
+    public GridLayer setPrimarySizeY(final double primaryY)
     {
         m_sizes[PRIMARY_Y] = primaryY;
 
@@ -186,7 +186,7 @@ public class GridLayer extends Layer
     /**
      * Returns the {@link Line} that defines how vertical primary lines are drawn.
      * The default value is null, which means they are not drawn.
-     * 
+     *
      * @return Line
      */
     public Line getPrimaryLineX()
@@ -197,11 +197,11 @@ public class GridLayer extends Layer
     /**
      * Sets the {@link Line} that defines how vertical primary lines are drawn.
      * The default value is null, which means they are not drawn.
-     * 
+     *
      * @param primaryLineX Line
      * @return GridLayer
      */
-    public GridLayer setPrimaryLineX(Line primaryLineX)
+    public GridLayer setPrimaryLineX(final Line primaryLineX)
     {
         m_lines[PRIMARY_X] = primaryLineX;
 
@@ -211,7 +211,7 @@ public class GridLayer extends Layer
     /**
      * Returns the {@link Line} that defines how horizontal primary lines are drawn.
      * The default value is null, which means they are not drawn.
-     * 
+     *
      * @return Line
      */
     public Line getPrimaryLineY()
@@ -222,11 +222,11 @@ public class GridLayer extends Layer
     /**
      * Sets the {@link Line} that defines how horizontal primary lines are drawn.
      * The default value is null, which means they are not drawn.
-     * 
+     *
      * @param primaryLineY Line
      * @return GridLayer
      */
-    public GridLayer setPrimaryLineY(Line primaryLineY)
+    public GridLayer setPrimaryLineY(final Line primaryLineY)
     {
         m_lines[PRIMARY_Y] = primaryLineY;
 
@@ -236,7 +236,7 @@ public class GridLayer extends Layer
     /**
      * Returns the width of the secondary grid cells.
      * The default value is 5.
-     * 
+     *
      * @return double
      */
     public double getSecondarySizeX()
@@ -247,11 +247,11 @@ public class GridLayer extends Layer
     /**
      * Sets the width of the secondary grid cells.
      * The default value is 5.
-     * 
+     *
      * @param secondaryX
      * @return this GridLayer
      */
-    public GridLayer setSecondarySizeX(double secondaryX)
+    public GridLayer setSecondarySizeX(final double secondaryX)
     {
         m_sizes[SECONDARY_X] = secondaryX;
 
@@ -261,7 +261,7 @@ public class GridLayer extends Layer
     /**
      * Returns the height of the secondary grid cells.
      * The default value is 5.
-     * 
+     *
      * @return double
      */
     public double getSecondarySizeY()
@@ -272,11 +272,11 @@ public class GridLayer extends Layer
     /**
      * Sets the height of the secondary grid cells.
      * The default value is 5.
-     * 
+     *
      * @param secondaryY
      * @return this GridLayer
      */
-    public GridLayer setSecondarySizeY(double secondaryY)
+    public GridLayer setSecondarySizeY(final double secondaryY)
     {
         m_sizes[SECONDARY_Y] = secondaryY;
 
@@ -286,7 +286,7 @@ public class GridLayer extends Layer
     /**
      * Returns the {@link Line} that defines how vertical secondary lines are drawn.
      * The default value is null, which means they are not drawn.
-     * 
+     *
      * @return Line
      */
     public Line getSecondaryLineX()
@@ -297,11 +297,11 @@ public class GridLayer extends Layer
     /**
      * Sets the {@link Line} that defines how vertical secondary lines are drawn.
      * The default value is null, which means they are not drawn.
-     * 
+     *
      * @param secondaryLineX Line
      * @return GridLayer
      */
-    public GridLayer setSecondaryLineX(Line secondaryLineX)
+    public GridLayer setSecondaryLineX(final Line secondaryLineX)
     {
         m_lines[SECONDARY_X] = secondaryLineX;
 
@@ -311,7 +311,7 @@ public class GridLayer extends Layer
     /**
      * Returns the {@link Line} that defines how horizontal secondary lines are drawn.
      * The default value is null, which means they are not drawn.
-     * 
+     *
      * @return Line
      */
     public Line getSecondaryLineY()
@@ -322,31 +322,31 @@ public class GridLayer extends Layer
     /**
      * Sets the {@link Line} that defines how horizontal secondary lines are drawn.
      * The default value is null, which means they are not drawn.
-     * 
+     *
      * @param secondaryLineY Line
      * @return GridLayer
      */
-    public void setSecondaryLineY(Line secondaryLineY)
+    public void setSecondaryLineY(final Line secondaryLineY)
     {
         m_lines[SECONDARY_Y] = secondaryLineY;
     }
 
     @Override
-    protected void drawWithoutTransforms(Context2D context, double alpha, final BoundingBox bounds)
+    protected void drawWithoutTransforms(final Context2D context, final double alpha, final BoundingBox bounds)
     {
         if (false == isVisible())
         {
             return;
         }
-        Viewport vp = getViewport();
+        final Viewport vp = getViewport();
 
-        int vw = vp.getWidth();
+        final int vw = vp.getWidth();
 
-        int vh = vp.getHeight();
+        final int vh = vp.getHeight();
 
-        Point2D a = new Point2D(0, 0);
+        final Point2D a = new Point2D(0, 0);
 
-        Point2D b = new Point2D(vw, vh);
+        final Point2D b = new Point2D(vw, vh);
 
         double scaleX = 1, scaleY = 1;
 
@@ -364,29 +364,29 @@ public class GridLayer extends Layer
 
             t.transform(b, b);
         }
-        double x1 = a.getX();
+        final double x1 = a.getX();
 
-        double y1 = a.getY();
+        final double y1 = a.getY();
 
-        double x2 = b.getX();
+        final double x2 = b.getX();
 
-        double y2 = b.getY();
+        final double y2 = b.getY();
 
         for (int direction = X; direction <= Y; direction++)
         {
-            boolean vertical = (direction == X);
+            final boolean vertical = (direction == X);
 
-            double scale = vertical ? scaleX : scaleY;
+            final double scale = vertical ? scaleX : scaleY;
 
-            double min = vertical ? x1 : y1;
+            final double min = vertical ? x1 : y1;
 
-            double max = vertical ? x2 : y2;
+            final double max = vertical ? x2 : y2;
 
             for (int primSec = 0; primSec <= 1; primSec++)
             {
-                int index = primSec * 2 + direction;
+                final int index = (primSec * 2) + direction;
 
-                boolean isSecondary = (primSec == 1);
+                final boolean isSecondary = (primSec == 1);
 
                 if (m_lines[index] == null)
                 {
@@ -401,45 +401,45 @@ public class GridLayer extends Layer
 
                     n = (int) Math.round(m_sizes[direction] / m_sizes[index]);
                 }
-                Line line = m_lines[index];
+                final Line line = m_lines[index];
 
-                double size = m_sizes[index];
+                final double size = m_sizes[index];
 
-                double previousLineWidth = line.getStrokeWidth();
+                final double previousLineWidth = line.getStrokeWidth();
 
                 line.setStrokeWidth(previousLineWidth / scale);
 
-                DashArray previousDashes = line.getDashArray();
+                final DashArray previousDashes = line.getDashArray();
 
                 if (previousDashes != null)
                 {
-                    double[] d = previousDashes.getNormalizedArray();
+                    final double[] d = previousDashes.getNormalizedArray();
 
-                    DashArray dashes = new DashArray();
+                    final DashArray dashes = new DashArray();
 
-                    for (int i = 0; i < d.length; i++)
+                    for (final double element : d)
                     {
-                        dashes.push(d[i] / scale);
+                        dashes.push(element / scale);
                     }
                     line.setDashArray(dashes);
                 }
                 long n1 = Math.round(min / size);
 
-                if (n1 * size < min)
+                if ((n1 * size) < min)
                 {
                     n1++;
                 }
                 long n2 = Math.round(max / size);
 
-                if (n2 * size > max)
+                if ((n2 * size) > max)
                 {
                     n2--;
                 }
-                Point2DArray points = line.getPoints();
+                final Point2DArray points = line.getPoints();
 
-                Point2D p1 = points.get(0);
+                final Point2D p1 = points.get(0);
 
-                Point2D p2 = points.get(1);
+                final Point2D p2 = points.get(1);
 
                 if (vertical)
                 {
@@ -455,13 +455,13 @@ public class GridLayer extends Layer
                 }
                 for (long ni = n1; ni <= n2; ni++)
                 {
-                    if (isSecondary && (ni % n == 0)) // skip primary lines
+                    if (isSecondary && ((ni % n) == 0)) // skip primary lines
                     {
                         continue;
                     }
                     if (vertical)
                     {
-                        double x = ni * size;
+                        final double x = ni * size;
 
                         p1.setX(x);
 
@@ -469,7 +469,7 @@ public class GridLayer extends Layer
                     }
                     else
                     {
-                        double y = ni * size;
+                        final double y = ni * size;
 
                         p1.setY(y);
 
@@ -492,11 +492,11 @@ public class GridLayer extends Layer
     @Override
     public JSONObject toJSONObject()
     {
-        JSONObject obj = super.toJSONObject();
+        final JSONObject obj = super.toJSONObject();
 
-        JSONArray lines = new JSONArray();
+        final JSONArray lines = new JSONArray();
 
-        JSONArray sizes = new JSONArray();
+        final JSONArray sizes = new JSONArray();
 
         for (int i = 0; i < 4; i++)
         {
@@ -527,29 +527,29 @@ public class GridLayer extends Layer
         @Override
         public GridLayer container(final JSONObject node, final ValidationContext ctx) throws ValidationException
         {
-            Line[] lines = new Line[4];
+            final Line[] lines = new Line[4];
 
-            double[] sizes = { 10, 10, 5, 5 };
+            final double[] sizes = { 10, 10, 5, 5 };
 
             JSONValue aval = node.get("lines");
 
             if (aval != null)
             {
-                JSONArray arr = aval.isArray();
+                final JSONArray arr = aval.isArray();
 
                 if (arr != null)
                 {
-                    for (int i = 0; i < 4 && i < arr.size(); i++)
+                    for (int i = 0; (i < 4) && (i < arr.size()); i++)
                     {
-                        JSONValue jval = arr.get(i);
+                        final JSONValue jval = arr.get(i);
 
                         if (jval != null)
                         {
-                            JSONObject jobj = jval.isObject();
+                            final JSONObject jobj = jval.isObject();
 
                             if (jobj != null)
                             {
-                                Line line = (Line) JSONDeserializer.get().fromJSON(jobj, ctx);
+                                final Line line = (Line) JSONDeserializer.get().fromJSON(jobj, ctx);
 
                                 lines[i] = line;
                             }
@@ -561,17 +561,17 @@ public class GridLayer extends Layer
 
             if (aval != null)
             {
-                JSONArray arr = aval.isArray();
+                final JSONArray arr = aval.isArray();
 
                 if (arr != null)
                 {
-                    for (int i = 0; i < 4 && i < arr.size(); i++)
+                    for (int i = 0; (i < 4) && (i < arr.size()); i++)
                     {
-                        JSONValue jval = arr.get(i);
+                        final JSONValue jval = arr.get(i);
 
                         if (jval != null)
                         {
-                            JSONNumber jnum = jval.isNumber();
+                            final JSONNumber jnum = jval.isNumber();
 
                             if (jnum != null)
                             {

@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.image.filter;
@@ -35,12 +35,12 @@ public class BrightnessImageDataFilter extends AbstractValueImageDataFilter<Brig
         super(ImageFilterType.BrightnessImageDataFilterType, 0);
     }
 
-    public BrightnessImageDataFilter(double value)
+    public BrightnessImageDataFilter(final double value)
     {
         super(ImageFilterType.BrightnessImageDataFilterType, value);
     }
 
-    protected BrightnessImageDataFilter(JSONObject node, ValidationContext ctx) throws ValidationException
+    protected BrightnessImageDataFilter(final JSONObject node, final ValidationContext ctx) throws ValidationException
     {
         super(ImageFilterType.BrightnessImageDataFilterType, node, ctx);
     }
@@ -64,7 +64,7 @@ public class BrightnessImageDataFilter extends AbstractValueImageDataFilter<Brig
     }
 
     @Override
-    public ImageData filter(ImageData source, boolean copy)
+    public ImageData filter(ImageData source, final boolean copy)
     {
         if (null == source)
         {
@@ -91,12 +91,12 @@ public class BrightnessImageDataFilter extends AbstractValueImageDataFilter<Brig
 
     private final native void filter_(JavaScriptObject data, int length, double value)
     /*-{
-        var v = (value * 255) + 0.5;
-    	for (var i = 0; i < length; i += 4) {
-    		data[  i  ] = Math.max(Math.min(data[  i  ] + v, 255), 0) | 0;
-    		data[i + 1] = Math.max(Math.min(data[i + 1] + v, 255), 0) | 0;
-    		data[i + 2] = Math.max(Math.min(data[i + 2] + v, 255), 0) | 0;
-    	}
+		var v = (value * 255) + 0.5;
+		for (var i = 0; i < length; i += 4) {
+			data[i] = Math.max(Math.min(data[i] + v, 255), 0) | 0;
+			data[i + 1] = Math.max(Math.min(data[i + 1] + v, 255), 0) | 0;
+			data[i + 2] = Math.max(Math.min(data[i + 2] + v, 255), 0) | 0;
+		}
     }-*/;
 
     @Override
@@ -113,7 +113,7 @@ public class BrightnessImageDataFilter extends AbstractValueImageDataFilter<Brig
         }
 
         @Override
-        public BrightnessImageDataFilter create(JSONObject node, ValidationContext ctx) throws ValidationException
+        public BrightnessImageDataFilter create(final JSONObject node, final ValidationContext ctx) throws ValidationException
         {
             return new BrightnessImageDataFilter(node, ctx);
         }

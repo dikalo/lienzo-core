@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.shape;
@@ -42,7 +42,7 @@ public class Star extends Shape<Star>
      * circle which all the tips of the star touch, and an inner circle where all the
      * vertices of the star's arms touch.  The distance between the inner and the outer
      * circle define how long the star's arms are.
-     * 
+     *
      * @param points number of points in this star.
      * @param innerRadius radius of the inner circle.
      * @param outerRadius radius of the enclosing circle.
@@ -78,7 +78,7 @@ public class Star extends Shape<Star>
 
     /**
      * Draws this star.
-     * 
+     *
      * @param context
      */
     @Override
@@ -120,7 +120,7 @@ public class Star extends Shape<Star>
             {
                 for (int n = 1; n < s2; n++)
                 {
-                    final double stheta = (n * Math.PI / sp);
+                    final double stheta = ((n * Math.PI) / sp);
 
                     final double radius = (((n % 2) == 0) ? or : ir);
 
@@ -134,7 +134,7 @@ public class Star extends Shape<Star>
 
                 for (int n = 1; n < s2; n++)
                 {
-                    final double stheta = (n * Math.PI / sp);
+                    final double stheta = ((n * Math.PI) / sp);
 
                     final double radius = (((n % 2) == 0) ? or : ir);
 
@@ -157,7 +157,7 @@ public class Star extends Shape<Star>
 
     /**
      * Returns the number of Stars points.
-     * 
+     *
      * @return int
      */
     public int getStarPoints()
@@ -167,9 +167,9 @@ public class Star extends Shape<Star>
 
     /**
      * Sets the number of Star points.
-     * 
+     *
      * If the value passed is less than 5, it will be replaced by 5.
-     * 
+     *
      * @param points
      * @return this Star
      */
@@ -182,7 +182,7 @@ public class Star extends Shape<Star>
 
     /**
      * Gets the {@link Star} inner radius.
-     * 
+     *
      * @return double
      */
     public double getInnerRadius()
@@ -192,7 +192,7 @@ public class Star extends Shape<Star>
 
     /**
      * Sets the {@link Star} inner radius.
-     * 
+     *
      * @param radius
      * @return this Star
      */
@@ -205,7 +205,7 @@ public class Star extends Shape<Star>
 
     /**
      * Returns the {@link Star} outer radius.
-     * 
+     *
      * @return double
      */
     public double getOuterRadius()
@@ -215,7 +215,7 @@ public class Star extends Shape<Star>
 
     /**
      * Sets the outer radius.
-     * 
+     *
      * @param radius
      * @return this Star
      */

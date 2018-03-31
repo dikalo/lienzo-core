@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.image.filter;
@@ -27,7 +27,7 @@ public class ImageDataFilterCommonOps extends JavaScriptObject
 {
     public static final ImageDataFilterCommonOps make()
     {
-        ImageDataFilterCommonOps self = JavaScriptObject.createObject().cast();
+        final ImageDataFilterCommonOps self = JavaScriptObject.createObject().cast();
 
         self.initialize();
 
@@ -254,33 +254,33 @@ public class ImageDataFilterCommonOps extends JavaScriptObject
         };
     }-*/;
 
-    public final int getLength(ImageData source)
+    public final int getLength(final ImageData source)
     {
         return ((source.getWidth() * source.getHeight()) * 4);
     }
-    
+
     public final native boolean hasAlphaChannel(CanvasPixelArray data, int length)
     /*-{
-        this.hasAlphaChannel(data, length);
+		this.hasAlphaChannel(data, length);
     }-*/;
 
     public final native void dofilterLuminosity(CanvasPixelArray data, int length)
     /*-{
-        this.filterLuminosity(data, length);
+		this.filterLuminosity(data, length);
     }-*/;
 
     public final native void doFilterTable(CanvasPixelArray data, FilterTableArray table, int w, int h)
     /*-{
-        this.filterTable(data, table, w, h);
+		this.filterTable(data, table, w, h);
     }-*/;
 
     public final native void doFilterConvolve(CanvasPixelArray data, CanvasPixelArray buff, FilterConvolveMatrix matrix, int w, int h)
     /*-{
-        this.filterConvolve(data, buff, matrix, w, h);
+		this.filterConvolve(data, buff, matrix, w, h);
     }-*/;
 
     public final native void doFilterTransform(CanvasPixelArray data, CanvasPixelArray buff, FilterTransformFunction transform, int w, int h)
     /*-{
-        this.filterTransform(data, buff, transform, w, h);
+		this.filterTransform(data, buff, transform, w, h);
     }-*/;
 }

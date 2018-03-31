@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.mediator;
@@ -44,7 +44,7 @@ import com.google.gwt.event.shared.GwtEvent;
  * <tr style="background: #EEEEEE;"><td>ALT</td><td>mouse event</td><td>whether the Alt key is pressed</td></tr>
  * <tr style="background: #EEEEEE;"><td>META</td><td>mouse event</td><td>whether the Meta key is pressed</td></tr>
  * </table>
- * 
+ *
  * @since 1.1
  */
 public final class EventFilter
@@ -72,9 +72,9 @@ public final class EventFilter
     }
 
     /**
-     * Chains several filters together. 
+     * Chains several filters together.
      * The resulting filter will return true, if at least one filter returns true.
-     * 
+     *
      * @param filters
      * @return IEventFilter
      */
@@ -84,9 +84,9 @@ public final class EventFilter
     }
 
     /**
-     * Chains several filters together. 
+     * Chains several filters together.
      * The resulting filter will return true, if at least one filter returns true.
-     * 
+     *
      * @param filters
      * @return IEventFilter
      */
@@ -96,9 +96,9 @@ public final class EventFilter
     }
 
     /**
-     * Chains several filters together. 
+     * Chains several filters together.
      * The resulting filter will return false, if at least one filter returns false.
-     * 
+     *
      * @param filters
      * @return IEventFilter
      */
@@ -108,9 +108,9 @@ public final class EventFilter
     }
 
     /**
-     * Chains several filters together. 
+     * Chains several filters together.
      * The resulting filter will return false, if at least one filter returns false.
-     * 
+     *
      * @param filters
      * @return IEventFilter
      */
@@ -121,7 +121,7 @@ public final class EventFilter
 
     /**
      * The resulting filter will return false, if the specified filter returns true.
-     * 
+     *
      * @param filter IEventFilter.
      * @return IEventFilter
      */
@@ -152,7 +152,7 @@ public final class EventFilter
         }
 
         @Override
-        public final void setEnabled(boolean enabled)
+        public final void setEnabled(final boolean enabled)
         {
         }
     }
@@ -186,7 +186,7 @@ public final class EventFilter
         }
 
         @Override
-        public final void setEnabled(boolean enabled)
+        public final void setEnabled(final boolean enabled)
         {
         }
     }
@@ -220,7 +220,7 @@ public final class EventFilter
         }
 
         @Override
-        public final void setEnabled(boolean enabled)
+        public final void setEnabled(final boolean enabled)
         {
         }
     }
@@ -254,7 +254,7 @@ public final class EventFilter
         }
 
         @Override
-        public final void setEnabled(boolean enabled)
+        public final void setEnabled(final boolean enabled)
         {
         }
     }
@@ -288,7 +288,7 @@ public final class EventFilter
         }
 
         @Override
-        public final void setEnabled(boolean enabled)
+        public final void setEnabled(final boolean enabled)
         {
         }
     }
@@ -322,7 +322,7 @@ public final class EventFilter
         }
 
         @Override
-        public final void setEnabled(boolean enabled)
+        public final void setEnabled(final boolean enabled)
         {
         }
     }
@@ -356,7 +356,7 @@ public final class EventFilter
         }
 
         @Override
-        public final void setEnabled(boolean enabled)
+        public final void setEnabled(final boolean enabled)
         {
         }
     }
@@ -390,7 +390,7 @@ public final class EventFilter
         }
 
         @Override
-        public final void setEnabled(boolean enabled)
+        public final void setEnabled(final boolean enabled)
         {
         }
     }
@@ -401,7 +401,7 @@ public final class EventFilter
 
         private final IEventFilter[] m_list;
 
-        public AndOpEventFilter(IEventFilter[] filters)
+        public AndOpEventFilter(final IEventFilter[] filters)
         {
             m_list = filters;
 
@@ -433,7 +433,7 @@ public final class EventFilter
 
         private final IEventFilter[] m_list;
 
-        public OrOpEventFilter(IEventFilter[] filters)
+        public OrOpEventFilter(final IEventFilter[] filters)
         {
             m_list = filters;
 

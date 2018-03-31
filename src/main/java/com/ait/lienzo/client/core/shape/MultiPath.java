@@ -1,20 +1,22 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.shape;
+
+import java.util.List;
 
 import com.ait.lienzo.client.core.Attribute;
 import com.ait.lienzo.client.core.shape.json.validators.ValidationContext;
@@ -28,8 +30,6 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 
-import java.util.List;
-
 public class MultiPath extends AbstractMultiPathPartShape<MultiPath>
 {
     public MultiPath()
@@ -37,22 +37,22 @@ public class MultiPath extends AbstractMultiPathPartShape<MultiPath>
         super(ShapeType.MULTI_PATH);
     }
 
-    public MultiPath(String path)
+    public MultiPath(final String path)
     {
         super(ShapeType.MULTI_PATH);
 
-        PathPartList list = getOrIncrementList();
+        final PathPartList list = getOrIncrementList();
 
         SVGPath.parse(list, path);
     }
 
-    public MultiPath(String[] paths)
+    public MultiPath(final String[] paths)
     {
         super(ShapeType.MULTI_PATH);
 
-        for (String path : paths)
+        for (final String path : paths)
         {
-            PathPartList list = getOrIncrementList();
+            final PathPartList list = getOrIncrementList();
 
             SVGPath.parse(list, path);
 
@@ -64,7 +64,7 @@ public class MultiPath extends AbstractMultiPathPartShape<MultiPath>
     {
         super(ShapeType.MULTI_PATH, node, ctx);
 
-        JSONValue pval = node.get("path-list");
+        final JSONValue pval = node.get("path-list");
 
         if (null != pval)
         {
@@ -84,7 +84,7 @@ public class MultiPath extends AbstractMultiPathPartShape<MultiPath>
 
                         if (null != path)
                         {
-                            PathPartListJSO pjso = path.getJavaScriptObject().cast();
+                            final PathPartListJSO pjso = path.getJavaScriptObject().cast();
 
                             add(new PathPartList(pjso, true));
                         }
@@ -156,7 +156,7 @@ public class MultiPath extends AbstractMultiPathPartShape<MultiPath>
         return C(c1.getX(), c1.getY(), c2.getX(), c2.getY(), ep.getX(), ep.getY());
     }
 
-    public MultiPath A(final double x0, final double y0, double x1, final double y1, double radius)
+    public MultiPath A(final double x0, final double y0, final double x1, final double y1, final double radius)
     {
         getOrIncrementList().A(x0, y0, x1, y1, radius);
 
@@ -239,7 +239,7 @@ public class MultiPath extends AbstractMultiPathPartShape<MultiPath>
 
         if (list.size() < 1)
         {
-            PathPartList path = new PathPartList();
+            final PathPartList path = new PathPartList();
 
             list.add(path);
 

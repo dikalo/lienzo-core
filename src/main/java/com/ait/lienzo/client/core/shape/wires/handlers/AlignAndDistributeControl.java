@@ -1,8 +1,24 @@
+/*
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.ait.lienzo.client.core.shape.wires.handlers;
 
 import java.util.Set;
 
-import com.ait.lienzo.client.core.shape.wires.AlignAndDistribute;
+import com.ait.lienzo.client.core.shape.wires.AlignAndDistribute.DistributionEntry;
 import com.ait.lienzo.client.core.types.Point2D;
 
 /**
@@ -10,43 +26,41 @@ import com.ait.lienzo.client.core.types.Point2D;
  * from the concrete event types fired, and these calls be reused programatically as well. So common logic
  * can be shared to provide drag and the operations support and attached to the necessary event handler type.
  */
-// TODO: Refactor this by implementing WiresControl, MoveControl.
-public interface AlignAndDistributeControl {
+public interface AlignAndDistributeControl
+{
+    public void refresh();
 
-    void refresh();
+    public void refresh(boolean transforms, boolean attributes);
 
-    void refresh( boolean transforms, boolean attributes );
+    public boolean isDraggable();
 
-    boolean isDraggable();
+    public void dragStart();
 
-    void dragStart();
+    public void dragEnd();
 
-    void dragEnd();
+    public boolean dragAdjust(Point2D dxy);
 
-    boolean dragAdjust(Point2D dxy);
+    public void remove();
 
-    void remove();
+    public Set<DistributionEntry> getHorizontalDistributionEntries();
 
-    Set<AlignAndDistribute.DistributionEntry> getHorizontalDistributionEntries();
+    public Set<DistributionEntry> getVerticalDistributionEntries();
 
-    Set<AlignAndDistribute.DistributionEntry> getVerticalDistributionEntries();
+    public double getLeft();
 
-    double getLeft();
+    public double getRight();
 
-    double getRight();
+    public double getTop();
 
-    double getTop();
+    public double getBottom();
 
-    double getBottom();
+    public double getHorizontalCenter();
 
-    double getHorizontalCenter();
+    public double getVerticalCenter();
 
-    double getVerticalCenter();
+    public boolean isIndexed();
 
-    boolean isIndexed();
+    public void setIndexed(boolean indexed);
 
-    void setIndexed(boolean indexed);
-
-    void updateIndex();
-
+    public void updateIndex();
 }

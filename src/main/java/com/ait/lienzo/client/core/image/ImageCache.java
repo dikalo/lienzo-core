@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.image;
@@ -24,11 +24,11 @@ public final class ImageCache
 {
     private static final ImageCache            INSTANCE   = new ImageCache();
 
-    private final NFastStringMap<String>       m_messages = new NFastStringMap<String>();
+    private final NFastStringMap<String>       m_messages = new NFastStringMap<>();
 
-    private final NFastStringMap<ImageElement> m_url_hmap = new NFastStringMap<ImageElement>();
+    private final NFastStringMap<ImageElement> m_url_hmap = new NFastStringMap<>();
 
-    private final NFastStringMap<ImageElement> m_key_hmap = new NFastStringMap<ImageElement>();
+    private final NFastStringMap<ImageElement> m_key_hmap = new NFastStringMap<>();
 
     private int                                m_counting = -1;
 
@@ -98,7 +98,7 @@ public final class ImageCache
         return this;
     }
 
-    private final void done(String key, String url, ImageElement image, String message)
+    private final void done(final String key, final String url, final ImageElement image, final String message)
     {
         if (null != image)
         {
@@ -118,17 +118,17 @@ public final class ImageCache
         }
     }
 
-    public final ImageElement getImageByKey(String key)
+    public final ImageElement getImageByKey(final String key)
     {
         return m_key_hmap.get(key);
     }
 
-    public final ImageElement getImageByURL(String url)
+    public final ImageElement getImageByURL(final String url)
     {
         return m_url_hmap.get(url);
     }
 
-    public final String getMessage(String name)
+    public final String getMessage(final String name)
     {
         return m_messages.get(name);
     }
@@ -157,7 +157,7 @@ public final class ImageCache
         return false;
     }
 
-    public final void onLoaded(Runnable callback)
+    public final void onLoaded(final Runnable callback)
     {
         if (null == callback)
         {

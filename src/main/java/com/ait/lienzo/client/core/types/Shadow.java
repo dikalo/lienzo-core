@@ -1,22 +1,23 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.types;
 
 import com.ait.lienzo.client.core.types.Point2D.Point2DJSO;
+import com.ait.lienzo.shared.core.types.ColorName;
 import com.ait.lienzo.shared.core.types.IColor;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONObject;
@@ -53,7 +54,7 @@ public final class Shadow
 
     /**
      * Constructs a Shadow from a color (as a String), a blur and an offset (offx, offy).
-     * 
+     *
      * @param color String
      * @param blur
      * @param offx
@@ -65,9 +66,9 @@ public final class Shadow
     }
 
     /**
-     * Constructs a Shadow from a color (i.e. {@link Color} or {@link ColorName}), 
+     * Constructs a Shadow from a color (i.e. {@link Color} or {@link ColorName}),
      * a blur and an offset (offx, offy).
-     * 
+     *
      * @param color {@link Color} or {@link ColorName}
      * @param blur
      * @param offx
@@ -80,7 +81,7 @@ public final class Shadow
 
     /**
      * Constructs a Shadow from a color (as a String), a blur and an offset (offx, offy).
-     * 
+     *
      * @param color String
      * @param blur
      * @param offx
@@ -92,9 +93,9 @@ public final class Shadow
     }
 
     /**
-     * Constructs a Shadow from a color (i.e. {@link Color} or {@link ColorName}), 
+     * Constructs a Shadow from a color (i.e. {@link Color} or {@link ColorName}),
      * a blur and an offset (offx, offy).
-     * 
+     *
      * @param color {@link Color} or {@link ColorName}
      * @param blur
      * @param offx
@@ -116,7 +117,7 @@ public final class Shadow
 
     /**
      * Sets the color as a string.
-     * 
+     *
      * @param color String
      * @return this Shadow
      */
@@ -129,7 +130,7 @@ public final class Shadow
 
     /**
      * Sets the color as a {@link Color} or {@link ColorName}.
-     * 
+     *
      * @param color {@link Color} or {@link ColorName}
      * @return this Shadow
      */
@@ -151,7 +152,7 @@ public final class Shadow
 
     /**
      * Sets the blur.
-     * 
+     *
      * @param blur int
      * @return this Shadow
      */
@@ -173,7 +174,7 @@ public final class Shadow
 
     /**
      * Sets the color as a string.
-     * 
+     *
      * @param offset Point2D
      * @return this Shadow
      */
@@ -195,7 +196,7 @@ public final class Shadow
 
     /**
      * Sets the color as a string.
-     * 
+     *
      * @param offset Point2D
      * @return this Shadow
      */

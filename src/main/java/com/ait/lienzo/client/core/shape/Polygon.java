@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.shape;
@@ -31,7 +31,7 @@ import com.ait.lienzo.shared.core.types.ShapeType;
 import com.google.gwt.json.client.JSONObject;
 
 /**
- * A polygon is traditionally a plane figure that is bounded by a closed path, 
+ * A polygon is traditionally a plane figure that is bounded by a closed path,
  * composed of a finite sequence of straight line segments.
  */
 public class Polygon extends AbstractMultiPointShape<Polygon>
@@ -40,7 +40,7 @@ public class Polygon extends AbstractMultiPointShape<Polygon>
 
     /**
      * Constructor. Creates an instance of a polygon.
-     * 
+     *
      * @param points a {@link Point2DArray} containing 3 or more points
      */
     public Polygon(final Point2DArray points)
@@ -62,7 +62,7 @@ public class Polygon extends AbstractMultiPointShape<Polygon>
         this(new Point2DArray(point, points));
     }
 
-    public Polygon(double... array)
+    public Polygon(final double... array)
     {
         this(Point2DArray.fromArrayOfDouble(array));
     }
@@ -116,7 +116,7 @@ public class Polygon extends AbstractMultiPointShape<Polygon>
 
     /**
      * Draws this polygon.
-     * 
+     *
      * @param context
      */
     @Override
@@ -160,7 +160,7 @@ public class Polygon extends AbstractMultiPointShape<Polygon>
 
     /**
      * Gets this polygon's points.
-     * 
+     *
      * @return {@link Point2DArray}
      */
     public Point2DArray getPoints()
@@ -170,7 +170,7 @@ public class Polygon extends AbstractMultiPointShape<Polygon>
 
     /**
      * Sets this polygon's points.
-     * 
+     *
      * @param points a {@link Point2DArray} of 3 or more points
      * @return this Polygon
      */
@@ -182,7 +182,7 @@ public class Polygon extends AbstractMultiPointShape<Polygon>
     }
 
     @Override
-    public Polygon setPoint2DArray(Point2DArray points)
+    public Polygon setPoint2DArray(final Point2DArray points)
     {
         return setPoints(points);
     }

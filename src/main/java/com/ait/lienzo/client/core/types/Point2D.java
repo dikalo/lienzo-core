@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.types;
@@ -23,7 +23,7 @@ import com.google.gwt.json.client.JSONObject;
 
 /**
  * Point2D can be used to represent a point or vector in 2D.
- * 
+ *
  * <p>
  * Some of the methods related to linear algebra come in two flavors, e.g. plus() and plusInSitu().
  * The first one does not modify the object that it is invoked on, but the second one does.
@@ -49,7 +49,7 @@ public final class Point2D
 
     /**
      * Constructs a Point2D at (x,y)
-     * 
+     *
      * @param x double
      * @param y double
      */
@@ -112,7 +112,7 @@ public final class Point2D
 
     /**
      * Sets the x and y coordinates to those of point P.
-     * 
+     *
      * @param p Point2D
      * @return this Point2D
      */
@@ -125,7 +125,7 @@ public final class Point2D
 
     /**
      * Returns the length of the vector from (0,0) to this Point2D.
-     * 
+     *
      * @return double
      */
     public final double getLength()
@@ -135,7 +135,7 @@ public final class Point2D
 
     /**
      * Returns the distance from this Point2D to the other Point2D.
-     * 
+     *
      * @param other Point2D
      * @return double
      */
@@ -146,7 +146,7 @@ public final class Point2D
 
     /**
      * Returns the distance from point A to point B.
-     * 
+     *
      * @param a Point2D
      * @param b Point2D
      * @return double
@@ -161,7 +161,7 @@ public final class Point2D
      * i.e. (this.x + p.x, this.y + p.y)
      * <p>
      * This Point2D is not modified.
-     * 
+     *
      * @param p Point2D
      * @return a new Point2D
      */
@@ -220,7 +220,7 @@ public final class Point2D
      * i.e. (this.x - p.x, this.y - p.y)
      * <p>
      * This Point2D is not modified.
-     * 
+     *
      * @param p Point2D
      * @return a new Point2D
      */
@@ -234,7 +234,7 @@ public final class Point2D
      * i.e. (this.x / d, this.y / d)
      * <p>
      * This Point2D is not modified.
-     * 
+     *
      * @param d double
      * @return a new Point2D
      */
@@ -252,7 +252,7 @@ public final class Point2D
      * i.e. (this.x * d, this.y * d)
      * <p>
      * This Point2D is not modified.
-     * 
+     *
      * @param d double
      * @return a new Point2D
      */
@@ -267,9 +267,9 @@ public final class Point2D
     }
 
     /**
-     * Returns a new Point2D perpendicular to this vector by rotating this Point2D 
+     * Returns a new Point2D perpendicular to this vector by rotating this Point2D
      * 90 degrees counterclockwise around (0,0)
-     * 
+     *
      * @return Point2D
      * @see http://mathworld.wolfram.com/PerpendicularVector.html
      */
@@ -279,13 +279,13 @@ public final class Point2D
     }
 
     /**
-     * Returns a new Point2D by rotating this Point2D counterclockwise 
+     * Returns a new Point2D by rotating this Point2D counterclockwise
      * over the angle (in radians, not degrees!)
      * <p>
      * This Point2D is not modified.
-     * 
+     *
      * @param angleInRadians
-     * 
+     *
      * @return Point2D
      */
     public final Point2D rotate(final double angle)
@@ -296,12 +296,12 @@ public final class Point2D
     /**
      * Returns a new Point2D in the same direction as this Point2D
      * with a length of 1.
-     * 
+     *
      * @return Point2D
      */
     public final Point2D unit() throws GeometryException
     {
-        double len = getLength();
+        final double len = getLength();
 
         if (len == 0)
         {
@@ -312,7 +312,7 @@ public final class Point2D
 
     /**
      * Returns whether this point is the Null vector (0,0)
-     * 
+     *
      * @return boolean
      */
     public final boolean isNullVector()
@@ -321,9 +321,9 @@ public final class Point2D
     }
 
     /**
-     * Returns the angle of the vector thru (0,0) and this Point2D, 
+     * Returns the angle of the vector thru (0,0) and this Point2D,
      * and the positive x-axis. Returns 0 for the null vector (0,0).
-     * 
+     *
      * @return double
      */
     public final double theta()
@@ -400,12 +400,12 @@ public final class Point2D
 
     /**
      * Returns whether the 3 points are colinear, i.e. whether they lie on a single straight line.
-     * 
+     *
      * @param p1
      * @param p2
      * @param p3
      * @return
-     * 
+     *
      * @see <a href="http://mathworld.wolfram.com/Collinear.html">Collinear in Wolfram MathWorld</a>
      */
     public static final boolean collinear(final Point2D p1, final Point2D p2, final Point2D p3)
@@ -433,7 +433,7 @@ public final class Point2D
      *  <li>if Q is on your right, det(P,Q) &lt; 0
      *  <li>if Q is on the line thru P and the Origin, det(P,Q) = 0
      * </ul>
-     * 
+     *
      * @param p Point2D
      * @param q Point2D
      * @return the determinant of vectors P and Q
@@ -445,7 +445,7 @@ public final class Point2D
 
     /**
      * Construct a Point2D from polar coordinates, i.e. a radius and an angle.
-     * 
+     *
      * @param radius
      * @param angle in radians
      * @return Point2D

@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.shape;
@@ -52,7 +52,7 @@ import com.google.gwt.json.client.JSONString;
 /**
  * A Container capable of holding a collection of T objects
  */
-public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>> extends ContainerNode<T, C>implements IPrimitive<C>
+public abstract class GroupOf<T extends IPrimitive<?>, C extends GroupOf<T, C>> extends ContainerNode<T, C> implements IPrimitive<C>
 {
     private GroupType                   m_type = null;
 
@@ -104,7 +104,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Only sub-classes that wish to extend a Shape should use this.
-     * 
+     *
      * @param type
      */
     protected void setGroupType(final GroupType type)
@@ -153,7 +153,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Returns this group as an {@link IPrimitive}.
-     * 
+     *
      * @return IPrimitive
      */
     @Override
@@ -164,7 +164,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Gets the X coordinate for this group.
-     * 
+     *
      * @return double
      */
     @Override
@@ -175,7 +175,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Sets the X coordinate for this group.
-     * 
+     *
      * @param x
      * @return Group this Group
      */
@@ -189,7 +189,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Gets the Y coordinate for this group.
-     * 
+     *
      * @return double
      */
     @Override
@@ -200,7 +200,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Sets the Y coordinate for this group.
-     * 
+     *
      * @return Group this Group
      */
     @Override
@@ -213,7 +213,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Sets the X and Y attributes to P.x and P.y
-     * 
+     *
      * @param p Point2D
      * @return Group this Group
      */
@@ -229,9 +229,10 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Returns the X and Y attributes as a Point2D
-     * 
+     *
      * @return Point2D
      */
+    @Override
     public Point2D getLocation()
     {
         return new Point2D(getX(), getY());
@@ -239,7 +240,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Gets the alpha value (transparency) for this group.
-     * 
+     *
      * @return double between 0 and 1
      */
     @Override
@@ -250,7 +251,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Sets the alpha value (transparency) on this group.
-     * 
+     *
      * @param alpha between 0 and 1
      * @return Group this Group
      */
@@ -264,7 +265,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Gets the alpha value (transparency) for this group.
-     * 
+     *
      * @return double between 0 and 1
      */
     @Override
@@ -275,7 +276,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Sets the alpha value (transparency) on this group.
-     * 
+     *
      * @param alpha between 0 and 1
      * @return Group this Group
      */
@@ -289,7 +290,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Sets the alpha color on this shape.
-     * 
+     *
      * @param alpha
      * @return T
      */
@@ -303,7 +304,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Gets the alpha value for this shape.
-     * 
+     *
      * @return double
      */
     @Override
@@ -314,8 +315,8 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Returns whether this group can be dragged.
-     * 
-     * @return boolean 
+     *
+     * @return boolean
      */
     @Override
     public boolean isDraggable()
@@ -325,7 +326,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Sets if this group can be dragged.
-     * 
+     *
      * @param draggable true if the group can be dragged; false otherwise
      * @return Group this Group
      */
@@ -353,7 +354,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Gets the group's scale.
-     * 
+     *
      * @return {@link Point2D}
      */
     @Override
@@ -364,7 +365,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Sets the group's scale, starting at the given point.
-     * 
+     *
      * @param scale
      * @return Group this Group
      */
@@ -378,7 +379,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Sets this group's scale, with the same value for x and y.
-     * 
+     *
      * @param xy
      * @return Group this Group
      */
@@ -392,7 +393,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Sets this gruop's scale, starting at the given x and y
-     * 
+     *
      * @param x
      * @param y
      * @return Group this Group
@@ -407,7 +408,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Gets this group's rotation, in radians.
-     * 
+     *
      * @return double
      */
     @Override
@@ -418,7 +419,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Sets this group's rotation, in radians.
-     * 
+     *
      * @param radians
      * @return Group this Group
      */
@@ -432,7 +433,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Gets this group's rotation, in degrees.
-     * 
+     *
      * @return double
      */
     @Override
@@ -443,7 +444,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Sets this group's rotation, in degrees.
-     * 
+     *
      * @param degrees
      * @return Group this Group
      */
@@ -457,7 +458,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Gets this group's offset as a {@link Point2D}
-     * 
+     *
      * @return Point2D
      */
     @Override
@@ -468,7 +469,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Gets this group's shear as a {@link Point2D}
-     * 
+     *
      * @return Point2D
      */
     @Override
@@ -479,7 +480,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Sets this group's shear
-     * 
+     *
      * @param offset
      * @return T
      */
@@ -493,7 +494,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Sets this group's shear
-     * 
+     *
      * @param offset
      * @return T
      */
@@ -507,7 +508,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Sets this group's offset
-     * 
+     *
      * @param offset
      * @return Group this Group
      */
@@ -521,7 +522,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Sets this group's offset, with the same value for x and y.
-     * 
+     *
      * @param xy
      * @return Group this Group
      */
@@ -535,7 +536,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Sets this group's offset, at the given x and y coordinates.
-     * 
+     *
      * @param x
      * @param y
      * @return Group this Group
@@ -550,7 +551,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Gets this group's {@link DragConstraint}
-     * 
+     *
      * @return DragConstraint
      */
     @Override
@@ -560,9 +561,9 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
     }
 
     /**
-     * Sets this group's drag constraint, 
+     * Sets this group's drag constraint,
      * e.g. horizontal, vertical or none (default)
-     * 
+     *
      * @param constraint
      * @return Group this Group
      */
@@ -576,7 +577,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Gets the {@link DragBounds} for this group.
-     * 
+     *
      * @return DragBounds
      */
     @Override
@@ -587,7 +588,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Sets this group's drag bounds.
-     * 
+     *
      * @param bounds
      * @return Group this Group
      */
@@ -601,7 +602,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Gets the {@link DragMode} for this node.
-     * 
+     *
      * @return DragMode
      */
     @Override
@@ -612,7 +613,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Sets this node's drag mode.
-     * 
+     *
      * @param mode
      * @return Group this Group
      */
@@ -626,7 +627,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Returns this group as a {@link IContainer}
-     * 
+     *
      * @return IContainer<IPrimitive>
      */
     @Override
@@ -676,7 +677,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
     {
         add(child);
 
-        for (T node : children)
+        for (final T node : children)
         {
             add(node);
         }
@@ -686,11 +687,11 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
     @Override
     public boolean removeFromParent()
     {
-        Node<?> parent = getParent();
+        final Node<?> parent = getParent();
 
         if (null != parent)
         {
-            Layer layer = parent.asLayer();
+            final Layer layer = parent.asLayer();
 
             if (null != layer)
             {
@@ -698,7 +699,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
                 return true;
             }
-            GroupOf<IPrimitive<?>, ?> group = parent.asGroupOf();
+            final GroupOf<IPrimitive<?>, ?> group = parent.asGroupOf();
 
             if (null != group)
             {
@@ -794,7 +795,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Serialize this group as a {@link JSONObject}.
-     * 
+     *
      * @return JSONObject
      */
     @Override
@@ -829,7 +830,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
                 if (null != prim)
                 {
-                    JSONObject make = prim.toJSONObject();
+                    final JSONObject make = prim.toJSONObject();
 
                     if (null != make)
                     {
@@ -847,7 +848,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Moves this group's {@link Layer} one level up
-     * 
+     *
      * @return Group this Group
      */
     @SuppressWarnings("unchecked")
@@ -870,7 +871,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Moves this group's {@link Layer} one level down
-     * 
+     *
      * @return Group this Group
      */
     @SuppressWarnings("unchecked")
@@ -893,7 +894,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Moves this group's {@link Layer} to the top of the layer stack.
-     * 
+     *
      * @return Group this Group
      */
     @SuppressWarnings("unchecked")
@@ -916,7 +917,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
     /**
      * Moves this group's {@link Layer} to the bottom of the layer stack.
-     * 
+     *
      * @return Group this Group
      */
     @SuppressWarnings("unchecked")
@@ -997,7 +998,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
     }
 
     @Override
-    public Map<ControlHandleType, IControlHandleList> getControlHandles(ControlHandleType... types)
+    public Map<ControlHandleType, IControlHandleList> getControlHandles(final ControlHandleType... types)
     {
         return getControlHandles(Arrays.asList(types));
     }
@@ -1011,9 +1012,9 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
         }
         if (types.size() > 1)
         {
-            types = new ArrayList<ControlHandleType>(new HashSet<ControlHandleType>(types));
+            types = new ArrayList<>(new HashSet<>(types));
         }
-        IControlHandleFactory factory = getControlHandleFactory();
+        final IControlHandleFactory factory = getControlHandleFactory();
 
         if (null == factory)
         {
@@ -1029,7 +1030,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
     }
 
     @Override
-    public C setControlHandleFactory(IControlHandleFactory factory)
+    public C setControlHandleFactory(final IControlHandleFactory factory)
     {
         m_opts.setControlHandleFactory(factory);
 
@@ -1039,7 +1040,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
     @Override
     public List<Attribute> getBoundingBoxAttributes()
     {
-        return new ArrayList<Attribute>();
+        return new ArrayList<>();
     }
 
     @Override
@@ -1062,7 +1063,7 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
         return cast();
     }
 
-    protected static abstract class GroupOfFactory <T extends IPrimitive<?>, C extends GroupOf<T, C>> extends ContainerNodeFactory<C>
+    protected static abstract class GroupOfFactory<T extends IPrimitive<?>, C extends GroupOf<T, C>> extends ContainerNodeFactory<C>
     {
         protected GroupOfFactory(final GroupType type)
         {
@@ -1136,44 +1137,44 @@ public abstract class GroupOf <T extends IPrimitive<?>, C extends GroupOf<T, C>>
 
         protected final native boolean isDragging()
         /*-{
-			return !!this.drag;
+        	return !!this.drag;
         }-*/;
 
         protected final native void setDragging(boolean drag)
         /*-{
-			if (false == drag) {
-				delete this["drag"];
-			} else {
-				this.drag = drag;
-			}
+        	if (false == drag) {
+        		delete this["drag"];
+        	} else {
+        		this.drag = drag;
+        	}
         }-*/;
 
         protected final native DragConstraintEnforcer getDragConstraintEnforcer()
         /*-{
-			return this.denf;
+        	return this.denf;
         }-*/;
 
         protected final native void setDragConstraintEnforcer(DragConstraintEnforcer denf)
         /*-{
-			if (null == denf) {
-				delete this["denf"];
-			} else {
-				this.denf = denf;
-			}
+        	if (null == denf) {
+        		delete this["denf"];
+        	} else {
+        		this.denf = denf;
+        	}
         }-*/;
 
         protected final native IControlHandleFactory getControlHandleFactory()
         /*-{
-			return this.hand;
+        	return this.hand;
         }-*/;
 
         protected final native void setControlHandleFactory(IControlHandleFactory hand)
         /*-{
-			if (null == hand) {
-				delete this["hand"];
-			} else {
-				this.hand = hand;
-			}
+        	if (null == hand) {
+        		delete this["hand"];
+        	} else {
+        		this.hand = hand;
+        	}
         }-*/;
     }
 }

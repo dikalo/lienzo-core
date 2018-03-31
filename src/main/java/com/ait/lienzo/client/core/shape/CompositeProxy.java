@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.shape;
@@ -42,7 +42,7 @@ import com.ait.lienzo.shared.core.types.NodeType;
 import com.ait.lienzo.shared.core.types.ProxyType;
 import com.google.gwt.json.client.JSONObject;
 
-public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends IPrimitive<?>> extends Node<C>implements IPrimitive<C>
+public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends IPrimitive<?>> extends Node<C> implements IPrimitive<C>
 {
     private ProxyType              m_type                   = null;
 
@@ -84,7 +84,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Gets the X coordinate for this group.
-     * 
+     *
      * @return double
      */
     @Override
@@ -95,7 +95,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Sets the X coordinate for this group.
-     * 
+     *
      * @param x
      * @return Group this Group
      */
@@ -109,7 +109,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Gets the Y coordinate for this group.
-     * 
+     *
      * @return double
      */
     @Override
@@ -120,7 +120,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Sets the Y coordinate for this group.
-     * 
+     *
      * @return Group this Group
      */
     @Override
@@ -133,7 +133,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Sets the X and Y attributes to P.x and P.y
-     * 
+     *
      * @param p Point2D
      * @return Group this Group
      */
@@ -149,9 +149,10 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Returns the X and Y attributes as a Point2D
-     * 
+     *
      * @return Point2D
      */
+    @Override
     public Point2D getLocation()
     {
         return new Point2D(getX(), getY());
@@ -159,7 +160,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Gets the alpha value (transparency) for this group.
-     * 
+     *
      * @return double between 0 and 1
      */
     @Override
@@ -170,7 +171,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Sets the alpha value (transparency) on this group.
-     * 
+     *
      * @param alpha between 0 and 1
      * @return Group this Group
      */
@@ -184,7 +185,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Gets the alpha value (transparency) for this group.
-     * 
+     *
      * @return double between 0 and 1
      */
     @Override
@@ -195,7 +196,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Sets the alpha value (transparency) on this group.
-     * 
+     *
      * @param alpha between 0 and 1
      * @return Group this Group
      */
@@ -209,7 +210,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Sets the alpha color on this shape.
-     * 
+     *
      * @param alpha
      * @return T
      */
@@ -223,7 +224,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Gets the alpha value for this shape.
-     * 
+     *
      * @return double
      */
     @Override
@@ -234,8 +235,8 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Returns whether this group can be dragged.
-     * 
-     * @return boolean 
+     *
+     * @return boolean
      */
     @Override
     public boolean isDraggable()
@@ -245,7 +246,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Sets if this group can be dragged.
-     * 
+     *
      * @param draggable true if the group can be dragged; false otherwise
      * @return Group this Group
      */
@@ -273,7 +274,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Gets the group's scale.
-     * 
+     *
      * @return {@link Point2D}
      */
     @Override
@@ -284,7 +285,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Sets the group's scale, starting at the given point.
-     * 
+     *
      * @param scale
      * @return Group this Group
      */
@@ -298,7 +299,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Sets this group's scale, with the same value for x and y.
-     * 
+     *
      * @param xy
      * @return Group this Group
      */
@@ -312,7 +313,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Sets this gruop's scale, starting at the given x and y
-     * 
+     *
      * @param x
      * @param y
      * @return Group this Group
@@ -327,7 +328,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Gets this group's rotation, in radians.
-     * 
+     *
      * @return double
      */
     @Override
@@ -338,7 +339,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Sets this group's rotation, in radians.
-     * 
+     *
      * @param radians
      * @return Group this Group
      */
@@ -352,7 +353,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Gets this group's rotation, in degrees.
-     * 
+     *
      * @return double
      */
     @Override
@@ -363,7 +364,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Sets this group's rotation, in degrees.
-     * 
+     *
      * @param degrees
      * @return Group this Group
      */
@@ -377,7 +378,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Gets this group's offset as a {@link Point2D}
-     * 
+     *
      * @return Point2D
      */
     @Override
@@ -388,7 +389,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Gets this group's shear as a {@link Point2D}
-     * 
+     *
      * @return Point2D
      */
     @Override
@@ -399,7 +400,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Sets this group's shear
-     * 
+     *
      * @param offset
      * @return T
      */
@@ -413,7 +414,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Sets this group's shear
-     * 
+     *
      * @param offset
      * @return T
      */
@@ -427,7 +428,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Sets this group's offset
-     * 
+     *
      * @param offset
      * @return Group this Group
      */
@@ -441,7 +442,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Sets this group's offset, with the same value for x and y.
-     * 
+     *
      * @param xy
      * @return Group this Group
      */
@@ -455,7 +456,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Sets this group's offset, at the given x and y coordinates.
-     * 
+     *
      * @param x
      * @param y
      * @return Group this Group
@@ -470,7 +471,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Gets this group's {@link DragConstraint}
-     * 
+     *
      * @return DragConstraint
      */
     @Override
@@ -480,9 +481,9 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
     }
 
     /**
-     * Sets this group's drag constraint, 
+     * Sets this group's drag constraint,
      * e.g. horizontal, vertical or none (default)
-     * 
+     *
      * @param constraint
      * @return Group this Group
      */
@@ -496,7 +497,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Gets the {@link DragBounds} for this group.
-     * 
+     *
      * @return DragBounds
      */
     @Override
@@ -507,7 +508,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Sets this group's drag bounds.
-     * 
+     *
      * @param bounds
      * @return Group this Group
      */
@@ -521,7 +522,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Gets the {@link DragMode} for this node.
-     * 
+     *
      * @return DragMode
      */
     @Override
@@ -532,7 +533,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Sets this node's drag mode.
-     * 
+     *
      * @param mode
      * @return Group this Group
      */
@@ -547,11 +548,11 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
     @Override
     public boolean removeFromParent()
     {
-        Node<?> parent = getParent();
+        final Node<?> parent = getParent();
 
         if (null != parent)
         {
-            Layer layer = parent.asLayer();
+            final Layer layer = parent.asLayer();
 
             if (null != layer)
             {
@@ -559,7 +560,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
                 return true;
             }
-            GroupOf<IPrimitive<?>, ?> group = parent.asGroupOf();
+            final GroupOf<IPrimitive<?>, ?> group = parent.asGroupOf();
 
             if (null != group)
             {
@@ -572,10 +573,10 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
     }
 
     /**
-    * Moves this shape one layer up.
-    * 
-    * @return T
-    */
+     * Moves this shape one layer up.
+     *
+     * @return T
+     */
     @SuppressWarnings("unchecked")
     @Override
     public C moveUp()
@@ -596,7 +597,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Moves this shape one layer down.
-     * 
+     *
      * @return T
      */
     @SuppressWarnings("unchecked")
@@ -619,7 +620,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Moves this shape to the top of the layers stack.
-     * 
+     *
      * @return T
      */
     @SuppressWarnings("unchecked")
@@ -642,7 +643,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
 
     /**
      * Moves this shape to the bottomw of the layers stack.
-     * 
+     *
      * @return T
      */
     @SuppressWarnings("unchecked")
@@ -664,7 +665,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
     }
 
     @Override
-    public Map<ControlHandleType, IControlHandleList> getControlHandles(ControlHandleType... types)
+    public Map<ControlHandleType, IControlHandleList> getControlHandles(final ControlHandleType... types)
     {
         return getControlHandles(Arrays.asList(types));
     }
@@ -678,9 +679,9 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
         }
         if (types.size() > 1)
         {
-            types = new ArrayList<ControlHandleType>(new HashSet<ControlHandleType>(types));
+            types = new ArrayList<>(new HashSet<>(types));
         }
-        IControlHandleFactory factory = getControlHandleFactory();
+        final IControlHandleFactory factory = getControlHandleFactory();
 
         if (null == factory)
         {
@@ -696,7 +697,7 @@ public abstract class CompositeProxy<C extends CompositeProxy<C, P>, P extends I
     }
 
     @Override
-    public C setControlHandleFactory(IControlHandleFactory factory)
+    public C setControlHandleFactory(final IControlHandleFactory factory)
     {
         m_controlHandleFactory = factory;
 

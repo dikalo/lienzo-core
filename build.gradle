@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,16 +17,14 @@
 buildscript {
     repositories {
         mavenCentral()
-        maven { url 'http://repo.spring.io/plugins-release' }
     }
     dependencies {
         classpath(group: 'org.ajoberstar', name: 'grgit', version: '1.7.2')
         classpath(group: 'commons-codec', name: 'commons-codec', version: '1.11')
         classpath(group: 'commons-logging', name: 'commons-logging', version: '1.2')
-        classpath(group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.4')
-        classpath(group: 'org.fusesource.jansi', name: 'jansi', version: '1.16')
-        classpath(group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.13', classifier: 'indy')
-        classpath(group: 'org.springframework.build.gradle', name: 'propdeps-plugin', version: '0.0.7')
+        classpath(group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.5')
+        classpath(group: 'org.fusesource.jansi', name: 'jansi', version: '1.17')
+        classpath(group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.14', classifier: 'indy')
     }
 }
 
@@ -35,14 +33,13 @@ import org.apache.tools.ant.filters.ReplaceTokens
 import java.net.InetAddress
 import org.ajoberstar.grgit.Grgit
 
+apply plugin: 'pmd'
 apply plugin: 'maven'
 apply plugin: 'groovy'
-apply plugin: 'jacoco'
 apply plugin: 'signing'
 apply plugin: 'eclipse'
-apply plugin: 'propdeps'
-apply plugin: 'propdeps-maven'
-apply plugin: 'propdeps-eclipse'
+apply plugin: 'findbugs'
+apply plugin: 'checkstyle'
 
 compileJava.options.encoding = 'UTF-8'
 
@@ -50,14 +47,68 @@ sourceCompatibility = 1.7
 
 targetCompatibility = 1.7
 
-version = '2.0.295-RELEASE'
+version = '2.0.296.0-SNAPSHOT'
 
 group = 'com.ahome-it'
+
+eclipse { classpath { downloadJavadoc = true } }
+
+checkstyle {
+    toolVersion = '7.7'
+    ignoreFailures = true
+}
+
+tasks.withType(Checkstyle) { source 'src/main' }
+
+pmd {
+    ignoreFailures = true
+    toolVersion = '5.6.1'
+    ruleSets = [
+        'java-basic',
+        'java-braces',
+        'java-empty',
+        'java-imports',
+        'java-optimizations',
+        'java-strings',
+        'java-unusedcode'
+    ]
+}
+
+findbugs {
+    ignoreFailures = true
+    toolVersion = '3.0.1'
+    effort = 'max'
+}
+
+tasks.withType(FindBugs) {
+    reports {
+        xml.enabled false
+        html.enabled true
+    }
+}
+
+task checkCodeQuality { doLast { println ':checkCodeQuality-done' } }
+
+checkCodeQuality.dependsOn checkstyleMain,pmdMain,findbugsMain
+
+task deleteConfigs(type: Delete) {
+    FileTree tree = project.fileTree(dir: "${buildDir}/resources/main")
+    tree.each { File file ->
+        delete(file)
+    }
+}
+
+task filterConfigs(dependsOn: deleteConfigs, type: Copy) {
+    from sourceSets.main.allSource
+    into "${buildDir}/resources/main"
+    filter(FixCrLfFilter)
+    filter(ReplaceTokens, tokens: getFilterTokens())
+}
 
 task doJavaDocs(type: Groovydoc) {
     source = sourceSets.main.allSource
     classpath = sourceSets.main.runtimeClasspath + buildscript.configurations.classpath
-    destinationDir = file("${buildDir}/docs/javadoc")
+    destinationDir = project.file("${buildDir}/docs/javadoc")
     includes = ['com/ait/lienzo/**']
     docTitle = "Lienzo 2D Structured Graphics"
     footer = "<small><a href=\"https://github.com/ahome-it/lienzo-core\" target=\"_blank\">Lienzo - ${version} - Author: Dean S. Jones</a></small>"
@@ -82,24 +133,68 @@ jar {
     manifest {
         attributes 'Implementation-Title': 'Lienzo-Core', 'Implementation-Version': version
     }
-    from sourceSets.main.allSource
 }
 
-repositories {
-    mavenCentral()
+jar.dependsOn(filterConfigs)
+
+def Map getFilterTokens() {
+    [:]
 }
+
+def String getBuildModuleVersion() {
+    version
+}
+
+def String getBuildDate() {
+    (new Date()).toString()
+}
+
+def String getBuildServerHost() {
+    try {
+        InetAddress.getLocalHost().getHostName()
+    }
+    catch (Exception e) {
+        'localhost'
+    }
+}
+
+def String getJavaVersion() {
+    System.getProperty('java.version') ?: 'unknown'
+}
+
+def String getBuildUser() {
+    System.getProperty('user.name') ?: 'unknown'
+}
+
+def String getBuildServerBuild() {
+    System.getenv('BUILD_DISPLAY_NAME') ?: "Gradle version ${gradle.gradleVersion}"
+}
+
+def String getBuildGITHomeURL() {
+    'https://github.com/ahome-it/lienzo-core/' + getProjectArtifactID()
+}
+
+def String getBuildGITCommitHash() {
+    getBuildGITHomeURL() + '/commit/' + Grgit.open(project.file('.')).head().id
+}
+
+def String getBuildGITCommitUser() {
+    Grgit.open(project.file('.')).head().committer.email
+}
+
+def String getBuildGITCommitMessage() {
+    Grgit.open(project.file('.')).head().shortMessage
+}
+
+repositories { mavenCentral() }
 
 sourceSets {
-    main {
-        resources {
-            srcDir 'src/main/java'
-        }
-    }
+    main { resources { source java } }
 }
 
 dependencies {
     compile(group: 'com.ahome-it', name: 'ahome-tooling-nativetools', version: '1.0.195-RELEASE')
-    provided(group: 'com.google.gwt', name: 'gwt-user', version: '2.7.0')
+    compileOnly(group: 'com.google.gwt', name: 'gwt-user', version: '2.7.0')
     testCompile(group: 'junit', name: 'junit', version: '4.12')
 }
 
@@ -109,17 +204,26 @@ artifacts {
     archives jar
 }
 
-signing {
-    sign configurations.archives
+signing { sign configurations.archives }
+
+def String getRepoUploadArchives() {
+    getBuildModuleVersion().endsWith('SNAPSHOT') ? 'https://oss.sonatype.org/content/repositories/snapshots/' : 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+}
+
+def String getUserNameUploadArchives() {
+    project.findProperty('sonatype_username_ahome') ?: ''
+}
+
+def String getPassWordUploadArchives() {
+    project.findProperty('sonatype_password_ahome') ?: ''
 }
 
 uploadArchives {
     repositories {
         mavenDeployer {
             beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-            //repository(url: "${sonatype_snapshotURL}") {
-            repository(url: "${sonatype_stageingURL}") {
-                authentication(userName: "${sonatype_user}", password: "${sonatype_password}")
+            repository(url: getRepoUploadArchives()) {
+                authentication(userName: getUserNameUploadArchives(), password: getPassWordUploadArchives())
             }
             pom.project {
                 name 'Lienzo-Core'
@@ -153,7 +257,7 @@ uploadArchives {
 
 def Map<String, List<String>> getGroovydocLinks() {
     def lmap = [:]
-    File data = file('groovydoc/GROOVYDOC_LINK_LISTS.txt')
+    def data = project.file('groovydoc/GROOVYDOC_LINK_LISTS.txt')
     if (data.exists()) {
         data.eachLine { line ->
             def vals = ((CharSequence) line).tokenize(',')
@@ -163,27 +267,27 @@ def Map<String, List<String>> getGroovydocLinks() {
     lmap
 }
 
-task(buildGroovydocLinks) << {
-    def site = [:]
-    File data = file('groovydoc/GROOVYDOC_LINK_SITES.txt')
-    if (data.exists()) {
-        data.eachLine { line ->
-            site[line] = ((CharSequence) new URL("${line}/package-list").text).tokenize('\n')
+task buildGroovydocLinks {
+    doLast {
+        def site = [:]
+        def data = project.file('groovydoc/GROOVYDOC_LINK_SITES.txt')
+        if (data.exists()) {
+            data.eachLine { line ->
+                site[line] = ((CharSequence) new URL("${line}/package-list").text).tokenize('\n')
+            }
         }
-    }
-    File make = file('groovydoc/GROOVYDOC_LINK_LISTS.txt')
-    if(make.exists()) {
-        make.delete()
-    }
-    make.createNewFile()
-    def save = make.newPrintWriter()
-    site.each { link, list ->
-        def show = "${link}"
-        list.each { line ->
-            show = "${show},${line}"
+        def make = project.file('groovydoc/GROOVYDOC_LINK_LISTS.txt')
+        if(make.exists()) {
+            make.delete()
         }
-        save.println("${show}")
+        make.createNewFile()
+        def save = make.newPrintWriter()
+        site.each { link, list ->
+            def show = "${link}"
+            list.each { line -> show = "${show},${line}" }
+            save.println("${show}")
+        }
+        save.flush()
+        save.close()
     }
-    save.flush()
-    save.close()
 }

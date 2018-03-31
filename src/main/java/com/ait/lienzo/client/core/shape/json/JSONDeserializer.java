@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.shape.json;
@@ -47,7 +47,7 @@ public final class JSONDeserializer
 {
     private static final JSONDeserializer INSTANCE = new JSONDeserializer();
 
-    public static final JSONDeserializer get()// questionable? do we allow sub-classing? this is always a problem with singletons. Should the class be final?
+    public static final JSONDeserializer get() // questionable? do we allow sub-classing? this is always a problem with singletons. Should the class be final?
     {
         return INSTANCE;
     }
@@ -60,7 +60,7 @@ public final class JSONDeserializer
     /**
      * Parses the JSON string and returns the {@link IJSONSerializable}.
      * Same as {@link #fromString(String, boolean)} with validate set to true.
-     * 
+     *
      * @param string JSON string as produced by {@link IJSONSerializable#toJSONString()}
      * @return IJSONSerializable
      */
@@ -90,7 +90,7 @@ public final class JSONDeserializer
      * If validate is true, it will attempt to validate the attributes and types of child nodes etc.
      * If validate is false, it assumes the JSON string is correct
      * (this is a little faster.)
-     * 
+     *
      * @param string JSON string as produced by {@link IJSONSerializable#toJSONString()}
      * @param validate Whether to validate the attributes and child node types
      * @return IJSONSerializable
@@ -119,11 +119,11 @@ public final class JSONDeserializer
 
             ctx.setValidate(validate);
 
-            ctx.setStopOnError(true);// bail if an error is encountered
+            ctx.setStopOnError(true); // bail if an error is encountered
 
             return fromJSON(json, ctx);
         }
-        catch (ValidationException e)
+        catch (final ValidationException e)
         {
             return null;
         }
@@ -142,7 +142,7 @@ public final class JSONDeserializer
      *   Console.log(ctx.getDebugString());
      * }
      * </pre>
-     * 
+     *
      * @param string JSON string as produced by {@link IJSONSerializable#toJSONString()}
      * @param ctx ValidationContext
      * @return IJSONSerializable
@@ -177,7 +177,7 @@ public final class JSONDeserializer
             }
             return fromJSON(json, ctx);
         }
-        catch (ValidationException e)
+        catch (final ValidationException e)
         {
             return null;
         }
@@ -188,7 +188,7 @@ public final class JSONDeserializer
      * <p>
      * You should only call this when you're writing your own node class
      * and you're building a custom {@link IFactory}.
-     * 
+     *
      * @param json JSONObject
      * @param ctx ValidationContext
      * @return IJSONSerializable
@@ -232,7 +232,7 @@ public final class JSONDeserializer
                 }
             }
         }
-        ctx.pop();// type
+        ctx.pop(); // type
 
         if (null == factory)
         {
@@ -269,7 +269,7 @@ public final class JSONDeserializer
 
         if (null == aval)
         {
-            return;// OK - 'attributes' is optional
+            return; // OK - 'attributes' is optional
         }
         ctx.push("attributes");
 
@@ -287,7 +287,7 @@ public final class JSONDeserializer
 
             final Set<String> keys = aobj.keySet();
 
-            for (Attribute attr : factory.getRequiredAttributes())
+            for (final Attribute attr : factory.getRequiredAttributes())
             {
                 final String attrName = attr.getProperty();
 
@@ -295,7 +295,7 @@ public final class JSONDeserializer
 
                 if (false == keys.contains(attrName))
                 {
-                    ctx.addRequiredError();// value is missing
+                    ctx.addRequiredError(); // value is missing
                 }
                 else
                 {
@@ -303,14 +303,14 @@ public final class JSONDeserializer
 
                     if (((jval == null) || (jval.isNull() != null)))
                     {
-                        ctx.addRequiredError();// value is null
+                        ctx.addRequiredError(); // value is null
                     }
                 }
-                ctx.pop();// attrName
+                ctx.pop(); // attrName
             }
             // Now check the attribute values
 
-            for (String attrName : keys)
+            for (final String attrName : keys)
             {
                 ctx.push(attrName);
 
@@ -324,19 +324,19 @@ public final class JSONDeserializer
                 {
                     atyp.validate(aobj.get(attrName), ctx);
                 }
-                ctx.pop();// attrName
+                ctx.pop(); // attrName
             }
         }
-        ctx.pop();// attributes
+        ctx.pop(); // attributes
     }
 
     /**
-     * Creates the child nodes for a {@link IJSONSerializable} that implements 
+     * Creates the child nodes for a {@link IJSONSerializable} that implements
      * {@link IContainer} from a JSONObject node.
      * <p>
      * You should only call this when you're writing your own {@link IContainer} class
      * and you're building a custom {@link IFactory}.
-     * 
+     *
      * @param container IContainer
      * @param node parent JSONObject
      * @param factory IContainerFactory
@@ -350,7 +350,7 @@ public final class JSONDeserializer
 
         if (null == jsonvalu)
         {
-            return;// OK - 'children' is optional
+            return; // OK - 'children' is optional
         }
         ctx.push("children");
 
@@ -395,10 +395,10 @@ public final class JSONDeserializer
                         }
                     }
                 }
-                ctx.pop();// index
+                ctx.pop(); // index
             }
         }
-        ctx.pop();// children
+        ctx.pop(); // children
     }
 
     public final void deserializeFilters(final ImageDataFilterable<?> filterable, final JSONObject node, final ValidationContext ctx) throws ValidationException
@@ -407,7 +407,7 @@ public final class JSONDeserializer
 
         if (null == jsonvalu)
         {
-            return;// OK - 'children' is optional
+            return; // OK - 'children' is optional
         }
         ctx.push("filters");
 
@@ -421,7 +421,7 @@ public final class JSONDeserializer
         {
             final int size = array.size();
 
-            final ArrayList<ImageDataFilter<?>> list = new ArrayList<ImageDataFilter<?>>(size);
+            final ArrayList<ImageDataFilter<?>> list = new ArrayList<>(size);
 
             for (int i = 0; i < size; i++)
             {
@@ -451,11 +451,11 @@ public final class JSONDeserializer
                         }
                     }
                 }
-                ctx.pop();// index
+                ctx.pop(); // index
             }
             filterable.setFilters(list);
         }
-        ctx.pop();// children
+        ctx.pop(); // children
     }
 
     public final void deserializePaletteItems(final Palette palette, final JSONObject node, final ValidationContext ctx) throws ValidationException
@@ -464,7 +464,7 @@ public final class JSONDeserializer
 
         if (null == jsonvalu)
         {
-            return;// OK - 'children' is optional
+            return; // OK - 'children' is optional
         }
         ctx.push("items");
 
@@ -478,7 +478,7 @@ public final class JSONDeserializer
         {
             final int size = array.size();
 
-            final ArrayList<PaletteItem> list = new ArrayList<PaletteItem>(size);
+            final ArrayList<PaletteItem> list = new ArrayList<>(size);
 
             for (int i = 0; i < size; i++)
             {
@@ -508,10 +508,10 @@ public final class JSONDeserializer
                         }
                     }
                 }
-                ctx.pop();// index
+                ctx.pop(); // index
             }
             palette.setPaletteItems(list);
         }
-        ctx.pop();// children
+        ctx.pop(); // children
     }
 }

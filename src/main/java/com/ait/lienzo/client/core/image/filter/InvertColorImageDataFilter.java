@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.image.filter;
@@ -35,13 +35,13 @@ public class InvertColorImageDataFilter extends AbstractImageDataFilter<InvertCo
         super(ImageFilterType.InvertColorImageDataFilterType);
     }
 
-    protected InvertColorImageDataFilter(JSONObject node, ValidationContext ctx) throws ValidationException
+    protected InvertColorImageDataFilter(final JSONObject node, final ValidationContext ctx) throws ValidationException
     {
         super(ImageFilterType.InvertColorImageDataFilterType, node, ctx);
     }
 
     @Override
-    public ImageData filter(ImageData source, boolean copy)
+    public ImageData filter(ImageData source, final boolean copy)
     {
         if (null == source)
         {
@@ -68,11 +68,11 @@ public class InvertColorImageDataFilter extends AbstractImageDataFilter<InvertCo
 
     private final native void filter_(JavaScriptObject data, int length)
     /*-{
-    	for (var i = 0; i < length; i += 4) {
-    		data[  i  ] = 255 - data[  i  ];
-    		data[i + 1] = 255 - data[i + 1];
-    		data[i + 2] = 255 - data[i + 2];
-    	}
+		for (var i = 0; i < length; i += 4) {
+			data[i] = 255 - data[i];
+			data[i + 1] = 255 - data[i + 1];
+			data[i + 2] = 255 - data[i + 2];
+		}
     }-*/;
 
     @Override
@@ -89,7 +89,7 @@ public class InvertColorImageDataFilter extends AbstractImageDataFilter<InvertCo
         }
 
         @Override
-        public InvertColorImageDataFilter create(JSONObject node, ValidationContext ctx) throws ValidationException
+        public InvertColorImageDataFilter create(final JSONObject node, final ValidationContext ctx) throws ValidationException
         {
             return new InvertColorImageDataFilter(node, ctx);
         }

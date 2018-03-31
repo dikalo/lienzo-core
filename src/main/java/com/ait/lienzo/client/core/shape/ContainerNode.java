@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.shape;
@@ -37,15 +37,15 @@ import com.google.gwt.json.client.JSONObject;
 
 /**
  * ContainerNode acts as a Collection holder for primitives.
- * 
+ *
  * <ul>
  * <li>A ContainerNode may contain {@link Layer} or {@link Group}.</li>
  * <li>A Container handles collection operations such as add, remove and removeAll.</li>
  * </ul>
- * 
+ *
  * @param <T>
  */
-public abstract class ContainerNode<M extends IDrawable<?>, T extends ContainerNode<M, T>>extends Node<T>implements IContainer<T, M>
+public abstract class ContainerNode<M extends IDrawable<?>, T extends ContainerNode<M, T>> extends Node<T> implements IContainer<T, M>
 {
     private BoundingBox       m_bbox;
 
@@ -125,7 +125,7 @@ public abstract class ContainerNode<M extends IDrawable<?>, T extends ContainerN
     }
 
     @Override
-    public T setStorageBounds(BoundingBox bounds)
+    public T setStorageBounds(final BoundingBox bounds)
     {
         m_bbox = bounds;
 
@@ -193,9 +193,9 @@ public abstract class ContainerNode<M extends IDrawable<?>, T extends ContainerN
 
     /**
      * Used internally. Draws the node in the current Context2D
-     * without applying the transformation-related attributes 
+     * without applying the transformation-related attributes
      * (e.g. X, Y, ROTATION, SCALE, SHEAR, OFFSET and TRANSFORM.)
-     * <p> 
+     * <p>
      * Groups should draw their children in the current context.
      */
     @Override
@@ -265,12 +265,10 @@ public abstract class ContainerNode<M extends IDrawable<?>, T extends ContainerN
         return bbox;
     }
 
-    // TODO - do this for containers
-
     @Override
     public List<Attribute> getBoundingBoxAttributes()
     {
-        return new ArrayList<Attribute>(0);
+        return new ArrayList<>(0);
     }
 
     /**
@@ -322,14 +320,14 @@ public abstract class ContainerNode<M extends IDrawable<?>, T extends ContainerN
     {
         if ((null == id) || ((id = id.trim()).isEmpty()))
         {
-            return new ArrayList<Node<?>>(0);
+            return new ArrayList<>(0);
         }
         final String look = id;
 
         return find(new Predicate<Node<?>>()
         {
             @Override
-            public boolean test(Node<?> node)
+            public boolean test(final Node<?> node)
             {
                 if (null == node)
                 {
@@ -351,7 +349,7 @@ public abstract class ContainerNode<M extends IDrawable<?>, T extends ContainerN
     @Override
     public final Iterable<Node<?>> find(final Predicate<Node<?>> predicate)
     {
-        final LinkedHashSet<Node<?>> buff = new LinkedHashSet<Node<?>>();
+        final LinkedHashSet<Node<?>> buff = new LinkedHashSet<>();
 
         find(predicate, buff);
 
@@ -384,7 +382,7 @@ public abstract class ContainerNode<M extends IDrawable<?>, T extends ContainerN
         return this;
     }
 
-    public static abstract class ContainerNodeFactory<C extends IJSONSerializable<C> & IContainer<C, ?>>extends NodeFactory<C>implements IContainerFactory
+    public static abstract class ContainerNodeFactory<C extends IJSONSerializable<C> & IContainer<C, ?>> extends NodeFactory<C> implements IContainerFactory
     {
         protected ContainerNodeFactory(final NodeType type)
         {

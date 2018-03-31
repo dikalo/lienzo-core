@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.shared.core.types;
@@ -93,11 +93,11 @@ public class Color implements IColor
 
     public Color brightness(final double brightness)
     {
-        int r = calculateBrightnessScale(getR(), brightness);
+        final int r = calculateBrightnessScale(getR(), brightness);
 
-        int g = calculateBrightnessScale(getG(), brightness);
+        final int g = calculateBrightnessScale(getG(), brightness);
 
-        int b = calculateBrightnessScale(getB(), brightness);
+        final int b = calculateBrightnessScale(getB(), brightness);
 
         return new Color(r, g, b, getA());
     }
@@ -121,21 +121,21 @@ public class Color implements IColor
         {
             percent = 1 + percent;
 
-            int r = Math.max(0, Math.min(255, (int) ((getR() * percent) + 0.5)));
+            final int r = Math.max(0, Math.min(255, (int) ((getR() * percent) + 0.5)));
 
-            int g = Math.max(0, Math.min(255, (int) ((getG() * percent) + 0.5)));
+            final int g = Math.max(0, Math.min(255, (int) ((getG() * percent) + 0.5)));
 
-            int b = Math.max(0, Math.min(255, (int) ((getB() * percent) + 0.5)));
+            final int b = Math.max(0, Math.min(255, (int) ((getB() * percent) + 0.5)));
 
             return new Color(r, g, b, getA());
         }
         else if (percent > 0)
         {
-            int r = Math.max(0, Math.min(255, (int) (((255 - getR()) * percent) + getR() + 0.5)));
+            final int r = Math.max(0, Math.min(255, (int) (((255 - getR()) * percent) + getR() + 0.5)));
 
-            int g = Math.max(0, Math.min(255, (int) (((255 - getG()) * percent) + getG() + 0.5)));
+            final int g = Math.max(0, Math.min(255, (int) (((255 - getG()) * percent) + getG() + 0.5)));
 
-            int b = Math.max(0, Math.min(255, (int) (((255 - getB()) * percent) + getB() + 0.5)));
+            final int b = Math.max(0, Math.min(255, (int) (((255 - getB()) * percent) + getB() + 0.5)));
 
             return new Color(r, g, b, getA());
         }
@@ -147,7 +147,7 @@ public class Color implements IColor
      *
      * @Deprecated
      * This is used internally. As public API use {@link Color#getRGB()} method.
-     * 
+     *
      * Note: Replaced by {@link ColorKeyRotor#next()} method.
      *
      * @return String
@@ -265,11 +265,11 @@ public class Color implements IColor
         // PUT hue.to.rgb(m1, m2, h-1/3) IN b
         // RETURN (r, g, b)
 
-        final double m2 = (l <= 0.5) ? (l * (s + 1)) : (l + s - l * s);
+        final double m2 = (l <= 0.5) ? (l * (s + 1)) : ((l + s) - (l * s));
 
-        final double m1 = l * 2 - m2;
+        final double m1 = (l * 2) - m2;
 
-        return new Color(fixRGB((int) Math.round(255 * hueToRGB(m1, m2, h + 1.0 / 3))), fixRGB((int) Math.round(255 * hueToRGB(m1, m2, h))), fixRGB((int) Math.round(255 * hueToRGB(m1, m2, h - 1.0 / 3))));
+        return new Color(fixRGB((int) Math.round(255 * hueToRGB(m1, m2, h + (1.0 / 3)))), fixRGB((int) Math.round(255 * hueToRGB(m1, m2, h))), fixRGB((int) Math.round(255 * hueToRGB(m1, m2, h - (1.0 / 3)))));
     }
 
     /**
@@ -285,7 +285,7 @@ public class Color implements IColor
      */
     public static Color fromColorString(final String cssColorString)
     {
-        String str = cssColorString.toLowerCase().replaceAll(" ", "");
+        final String str = cssColorString.toLowerCase().replaceAll(" ", "");
 
         try
         {
@@ -379,56 +379,68 @@ public class Color implements IColor
             }
             return null;// unknown format
         }
-        catch (NumberFormatException e)
+        catch (final NumberFormatException e)
         {
             return null;
         }
     }
 
-    private static final int intOrPct(String s, int max)
+    private static final int intOrPct(String s, final int max)
     {
         if (s.endsWith("%"))
         {
             s = s.substring(0, s.length() - 1);
 
-            double val = Double.parseDouble(s);
+            final double val = Double.parseDouble(s);
 
-            if (val < 0) return 0;
-
-            if (val >= 100) return max;
-
-            return (int) Math.round(val * max / 100.0);
+            if (val < 0)
+            {
+                return 0;
+            }
+            if (val >= 100)
+            {
+                return max;
+            }
+            return (int) Math.round((val * max) / 100.0);
         }
         else
         {
-            int val = Integer.parseInt(s);
+            final int val = Integer.parseInt(s);
 
-            if (val < 0) return 0;
-
-            if (val > max) return max;
-
+            if (val < 0)
+            {
+                return 0;
+            }
+            if (val > max)
+            {
+                return max;
+            }
             return val;
         }
     }
 
-    private static final double percentage(String s, double max)
+    private static final double percentage(String s, final double max)
     {
         if (s.endsWith("%"))
         {
             s = s.substring(0, s.length() - 1);
 
-            double val = Double.parseDouble(s);
+            final double val = Double.parseDouble(s);
 
-            if (val < 0) return 0;
-
-            if (val >= 100) return max;
-
-            return val * max / 100.0;
+            if (val < 0)
+            {
+                return 0;
+            }
+            if (val >= 100)
+            {
+                return max;
+            }
+            return (val * max) / 100.0;
         }
         throw new IllegalArgumentException("invalid percentage [" + s + "]");
     }
 
-    private static final double doubleOrPct(String s, double max)
+    private static final double doubleOrPct(final String s, final double max)
     {
         if (s.endsWith("%"))
         {
@@ -436,17 +448,21 @@ public class Color implements IColor
         }
         else
         {
-            double val = Double.parseDouble(s);
+            final double val = Double.parseDouble(s);
 
-            if (val < 0) return 0;
-
-            if (val > max) return max;
-
+            if (val < 0)
+            {
+                return 0;
+            }
+            if (val > max)
+            {
+                return max;
+            }
             return val;
         }
     }
 
-    private static final double hueOrPct(String s)
+    private static final double hueOrPct(final String s)
     {
         if (s.endsWith("%"))
         {
@@ -469,11 +485,11 @@ public class Color implements IColor
      */
     public static final String getRandomHexColor()
     {
-        int r = randomRGB();
+        final int r = randomRGB();
 
-        int g = randomRGB();
+        final int g = randomRGB();
 
-        int b = randomRGB();
+        final int b = randomRGB();
 
         return rgbToBrowserHexColor(r, g, b);
     }
@@ -537,7 +553,7 @@ public class Color implements IColor
         {
             return new Color(Integer.valueOf(r, 16), Integer.valueOf(g, 16), Integer.valueOf(b, 16));
         }
-        catch (NumberFormatException ignored)
+        catch (final NumberFormatException ignored)
         {
             return null;
         }
@@ -730,7 +746,7 @@ public class Color implements IColor
      * @param h
      * @return
      */
-    private static double hueToRGB(double m1, double m2, double h)
+    private static double hueToRGB(final double m1, final double m2, double h)
     {
         // see http://www.w3.org/TR/css3-color/
         //
@@ -742,23 +758,33 @@ public class Color implements IColor
         // IF h*3<2: RETURN m1+(m2-m1)*(2/3-h)*6
         // RETURN m1
 
-        if (h < 0) h++;
-
-        if (h > 1) h--;
-
-        if (h * 6 < 1) return m1 + (m2 - m1) * h * 6;
-
-        if (h * 2 < 1) return m2;
-
-        if (h * 3 < 2) return m1 + (m2 - m1) * (2.0 / 3 - h) * 6;
-
+        if (h < 0)
+        {
+            h++;
+        }
+        if (h > 1)
+        {
+            h--;
+        }
+        if ((h * 6) < 1)
+        {
+            return m1 + ((m2 - m1) * h * 6);
+        }
+        if ((h * 2) < 1)
+        {
+            return m2;
+        }
+        if ((h * 3) < 2)
+        {
+            return m1 + ((m2 - m1) * ((2.0 / 3) - h) * 6);
+        }
         return m1;
     }
 
     @Override
-    public boolean equals(Object other)
+    public boolean equals(final Object other)
     {
-        if (false == other instanceof Color)
+        if (false == (other instanceof Color))
         {
             return false;
         }
@@ -766,7 +792,7 @@ public class Color implements IColor
         {
             return true;
         }
-        Color that = ((Color) other);
+        final Color that = ((Color) other);
 
         return (that.getR() == getR()) && (that.getG() == getG()) && (that.getB() == getB()) && (that.getA() == getA());
     }
@@ -874,11 +900,11 @@ public class Color implements IColor
             }
             else if (g == vmax)
             {
-                h = (1.0 / 3.0) + delr - delb;
+                h = ((1.0 / 3.0) + delr) - delb;
             }
             else if (b == vmax)
             {
-                h = (2.0 / 3.0) + delg - delr;
+                h = ((2.0 / 3.0) + delg) - delr;
             }
             if (h < 0)
             {

@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.image.filter;
@@ -32,7 +32,7 @@ public class BumpImageDataFilter extends AbstractConvolveImageDataFilter<BumpIma
         super(ImageFilterType.BumpImageDataFilterType, -1, -1, 0, -1, 1, 1, 0, 1, 1);
     }
 
-    protected BumpImageDataFilter(JSONObject node, ValidationContext ctx) throws ValidationException
+    protected BumpImageDataFilter(final JSONObject node, final ValidationContext ctx) throws ValidationException
     {
         super(ImageFilterType.BumpImageDataFilterType, node, ctx);
     }
@@ -51,7 +51,7 @@ public class BumpImageDataFilter extends AbstractConvolveImageDataFilter<BumpIma
         }
 
         @Override
-        public BumpImageDataFilter create(JSONObject node, ValidationContext ctx) throws ValidationException
+        public BumpImageDataFilter create(final JSONObject node, final ValidationContext ctx) throws ValidationException
         {
             return new BumpImageDataFilter(node, ctx);
         }

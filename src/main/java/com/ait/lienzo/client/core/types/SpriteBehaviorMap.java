@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.types;
@@ -65,9 +65,9 @@ public final class SpriteBehaviorMap
         }
         final BoundingBoxArrayJSO ajso = BoundingBoxArrayJSO.make();
 
-        for (int i = 0; i < frames.length; i++)
+        for (final BoundingBox frame : frames)
         {
-            ajso.add(frames[i].getJSO());
+            ajso.add(frame.getJSO());
         }
         m_jso.put(behavior, ajso);
 
@@ -88,7 +88,7 @@ public final class SpriteBehaviorMap
         }
         final BoundingBoxArrayJSO ajso = BoundingBoxArrayJSO.make();
 
-        for (BoundingBox frame : frames)
+        for (final BoundingBox frame : frames)
         {
             ajso.add(frame.getJSO());
         }
@@ -99,7 +99,7 @@ public final class SpriteBehaviorMap
 
     public final BoundingBox[] getFramesForBehavior(final String behavior)
     {
-        BoundingBoxArrayJSO ajso = m_jso.get(StringOps.requireTrimOrNull(behavior, "behavior is null or empty"));
+        final BoundingBoxArrayJSO ajso = m_jso.get(StringOps.requireTrimOrNull(behavior, "behavior is null or empty"));
 
         if (ajso != null)
         {

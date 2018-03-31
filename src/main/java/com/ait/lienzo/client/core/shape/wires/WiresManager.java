@@ -1,24 +1,24 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-// TODO - review DSJ
 
 package com.ait.lienzo.client.core.shape.wires;
 
 import com.ait.lienzo.client.core.event.NodeDragEndEvent;
 import com.ait.lienzo.client.core.event.NodeDragEndHandler;
+import com.ait.lienzo.client.core.shape.Group;
 import com.ait.lienzo.client.core.shape.Layer;
 import com.ait.lienzo.client.core.shape.wires.event.WiresResizeEndEvent;
 import com.ait.lienzo.client.core.shape.wires.event.WiresResizeEndHandler;
@@ -39,7 +39,7 @@ import com.ait.tooling.nativetools.client.event.HandlerRegistrationManager;
 
 public final class WiresManager
 {
-    private static final NFastStringMap<WiresManager>        MANAGER_MAP           = new NFastStringMap<WiresManager>();
+    private static final NFastStringMap<WiresManager>        MANAGER_MAP           = new NFastStringMap<>();
 
     private final MagnetManager                              m_magnetManager       = new MagnetManager();
 
@@ -49,11 +49,11 @@ public final class WiresManager
 
     private final AlignAndDistribute                         m_index;
 
-    private final NFastStringMap<WiresShape>                 m_shapesMap           = new NFastStringMap<WiresShape>();
+    private final NFastStringMap<WiresShape>                 m_shapesMap           = new NFastStringMap<>();
 
-    private final NFastStringMap<HandlerRegistrationManager> m_shapeHandlersMap    = new NFastStringMap<HandlerRegistrationManager>();
+    private final NFastStringMap<HandlerRegistrationManager> m_shapeHandlersMap    = new NFastStringMap<>();
 
-    private final NFastArrayList<WiresConnector>             m_connectorList       = new NFastArrayList<WiresConnector>();
+    private final NFastArrayList<WiresConnector>             m_connectorList       = new NFastArrayList<>();
 
     private final WiresLayer                                 m_layer;
 
@@ -69,9 +69,9 @@ public final class WiresManager
 
     private boolean                                          m_spliceEnabled;
 
-    public static final WiresManager get(Layer layer)
+    public static final WiresManager get(final Layer layer)
     {
-        String uuid = layer.uuid();
+        final String uuid = layer.uuid();
 
         WiresManager manager = MANAGER_MAP.get(uuid);
 
@@ -89,16 +89,19 @@ public final class WiresManager
     private WiresManager(final Layer layer)
     {
         m_layer = new WiresLayer(layer);
+
         m_layer.setWiresManager(this);
+
         layer.setOnLayerBeforeDraw(new LinePreparer(this));
 
         m_index = new AlignAndDistribute(layer);
+
         m_handler = null;
     }
 
     public void enableSelectionManager()
     {
-        if (m_selectionManager==null)
+        if (m_selectionManager == null)
         {
             m_selectionManager = new SelectionManager(this);
         }
@@ -109,35 +112,34 @@ public final class WiresManager
         return m_spliceEnabled;
     }
 
-    public void setSpliceEnabled(boolean spliceEnabled)
+    public void setSpliceEnabled(final boolean spliceEnabled)
     {
         m_spliceEnabled = spliceEnabled;
     }
 
     public static class LinePreparer implements OnLayerBeforeDraw
     {
-        private WiresManager m_wiresManager;
+        private final WiresManager m_wiresManager;
 
-        public LinePreparer(WiresManager wiresManager)
+        public LinePreparer(final WiresManager wiresManager)
         {
             m_wiresManager = wiresManager;
         }
 
         @Override
-        public boolean onLayerBeforeDraw(Layer layer)
+        public boolean onLayerBeforeDraw(final Layer layer)
         {
             // this is necessary as the line decorator cannot be determined until line parse has been attempted
             // as this is expensive it's delayed until the last minute before draw. As drawing order is not guaranteed
             // this method is used to force a parse on any line that has been refreshed. Refreshed means it's points where
             // changed and thus will be reparsed.
-            for (WiresConnector c : m_wiresManager.getConnectorList())
+            for (final WiresConnector c : m_wiresManager.getConnectorList())
             {
                 if (WiresConnector.updateHeadTailForRefreshedConnector(c))
                 {
                     return false;
                 }
             }
-
             return true;
         }
     }
@@ -161,61 +163,69 @@ public final class WiresManager
     {
         shape.setWiresManager(this);
 
-        final WiresShapeHandler handler = new WiresShapeHandler(getControlFactory().newShapeControl(shape, this),
-                                                                getControlFactory().newShapeHighlight(this),
-                                                                this);
+        final WiresShapeHandler handler = new WiresShapeHandler(getControlFactory().newShapeControl(shape, this), getControlFactory().newShapeHighlight(this), this);
 
         if (addIntoIndex)
         {
             // Shapes added to the align and distribute index.
-            final AlignAndDistributeControl alignAndDistrControl = addToIndex(shape);
-            handler.getControl().setAlignAndDistributeControl(alignAndDistrControl);
+            handler.getControl().setAlignAndDistributeControl(addToIndex(shape));
 
             shape.addWiresResizeEndHandler(new WiresResizeEndHandler()
             {
                 @Override
-                public void onShapeResizeEnd(WiresResizeEndEvent event)
+                public void onShapeResizeEnd(final WiresResizeEndEvent event)
                 {
                     removeFromIndex(shape);
-                    final AlignAndDistributeControl controls = addToIndex(shape);
-                    handler.getControl().setAlignAndDistributeControl(controls);
+
+                    handler.getControl().setAlignAndDistributeControl(addToIndex(shape));
                 }
             });
         }
-
         final HandlerRegistrationManager registrationManager = createHandlerRegistrationManager();
 
-        setWiresShapeHandler( shape, registrationManager, handler );
+        setWiresShapeHandler(shape, registrationManager, handler);
 
         // Shapes added to the canvas layer by default.
         getLayer().add(shape);
 
         final String uuid = shape.uuid();
+
         m_shapesMap.put(uuid, shape);
+
         m_shapeHandlersMap.put(uuid, registrationManager);
 
         return handler.getControl();
     }
 
-    public static void setWiresShapeHandler( final WiresShape shape,
-                                      final HandlerRegistrationManager registrationManager,
-                                      final WiresShapeHandler handler )
+    public static void setWiresShapeHandler(final WiresShape shape, final HandlerRegistrationManager registrationManager, final WiresShapeHandler handler)
     {
-        registrationManager.register(shape.getGroup().addNodeMouseClickHandler(handler));
-        registrationManager.register(shape.getGroup().addNodeMouseDownHandler(handler));
-        registrationManager.register(shape.getGroup().addNodeMouseUpHandler(handler));
-        registrationManager.register(shape.getGroup().addNodeDragEndHandler(handler));
-        shape.getGroup().setDragConstraints(handler);
+        final Group group = shape.getGroup();
+
+        registrationManager.register(group.addNodeMouseClickHandler(handler));
+
+        registrationManager.register(group.addNodeMouseDownHandler(handler));
+
+        registrationManager.register(group.addNodeMouseUpHandler(handler));
+
+        registrationManager.register(group.addNodeDragEndHandler(handler));
+
+        group.setDragConstraints(handler);
+
         shape.setWiresShapeControl(handler.getControl());
     }
 
     public void deregister(final WiresShape shape)
     {
         final String uuid = shape.uuid();
+
         removeHandlers(uuid);
+
         removeFromIndex(shape);
+
         shape.destroy();
+
         getLayer().remove(shape);
+
         m_shapesMap.remove(uuid);
     }
 
@@ -229,9 +239,10 @@ public final class WiresManager
 
         final WiresConnector.WiresConnectorHandler handler = new WiresConnector.WiresConnectorHandlerImpl(connector, this);
 
-        connector.setWiresConnectorHandler( m_registrationManager, handler );
+        connector.setWiresConnectorHandler(m_registrationManager, handler);
 
         getConnectorList().add(connector);
+
         m_shapeHandlersMap.put(uuid, m_registrationManager);
 
         connector.addToLayer(getLayer().getLayer());
@@ -242,15 +253,22 @@ public final class WiresManager
     public void deregister(final WiresConnector connector)
     {
         connector.removeFromLayer();
+
         final String uuid = connector.uuid();
+
         removeHandlers(uuid);
+
         connector.destroy();
+
         getConnectorList().remove(connector);
     }
 
-    public void resetContext() {
-        if (null != m_handler) {
+    public void resetContext()
+    {
+        if (null != m_handler)
+        {
             m_handler.reset();
+
             m_handler = null;
         }
     }
@@ -299,7 +317,7 @@ public final class WiresManager
         return m_connectionAcceptor;
     }
 
-    public void setConnectionAcceptor(IConnectionAcceptor connectionAcceptor)
+    public void setConnectionAcceptor(final IConnectionAcceptor connectionAcceptor)
     {
         m_connectionAcceptor = connectionAcceptor;
     }
@@ -309,11 +327,12 @@ public final class WiresManager
         return m_containmentAcceptor;
     }
 
-    public IDockingAcceptor getDockingAcceptor() {
+    public IDockingAcceptor getDockingAcceptor()
+    {
         return m_dockingAcceptor;
     }
 
-    public void setContainmentAcceptor(IContainmentAcceptor containmentAcceptor)
+    public void setContainmentAcceptor(final IContainmentAcceptor containmentAcceptor)
     {
         if (containmentAcceptor == null)
         {
@@ -322,30 +341,33 @@ public final class WiresManager
         m_containmentAcceptor = containmentAcceptor;
     }
 
-    public void setDockingAcceptor(IDockingAcceptor dockingAcceptor)
+    public void setDockingAcceptor(final IDockingAcceptor dockingAcceptor)
     {
         if (dockingAcceptor == null)
         {
             throw new IllegalArgumentException("DockingAcceptor cannot be null");
         }
-        this.m_dockingAcceptor = dockingAcceptor;
+        m_dockingAcceptor = dockingAcceptor;
     }
 
-    public void setLocationAcceptor(ILocationAcceptor m_locationAcceptor) {
-        if (m_locationAcceptor == null)
+    public void setLocationAcceptor(final ILocationAcceptor locationAcceptor)
+    {
+        if (locationAcceptor == null)
         {
             throw new IllegalArgumentException("LocationAcceptor cannot be null");
         }
-        this.m_locationAcceptor = m_locationAcceptor;
+        m_locationAcceptor = locationAcceptor;
     }
 
-    public ILocationAcceptor getLocationAcceptor() {
+    public ILocationAcceptor getLocationAcceptor()
+    {
         return m_locationAcceptor;
     }
 
     private void removeHandlers(final String uuid)
     {
         final HandlerRegistrationManager m_registrationManager = m_shapeHandlersMap.get(uuid);
+
         if (null != m_registrationManager)
         {
             m_registrationManager.removeHandler();
@@ -367,13 +389,14 @@ public final class WiresManager
         return new HandlerRegistrationManager();
     }
 
-    public static abstract class WiresDragHandler implements DragConstraintEnforcer,
-                                                      NodeDragEndHandler {
-
+    public static abstract class WiresDragHandler implements DragConstraintEnforcer, NodeDragEndHandler
+    {
         private final WiresManager wiresManager;
-        private DragContext dragContext;
 
-        protected WiresDragHandler(final WiresManager wiresManager) {
+        private DragContext        dragContext;
+
+        protected WiresDragHandler(final WiresManager wiresManager)
+        {
             this.wiresManager = wiresManager;
         }
 
@@ -384,46 +407,60 @@ public final class WiresManager
         protected abstract void doOnNodeDragEnd(NodeDragEndEvent event);
 
         @Override
-        public void startDrag(DragContext dragContext) {
+        public void startDrag(final DragContext dragContext)
+        {
             this.dragContext = dragContext;
+
             wiresManager.m_handler = this;
         }
 
         @Override
-        public boolean adjust(Point2D dxy) {
-            if (null == dragContext) {
+        public boolean adjust(final Point2D dxy)
+        {
+            if (null == dragContext)
+            {
                 dxy.setX(0);
+
                 dxy.setY(0);
+
                 return true;
             }
             return doAdjust(dxy);
         }
 
         @Override
-        public void onNodeDragEnd(NodeDragEndEvent event) {
-            if (null != dragContext) {
+        public void onNodeDragEnd(final NodeDragEndEvent event)
+        {
+            if (null != dragContext)
+            {
                 doOnNodeDragEnd(event);
+
                 this.dragContext = null;
+
                 wiresManager.m_handler = null;
             }
         }
 
-        public void reset() {
-            if (null != dragContext) {
+        public void reset()
+        {
+            if (null != dragContext)
+            {
                 doReset();
             }
         }
 
-        protected void doReset() {
+        protected void doReset()
+        {
             dragContext.reset();
+
             dragContext = null;
+
             getControl().reset();
         }
 
-        protected WiresManager getWiresManager() {
+        protected WiresManager getWiresManager()
+        {
             return wiresManager;
         }
     }
-
-
 }

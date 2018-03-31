@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.types;
@@ -26,7 +26,7 @@ import com.google.gwt.json.client.JSONArray;
  * <p>
  * In general, an affine transformation is a composition of rotations, translations (i.e. offsets), dilations (i.e. scaling), and shears.
  * The underlying matrix is a 3x3 matrix of which the last 3 coordinates are hardcoded, so internally we only store 6 coordinates.
- * 
+ *
  * @see <a href="http://en.wikipedia.org/wiki/Affine_transformation">http://en.wikipedia.org/wiki/Affine_transformation</a>
  * @see <a href="http://docs.oracle.com/javase/6/docs/api/java/awt/geom/AffineTransform.html">http://docs.oracle.com/javase/6/docs/api/java/awt/geom/AffineTransform.html</a>
  * @see <a href="http://mathworld.wolfram.com/AffineTransformation.html">http://mathworld.wolfram.com/AffineTransformation.html</a>
@@ -64,7 +64,7 @@ public final class Transform
     /**
      * Constructs a new <code>Transform</code> from 6 floating point
      * values representing the 6 specifiable entries of the 3x3
-     * transformation matrix. 
+     * transformation matrix.
      *
      * @param m an array with [m00, m10, m01, m11, m02, m12] where:
      * @param m00 the X coordinate scaling element of the 3x3 matrix
@@ -81,7 +81,7 @@ public final class Transform
 
     /**
      * Constructs a Transform from a TransformJSO. Used internally.
-     * 
+     *
      * @param jso TransformJSO
      */
     public Transform(final TransformJSO jso)
@@ -102,9 +102,9 @@ public final class Transform
     }
 
     /**
-     * Returns a copy of this Transform. 
+     * Returns a copy of this Transform.
      * The original Transform is not affected.
-     * 
+     *
      * @return Transform
      */
     public Transform copy()
@@ -115,7 +115,7 @@ public final class Transform
     /**
      * Concatenates this transform with a translation transformation.
      * It basically moves a node with the specified offset (tx,ty).
-     * 
+     *
      * This is equivalent to calling concatenate(T), where T is an
      * <code>Transform</code> represented by the following matrix:
      * <pre>
@@ -127,7 +127,7 @@ public final class Transform
      * X axis direction
      * @param ty the distance by which coordinates are translated in the
      * Y axis direction
-     * 
+     *
      * @return this Transform
      */
     public final Transform translate(final double tx, final double ty)
@@ -146,10 +146,10 @@ public final class Transform
      *      [   0    sy   0   ]
      *      [   0    0    1   ]
      * </pre>
-     * @param sx the factor by which coordinates are scaled along the   
+     * @param sx the factor by which coordinates are scaled along the
      * X axis direction
      * @param sy the factor by which coordinates are scaled along the
-     * Y axis direction 
+     * Y axis direction
      * @return this Transform
      */
     public final Transform scale(final double sx, final double sy)
@@ -162,9 +162,9 @@ public final class Transform
     /**
      * Concatenates this transform with a scaling transformation.
      * Same as <pre>scale(scaleFactor, scaleFactor)</pre>
-     * 
+     *
      * @see #scale(double, double)
-     * @param scaleFactor used as the scale factor for both x and y directions 
+     * @param scaleFactor used as the scale factor for both x and y directions
      * @return this Transform
      */
     public final Transform scale(final double scaleFactor)
@@ -207,9 +207,9 @@ public final class Transform
      * </pre>
      * Rotating by a positive angle theta rotates points on the positive
      * X axis toward the positive Y axis.
-     * 
+     *
      * @param theta the angle of rotation measured in radians
-     * 
+     *
      * @return this Transform
      */
     public final Transform rotate(final double theta)
@@ -221,9 +221,9 @@ public final class Transform
 
     /**
      * Same as {@link #concatenate(Transform)}
-     * 
+     *
      * @param transform
-     * 
+     *
      * @return this Transform
      */
     public final Transform multiply(final Transform transform)
@@ -242,7 +242,7 @@ public final class Transform
      * Transforming a point p by the updated transform Cx' is
      * equivalent to first transforming p by <code>Tx</code> and then
      * transforming the result by the original transform Cx like this:
-     * Cx'(p) = Cx(Tx(p))  
+     * Cx'(p) = Cx(Tx(p))
      * In matrix notation, if this transform Cx is
      * represented by the matrix [this] and <code>Tx</code> is represented
      * by the matrix [Tx] then this method does the following:
@@ -308,7 +308,7 @@ public final class Transform
     }
 
     /**
-     * Concatenates this transform with a translation, a rotation and another translation transformation, 
+     * Concatenates this transform with a translation, a rotation and another translation transformation,
      * resulting in an scaling with respect to the specified point (x,y).
      * <p>
      * Equivalent to:
@@ -355,11 +355,11 @@ public final class Transform
     }
 
     /**
-    * Returns the X coordinate shearing element (m01) of the 3x3
-    * affine transformation matrix.
-    * @return a double value that is the X coordinate of the shearing
-    *  element of the affine transformation matrix.
-    */
+     * Returns the X coordinate shearing element (m01) of the 3x3
+     * affine transformation matrix.
+     * @return a double value that is the X coordinate of the shearing
+     *  element of the affine transformation matrix.
+     */
     public double getShearX()
     {
         return get(2);
@@ -391,7 +391,7 @@ public final class Transform
      * Returns the Y coordinate of the translation element (m12) of the
      * 3x3 affine transformation matrix.
      * @return a double value that is the Y coordinate of the translation
-     *  element of the affine transformation matrix. 
+     *  element of the affine transformation matrix.
      */
     public double getTranslateY()
     {
@@ -400,7 +400,7 @@ public final class Transform
 
     /**
      * Returns the underlying matrix values.
-     * 
+     *
      * @param i index into the array [m00, m10, m01, m11, m02, m12]
      * @return matrix value
      */
@@ -457,7 +457,7 @@ public final class Transform
     /**
      * Creates a Transform for a viewport. The visible area is defined by the rectangle
      * [x, y, width, height] and the viewport's width and height.
-     * 
+     *
      * @param x X coordinate of the top-left corner of the new view area.
      * @param y Y coordinate of the top-left corner of the new view area.
      * @param width Width of the new view area.
@@ -466,15 +466,15 @@ public final class Transform
      * @param viewportHeight Height of the Viewport.
      * @return Transform
      */
-    public static Transform createViewportTransform(double x, double y, double width, double height, double viewportWidth, double viewportHeight)
+    public static Transform createViewportTransform(double x, double y, final double width, final double height, final double viewportWidth, final double viewportHeight)
     {
-        if (width <= 0 || height <= 0)
+        if ((width <= 0) || (height <= 0))
         {
             return null;
         }
-        double scaleX = viewportWidth / width;
+        final double scaleX = viewportWidth / width;
 
-        double scaleY = viewportHeight / height;
+        final double scaleY = viewportHeight / height;
 
         double scale;
 
@@ -484,7 +484,7 @@ public final class Transform
 
             scale = scaleY;
 
-            double dw = viewportWidth / scale - width;
+            final double dw = (viewportWidth / scale) - width;
 
             x -= dw / 2;
         }
@@ -492,15 +492,15 @@ public final class Transform
         {
             scale = scaleX;
 
-            double dh = viewportHeight / scale - height;
+            final double dh = (viewportHeight / scale) - height;
 
             y -= dh / 2;
         }
         // x' = m[0] + x*m[1] y' = m[2] + y*m[3]
 
-        double m02 = -x * scale;
+        final double m02 = -x * scale;
 
-        double m12 = -y * scale;
+        final double m12 = -y * scale;
 
         return new Transform(scale, 0, 0, scale, m02, m12);
     }
@@ -508,7 +508,7 @@ public final class Transform
     /**
      * Javascript class to store the Transform matrix values.
      * It's an array with 6 values:
-     * 
+     *
      * [0] m00, [1] m10, [2] m01, [3] m11, [4] m02, [5] m12
      *
      */

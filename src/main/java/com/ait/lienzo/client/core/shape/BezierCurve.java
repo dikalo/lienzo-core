@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.shape;
@@ -37,7 +37,7 @@ public class BezierCurve extends AbstractMultiPointShape<BezierCurve>
 {
     /**
      * Constructor. Creates an instance of a cubic bezier curve.
-     * 
+     *
      * @param sx x value for the first anchor point
      * @param sy y value for the first anchor point
      * @param c1x x value for the first control point
@@ -88,7 +88,7 @@ public class BezierCurve extends AbstractMultiPointShape<BezierCurve>
 
     /**
      * Draws this Bezier Curve.
-     * 
+     *
      * @param context the {@link Context2D} used to draw this bezier curve.
      */
     @Override
@@ -119,7 +119,7 @@ public class BezierCurve extends AbstractMultiPointShape<BezierCurve>
 
     /**
      * Gets this curve's control points.
-     * 
+     *
      * @return {@link Point2DArray}
      */
     public Point2DArray getControlPoints()
@@ -129,11 +129,11 @@ public class BezierCurve extends AbstractMultiPointShape<BezierCurve>
 
     /**
      * Sets the control points for this curve.
-     * 
+     *
      * @param points
      *            A {@link Point2DArray} containing the control points in the following order:
      *            first anchor, first control point, second control point, second anchor
-     *       
+     *
      * @return this BezierCurve
      */
     public BezierCurve setControlPoints(final Point2DArray points)
@@ -144,7 +144,7 @@ public class BezierCurve extends AbstractMultiPointShape<BezierCurve>
     }
 
     @Override
-    public BezierCurve setPoint2DArray(Point2DArray points)
+    public BezierCurve setPoint2DArray(final Point2DArray points)
     {
         return setControlPoints(points);
     }

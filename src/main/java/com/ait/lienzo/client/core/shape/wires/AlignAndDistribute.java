@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.shape.wires;
@@ -58,67 +58,75 @@ import com.ait.lienzo.client.core.types.Point2DArray;
  */
 public class AlignAndDistribute
 {
-    private Map<Double, LinkedList<AlignAndDistributeControl>> m_leftIndex;
+    private final Map<Double, LinkedList<AlignAndDistributeControl>> m_leftIndex;
 
-    private Map<Double, LinkedList<AlignAndDistributeControl>> m_hCenterIndex;
+    private final Map<Double, LinkedList<AlignAndDistributeControl>> m_hCenterIndex;
 
-    private Map<Double, LinkedList<AlignAndDistributeControl>> m_rightIndex;
+    private final Map<Double, LinkedList<AlignAndDistributeControl>> m_rightIndex;
 
-    private Map<Double, LinkedList<AlignAndDistributeControl>> m_topIndex;
+    private final Map<Double, LinkedList<AlignAndDistributeControl>> m_topIndex;
 
-    private Map<Double, LinkedList<AlignAndDistributeControl>> m_vCenterIndex;
+    private final Map<Double, LinkedList<AlignAndDistributeControl>> m_vCenterIndex;
 
-    private Map<Double, LinkedList<AlignAndDistributeControl>> m_bottomIndex;
+    private final Map<Double, LinkedList<AlignAndDistributeControl>> m_bottomIndex;
 
-    private Map<Double, LinkedList<DistributionEntry>>         m_leftDistIndex;
+    private final Map<Double, LinkedList<DistributionEntry>>         m_leftDistIndex;
 
-    private Map<Double, LinkedList<DistributionEntry>>         m_hCenterDistIndex;
+    private final Map<Double, LinkedList<DistributionEntry>>         m_hCenterDistIndex;
 
-    private Map<Double, LinkedList<DistributionEntry>>         m_rightDistIndex;
+    private final Map<Double, LinkedList<DistributionEntry>>         m_rightDistIndex;
 
-    private Map<Double, LinkedList<DistributionEntry>>         m_topDistIndex;
+    private final Map<Double, LinkedList<DistributionEntry>>         m_topDistIndex;
 
-    private Map<Double, LinkedList<DistributionEntry>>         m_vCenterDistIndex;
+    private final Map<Double, LinkedList<DistributionEntry>>         m_vCenterDistIndex;
 
-    private Map<Double, LinkedList<DistributionEntry>>         m_bottomDistIndex;
+    private final Map<Double, LinkedList<DistributionEntry>>         m_bottomDistIndex;
 
-    private DefaultAlignAndDistributeMatchesCallback           m_alignmentCallback;
+    private final DefaultAlignAndDistributeMatchesCallback           m_alignmentCallback;
 
-    private Map<String, AlignAndDistributeControl>             m_shapes         = new HashMap<String, AlignAndDistributeControl>();
+    private final Map<String, AlignAndDistributeControl>             m_shapes         = new HashMap<>();
 
-    private int                                                m_circa          = 4;
+    private int                                                      m_circa          = 4;
 
-    protected boolean                                          m_snap           = true;
+    protected boolean                                                m_snap           = true;
 
-    protected boolean                                          m_drawGuideLines = true;
+    protected boolean                                                m_drawGuideLines = true;
 
-    public AlignAndDistribute(Layer layer)
+    public AlignAndDistribute(final Layer layer)
     {
-        m_leftIndex = new HashMap<Double, LinkedList<AlignAndDistributeControl>>();
-        m_hCenterIndex = new HashMap<Double, LinkedList<AlignAndDistributeControl>>();
-        m_rightIndex = new HashMap<Double, LinkedList<AlignAndDistributeControl>>();
+        m_leftIndex = new HashMap<>();
 
-        m_topIndex = new HashMap<Double, LinkedList<AlignAndDistributeControl>>();
-        m_vCenterIndex = new HashMap<Double, LinkedList<AlignAndDistributeControl>>();
-        m_bottomIndex = new HashMap<Double, LinkedList<AlignAndDistributeControl>>();
+        m_hCenterIndex = new HashMap<>();
+
+        m_rightIndex = new HashMap<>();
+
+        m_topIndex = new HashMap<>();
+
+        m_vCenterIndex = new HashMap<>();
+
+        m_bottomIndex = new HashMap<>();
 
         m_alignmentCallback = new DefaultAlignAndDistributeMatchesCallback(layer);
 
-        m_leftDistIndex = new HashMap<Double, LinkedList<DistributionEntry>>();
-        m_hCenterDistIndex = new HashMap<Double, LinkedList<DistributionEntry>>();
-        m_rightDistIndex = new HashMap<Double, LinkedList<DistributionEntry>>();
+        m_leftDistIndex = new HashMap<>();
 
-        m_topDistIndex = new HashMap<Double, LinkedList<DistributionEntry>>();
-        m_vCenterDistIndex = new HashMap<Double, LinkedList<DistributionEntry>>();
-        m_bottomDistIndex = new HashMap<Double, LinkedList<DistributionEntry>>();
+        m_hCenterDistIndex = new HashMap<>();
+
+        m_rightDistIndex = new HashMap<>();
+
+        m_topDistIndex = new HashMap<>();
+
+        m_vCenterDistIndex = new HashMap<>();
+
+        m_bottomDistIndex = new HashMap<>();
     }
 
-    public static BoundingBox getBoundingBox(IDrawable<?> prim)
+    public static BoundingBox getBoundingBox(final IDrawable<?> prim)
     {
         return prim.getComputedBoundingPoints().getBoundingBox();
     }
 
-    public static Attributes getAttributes(IPrimitive<?> prim)
+    public static Attributes getAttributes(final IPrimitive<?> prim)
     {
         return prim.getAttributes();
     }
@@ -128,7 +136,7 @@ public class AlignAndDistribute
         return m_alignmentCallback.getStrokeWidth();
     }
 
-    public void setStrokeWidth(double strokeWidth)
+    public void setStrokeWidth(final double strokeWidth)
     {
         m_alignmentCallback.setStrokeWidth(strokeWidth);
     }
@@ -138,7 +146,7 @@ public class AlignAndDistribute
         return m_alignmentCallback.getStrokeColor();
     }
 
-    public void setStrokeColor(String strokeColor)
+    public void setStrokeColor(final String strokeColor)
     {
         m_alignmentCallback.setStrokeColor(strokeColor);
     }
@@ -148,7 +156,7 @@ public class AlignAndDistribute
         return m_alignmentCallback.getDashArray();
     }
 
-    public void setDashArray(DashArray dashArray)
+    public void setDashArray(final DashArray dashArray)
     {
         m_alignmentCallback.setDashArray(dashArray);
     }
@@ -158,7 +166,7 @@ public class AlignAndDistribute
         return m_circa;
     }
 
-    public void setSnapCirca(int circa)
+    public void setSnapCirca(final int circa)
     {
         m_circa = circa;
     }
@@ -168,7 +176,7 @@ public class AlignAndDistribute
         return m_snap;
     }
 
-    public void setSnap(boolean snap)
+    public void setSnap(final boolean snap)
     {
         m_snap = snap;
     }
@@ -178,17 +186,17 @@ public class AlignAndDistribute
         return m_drawGuideLines;
     }
 
-    public void setDrawGuideLines(boolean drawGuideLines)
+    public void setDrawGuideLines(final boolean drawGuideLines)
     {
         m_drawGuideLines = drawGuideLines;
     }
 
-    public AlignAndDistributeControl getShapeControl(IPrimitive<?> prim)
+    public AlignAndDistributeControl getShapeControl(final IPrimitive<?> prim)
     {
         return m_shapes.get(prim.uuid());
     }
 
-    public AlignAndDistributeControl addShape(IDrawable<?> group)
+    public AlignAndDistributeControl addShape(final IDrawable<?> group)
     {
         final String uuid = group.uuid();
 
@@ -198,14 +206,15 @@ public class AlignAndDistribute
         if (null == handler)
         {
             handler = new AlignAndDistributeControlImpl((IPrimitive<?>) group, this, m_alignmentCallback, group.getBoundingBoxAttributes());
+
             m_shapes.put(uuid, handler);
         }
         return handler;
     }
 
-    public void removeShape(IDrawable<?> shape)
+    public void removeShape(final IDrawable<?> shape)
     {
-        AlignAndDistributeControl handler = m_shapes.get(shape.uuid());
+        final AlignAndDistributeControl handler = m_shapes.get(shape.uuid());
 
         if (null != handler)
         {
@@ -227,26 +236,26 @@ public class AlignAndDistribute
         return m_shapes.get(uuid);
     }
 
-    public void addAlignIndexEntry(Map<Double, LinkedList<AlignAndDistributeControl>> index, AlignAndDistributeControl handler, double pos)
+    public void addAlignIndexEntry(final Map<Double, LinkedList<AlignAndDistributeControl>> index, final AlignAndDistributeControl handler, final double pos)
     {
-        double rounded = round(pos);
+        final double rounded = round(pos);
 
         LinkedList<AlignAndDistributeControl> bucket = index.get(rounded);
 
         if (bucket == null)
         {
-            bucket = new LinkedList<AlignAndDistributeControl>();
+            bucket = new LinkedList<>();
 
             index.put(rounded, bucket);
         }
         bucket.add(handler);
     }
 
-    public void removeAlignIndexEntry(Map<Double, LinkedList<AlignAndDistributeControl>> index, AlignAndDistributeControl handler, double pos)
+    public void removeAlignIndexEntry(final Map<Double, LinkedList<AlignAndDistributeControl>> index, final AlignAndDistributeControl handler, final double pos)
     {
-        double rounded = round(pos);
+        final double rounded = round(pos);
 
-        LinkedList<AlignAndDistributeControl> bucket = index.get(rounded);
+        final LinkedList<AlignAndDistributeControl> bucket = index.get(rounded);
 
         bucket.remove(handler);
 
@@ -256,22 +265,22 @@ public class AlignAndDistribute
         }
     }
 
-    public void addDistIndexEntry(Map<Double, LinkedList<DistributionEntry>> index, DistributionEntry dist)
+    public void addDistIndexEntry(final Map<Double, LinkedList<DistributionEntry>> index, final DistributionEntry dist)
     {
         LinkedList<DistributionEntry> bucket = index.get(dist.getPoint());
 
         if (bucket == null)
         {
-            bucket = new LinkedList<DistributionEntry>();
+            bucket = new LinkedList<>();
 
             index.put(dist.getPoint(), bucket);
         }
         bucket.add(dist);
     }
 
-    public void removeDistIndexEntry(Map<Double, LinkedList<DistributionEntry>> index, DistributionEntry dist)
+    public void removeDistIndexEntry(final Map<Double, LinkedList<DistributionEntry>> index, final DistributionEntry dist)
     {
-        LinkedList<DistributionEntry> bucket = index.get(dist.getPoint());
+        final LinkedList<DistributionEntry> bucket = index.get(dist.getPoint());
 
         bucket.remove(dist);
 
@@ -281,19 +290,20 @@ public class AlignAndDistribute
         }
     }
 
-    public void removeDistIndex(AlignAndDistributeControl handler)
+    public void removeDistIndex(final AlignAndDistributeControl handler)
     {
         removeHorizontalDistIndex(handler);
 
         removeVerticalDistIndex(handler);
     }
 
-    public void removeHorizontalDistIndex(AlignAndDistributeControl handler)
+    public void removeHorizontalDistIndex(final AlignAndDistributeControl handler)
     {
-        for (DistributionEntry dist : handler.getHorizontalDistributionEntries())
+        for (final DistributionEntry dist : handler.getHorizontalDistributionEntries())
         {
-            AlignAndDistributeControl h1 = dist.getShape1();
-            AlignAndDistributeControl h2 = dist.getShape2();
+            final AlignAndDistributeControl h1 = dist.getShape1();
+
+            final AlignAndDistributeControl h2 = dist.getShape2();
 
             // make sure we don't remove from handler, or it will remove from the collection currently being iterated.
             if (handler == h1)
@@ -320,12 +330,13 @@ public class AlignAndDistribute
         handler.getHorizontalDistributionEntries().clear();
     }
 
-    public void removeVerticalDistIndex(AlignAndDistributeControl handler)
+    public void removeVerticalDistIndex(final AlignAndDistributeControl handler)
     {
-        for (DistributionEntry dist : handler.getVerticalDistributionEntries())
+        for (final DistributionEntry dist : handler.getVerticalDistributionEntries())
         {
-            AlignAndDistributeControl h1 = dist.getShape1();
-            AlignAndDistributeControl h2 = dist.getShape2();
+            final AlignAndDistributeControl h1 = dist.getShape1();
+
+            final AlignAndDistributeControl h2 = dist.getShape2();
 
             // make sure we don't remove from handler, or it will remove from the collection currently being iterated.
             if (handler == h1)
@@ -336,7 +347,6 @@ public class AlignAndDistribute
             {
                 h1.getVerticalDistributionEntries().remove(dist);
             }
-
             switch (dist.getDistributionType())
             {
                 case DistributionEntry.TOP_DIST:
@@ -353,65 +363,81 @@ public class AlignAndDistribute
         handler.getVerticalDistributionEntries().clear();
     }
 
-    public void buildDistIndex(AlignAndDistributeControl handler)
+    public void buildDistIndex(final AlignAndDistributeControl handler)
     {
         buildHorizontalDistIndex(handler);
 
         buildVerticalDistIndex(handler);
     }
 
-    public void buildHorizontalDistIndex(AlignAndDistributeControl handler)
+    public void buildHorizontalDistIndex(final AlignAndDistributeControl handler)
     {
-        double left = round(handler.getLeft());
+        final double left = round(handler.getLeft());
 
-        double right = round(handler.getRight());
+        final double right = round(handler.getRight());
 
-        for (AlignAndDistributeControl otherH : m_shapes.values())
+        for (final AlignAndDistributeControl otherH : m_shapes.values())
         {
             if (skipShape(handler, otherH))
             {
                 continue;
             }
+            final double otherLeft = round(otherH.getLeft());
 
-            double otherLeft = round(otherH.getLeft());
-            double otherRight = round(otherH.getRight());
+            final double otherRight = round(otherH.getRight());
 
             DistributionEntry leftDist = null;
+
             DistributionEntry hCenterDist = null;
+
             DistributionEntry rightDist = null;
+
             if (otherRight < left)
             {
-                double dx = left - otherRight;
-                double leftPoint = otherLeft - dx;
-                double rightPoint = right + dx;
-                double centerPoint = round(otherRight + ((left - otherRight) / 2));
+                final double dx = left - otherRight;
+
+                final double leftPoint = otherLeft - dx;
+
+                final double rightPoint = right + dx;
+
+                final double centerPoint = round(otherRight + ((left - otherRight) / 2));
+
                 leftDist = new DistributionEntry(otherH, handler, leftPoint, DistributionEntry.LEFT_DIST);
+
                 hCenterDist = new DistributionEntry(otherH, handler, centerPoint, DistributionEntry.H_CENTER_DIST);
+
                 rightDist = new DistributionEntry(otherH, handler, rightPoint, DistributionEntry.RIGHT_DIST);
             }
             else if (otherLeft > right)
             {
-                double dx = otherLeft - right;
-                double leftPoint = left - dx;
-                double rightPoint = otherRight + dx;
-                double centerPoint = round(otherLeft + ((right - otherLeft) / 2));
+                final double dx = otherLeft - right;
+
+                final double leftPoint = left - dx;
+
+                final double rightPoint = otherRight + dx;
+
+                final double centerPoint = round(otherLeft + ((right - otherLeft) / 2));
+
                 leftDist = new DistributionEntry(handler, otherH, leftPoint, DistributionEntry.LEFT_DIST);
+
                 hCenterDist = new DistributionEntry(handler, otherH, centerPoint, DistributionEntry.H_CENTER_DIST);
+
                 rightDist = new DistributionEntry(handler, otherH, rightPoint, DistributionEntry.RIGHT_DIST);
             }
-
             if (leftDist != null)
             {
                 addDistIndexEntry(m_leftDistIndex, leftDist);
+
                 addDistIndexEntry(m_hCenterDistIndex, hCenterDist);
+
                 addDistIndexEntry(m_rightDistIndex, rightDist);
             }
         }
     }
 
-    private boolean skipShape(AlignAndDistributeControl handler, AlignAndDistributeControl otherH)
+    private boolean skipShape(final AlignAndDistributeControl handler, final AlignAndDistributeControl otherH)
     {
-        if (otherH == handler || !otherH.isIndexed())
+        if ((otherH == handler) || !otherH.isIndexed())
         {
             // don't index against yourself or shapes not indexed
             return true;
@@ -419,49 +445,66 @@ public class AlignAndDistribute
         return false;
     }
 
-    public void buildVerticalDistIndex(AlignAndDistributeControl handler)
+    public void buildVerticalDistIndex(final AlignAndDistributeControl handler)
     {
-        double top = round(handler.getTop());
-        double bottom = round(handler.getBottom());
+        final double top = round(handler.getTop());
 
-        for (AlignAndDistributeControl otherH : m_shapes.values())
+        final double bottom = round(handler.getBottom());
+
+        for (final AlignAndDistributeControl otherH : m_shapes.values())
         {
             if (skipShape(handler, otherH))
             {
                 continue;
             }
+            final double otherTop = round(otherH.getTop());
 
-            double otherTop = round(otherH.getTop());
-            double otherBottom = round(otherH.getBottom());
+            final double otherBottom = round(otherH.getBottom());
 
             DistributionEntry topDist = null;
+
             DistributionEntry vCenterDist = null;
+
             DistributionEntry bottomDist = null;
+
             if (otherBottom < top)
             {
-                double dx = top - otherBottom;
-                double topPoint = otherTop - dx;
-                double bottomPoint = bottom + dx;
-                double centerPoint = round(otherBottom + ((top - otherBottom) / 2));
+                final double dx = top - otherBottom;
+
+                final double topPoint = otherTop - dx;
+
+                final double bottomPoint = bottom + dx;
+
+                final double centerPoint = round(otherBottom + ((top - otherBottom) / 2));
+
                 topDist = new DistributionEntry(otherH, handler, topPoint, DistributionEntry.TOP_DIST);
+
                 vCenterDist = new DistributionEntry(otherH, handler, centerPoint, DistributionEntry.V_CENTER_DIST);
+
                 bottomDist = new DistributionEntry(otherH, handler, bottomPoint, DistributionEntry.BOTTOM_DIST);
             }
             else if (otherTop > bottom)
             {
-                double dx = otherTop - bottom;
-                double topPoint = top - dx;
-                double bottomPoint = otherBottom + dx;
-                double centerPoint = round(bottom + ((otherTop - bottom) / 2));
+                final double dx = otherTop - bottom;
+
+                final double topPoint = top - dx;
+
+                final double bottomPoint = otherBottom + dx;
+
+                final double centerPoint = round(bottom + ((otherTop - bottom) / 2));
+
                 topDist = new DistributionEntry(handler, otherH, topPoint, DistributionEntry.TOP_DIST);
+
                 vCenterDist = new DistributionEntry(handler, otherH, centerPoint, DistributionEntry.V_CENTER_DIST);
+
                 bottomDist = new DistributionEntry(handler, otherH, bottomPoint, DistributionEntry.BOTTOM_DIST);
             }
-
             if (topDist != null)
             {
                 addDistIndexEntry(m_topDistIndex, topDist);
+
                 addDistIndexEntry(m_vCenterDistIndex, vCenterDist);
+
                 addDistIndexEntry(m_bottomDistIndex, bottomDist);
             }
         }
@@ -469,27 +512,27 @@ public class AlignAndDistribute
 
     public static class DistributionEntry
     {
-        private static final int          LEFT_DIST     = 0;
+        private static final int                LEFT_DIST     = 0;
 
-        private static final int          H_CENTER_DIST = 1;
+        private static final int                H_CENTER_DIST = 1;
 
-        private static final int          RIGHT_DIST    = 2;
+        private static final int                RIGHT_DIST    = 2;
 
-        private static final int          TOP_DIST      = 3;
+        private static final int                TOP_DIST      = 3;
 
-        private static final int          V_CENTER_DIST = 4;
+        private static final int                V_CENTER_DIST = 4;
 
-        private static final int          BOTTOM_DIST   = 5;
+        private static final int                BOTTOM_DIST   = 5;
 
-        private AlignAndDistributeControl m_shape1;
+        private final AlignAndDistributeControl m_shape1;
 
-        private AlignAndDistributeControl m_shape2;
+        private final AlignAndDistributeControl m_shape2;
 
-        private double                    m_point;
+        private final double                    m_point;
 
-        private int                       m_distType;
+        private final int                       m_distType;
 
-        public DistributionEntry(AlignAndDistributeControl shape1, AlignAndDistributeControl shape2, double point, int distType)
+        public DistributionEntry(final AlignAndDistributeControl shape1, final AlignAndDistributeControl shape2, final double point, final int distType)
         {
             m_shape1 = shape1;
             m_shape2 = shape2;
@@ -528,7 +571,7 @@ public class AlignAndDistribute
         }
     }
 
-    public AlignAndDistributeMatches findNearestMatches(AlignAndDistributeControl handler, double left, double hCenter, double right, double top, double vCenter, double bottom)
+    public AlignAndDistributeMatches findNearestMatches(final AlignAndDistributeControl handler, final double left, final double hCenter, final double right, final double top, final double vCenter, final double bottom)
     {
         LinkedList<AlignAndDistributeControl> leftList = null;
         LinkedList<AlignAndDistributeControl> hCenterList = null;
@@ -621,27 +664,23 @@ public class AlignAndDistribute
         return matches;
     }
 
-    private boolean matchFound(LinkedList<AlignAndDistributeControl> l1, LinkedList<AlignAndDistributeControl> l2, LinkedList<AlignAndDistributeControl> l3, LinkedList<DistributionEntry> l4, LinkedList<DistributionEntry> l5, LinkedList<DistributionEntry> l6)
+    private boolean matchFound(final LinkedList<AlignAndDistributeControl> l1, final LinkedList<AlignAndDistributeControl> l2, final LinkedList<AlignAndDistributeControl> l3, final LinkedList<DistributionEntry> l4, final LinkedList<DistributionEntry> l5, final LinkedList<DistributionEntry> l6)
     {
-        if (l1 != null || l2 != null || l3 != null || l4 != null || l5 != null || l6 != null)
+        if ((l1 != null) || (l2 != null) || (l3 != null) || (l4 != null) || (l5 != null) || (l6 != null))
         {
             return true;
         }
         return false;
     }
 
-    private static LinkedList<AlignAndDistributeControl> findNearestAlignIndexEntry(Map<Double, LinkedList<AlignAndDistributeControl>> map, double pos)
+    private static LinkedList<AlignAndDistributeControl> findNearestAlignIndexEntry(final Map<Double, LinkedList<AlignAndDistributeControl>> map, final double pos)
     {
-        double rounded = Math.round(pos);
-        LinkedList<AlignAndDistributeControl> indexEntries = map.get(rounded);
-        return indexEntries;
+        return map.get(round(pos));
     }
 
-    private static LinkedList<DistributionEntry> findNearestDistIndexEntry(Map<Double, LinkedList<DistributionEntry>> map, double pos)
+    private static LinkedList<DistributionEntry> findNearestDistIndexEntry(final Map<Double, LinkedList<DistributionEntry>> map, final double pos)
     {
-        double rounded = Math.round(pos);
-        LinkedList<DistributionEntry> indexEntries = map.get(rounded);
-        return indexEntries;
+        return map.get(round(pos));
     }
 
     private static final EmptyAlignAndDistributeMatches emptyAlignedMatches = new EmptyAlignAndDistributeMatches();
@@ -654,31 +693,31 @@ public class AlignAndDistribute
         }
     }
 
-    public void indexOff(AlignAndDistributeControl handler)
+    public void indexOff(final AlignAndDistributeControl handler)
     {
         indexOffWithoutChangingStatus(handler);
         handler.setIndexed(false);
     }
 
-    public void indexOffWithoutChangingStatus(AlignAndDistributeControl handler)
+    public void indexOffWithoutChangingStatus(final AlignAndDistributeControl handler)
     {
         removeAlignIndex(handler, handler.getLeft(), handler.getHorizontalCenter(), handler.getRight(), handler.getTop(), handler.getVerticalCenter(), handler.getBottom());
         removeDistIndex(handler);
     }
 
-    public void indexOn(AlignAndDistributeControl handler)
+    public void indexOn(final AlignAndDistributeControl handler)
     {
         indexOnWithoutChangingStatus(handler);
         handler.setIndexed(true);
     }
 
-    public void indexOnWithoutChangingStatus(AlignAndDistributeControl handler)
+    public void indexOnWithoutChangingStatus(final AlignAndDistributeControl handler)
     {
         buildAlignIndex(handler, handler.getLeft(), handler.getHorizontalCenter(), handler.getRight(), handler.getTop(), handler.getVerticalCenter(), handler.getBottom());
         buildDistIndex(handler);
     }
 
-    private void buildAlignIndex(AlignAndDistributeControl handler, double left, double hCenter, double right, double top, double vCenter, double bottom)
+    private void buildAlignIndex(final AlignAndDistributeControl handler, final double left, final double hCenter, final double right, final double top, final double vCenter, final double bottom)
     {
         addAlignIndexEntry(m_leftIndex, handler, left);
         addAlignIndexEntry(m_hCenterIndex, handler, hCenter);
@@ -689,7 +728,7 @@ public class AlignAndDistribute
         addAlignIndexEntry(m_bottomIndex, handler, bottom);
     }
 
-    private void removeAlignIndex(AlignAndDistributeControl handler, double left, double hCenter, double right, double top, double vCenter, double bottom)
+    private void removeAlignIndex(final AlignAndDistributeControl handler, final double left, final double hCenter, final double right, final double top, final double vCenter, final double bottom)
     {
         removeAlignIndexEntry(m_leftIndex, handler, left);
         removeAlignIndexEntry(m_hCenterIndex, handler, hCenter);
@@ -700,62 +739,62 @@ public class AlignAndDistribute
         removeAlignIndexEntry(m_bottomIndex, handler, bottom);
     }
 
-    public void addLeftAlignIndexEntry(AlignAndDistributeControl shape, double left)
+    public void addLeftAlignIndexEntry(final AlignAndDistributeControl shape, final double left)
     {
         addAlignIndexEntry(m_leftIndex, shape, left);
     }
 
-    public void addHCenterAlignIndexEntry(AlignAndDistributeControl shape, double hCenter)
+    public void addHCenterAlignIndexEntry(final AlignAndDistributeControl shape, final double hCenter)
     {
         addAlignIndexEntry(m_hCenterIndex, shape, hCenter);
     }
 
-    public void addRightAlignIndexEntry(AlignAndDistributeControl shape, double right)
+    public void addRightAlignIndexEntry(final AlignAndDistributeControl shape, final double right)
     {
         addAlignIndexEntry(m_rightIndex, shape, right);
     }
 
-    public void addTopAlignIndexEntry(AlignAndDistributeControl shape, double top)
+    public void addTopAlignIndexEntry(final AlignAndDistributeControl shape, final double top)
     {
         addAlignIndexEntry(m_topIndex, shape, top);
     }
 
-    public void addVCenterAlignIndexEntry(AlignAndDistributeControl shape, double vCenter)
+    public void addVCenterAlignIndexEntry(final AlignAndDistributeControl shape, final double vCenter)
     {
         addAlignIndexEntry(m_vCenterIndex, shape, vCenter);
     }
 
-    public void addBottomAlignIndexEntry(AlignAndDistributeControl shape, double bottom)
+    public void addBottomAlignIndexEntry(final AlignAndDistributeControl shape, final double bottom)
     {
         addAlignIndexEntry(m_bottomIndex, shape, bottom);
     }
 
-    public void removeLeftAlignIndexEntry(AlignAndDistributeControl shape, double left)
+    public void removeLeftAlignIndexEntry(final AlignAndDistributeControl shape, final double left)
     {
         removeAlignIndexEntry(m_leftIndex, shape, left);
     }
 
-    public void removeHCenterAlignIndexEntry(AlignAndDistributeControl shape, double hCenter)
+    public void removeHCenterAlignIndexEntry(final AlignAndDistributeControl shape, final double hCenter)
     {
         removeAlignIndexEntry(m_hCenterIndex, shape, hCenter);
     }
 
-    public void removeRightAlignIndexEntry(AlignAndDistributeControl shape, double right)
+    public void removeRightAlignIndexEntry(final AlignAndDistributeControl shape, final double right)
     {
         removeAlignIndexEntry(m_rightIndex, shape, right);
     }
 
-    public void removeTopAlignIndexEntry(AlignAndDistributeControl shape, double top)
+    public void removeTopAlignIndexEntry(final AlignAndDistributeControl shape, final double top)
     {
         removeAlignIndexEntry(m_topIndex, shape, top);
     }
 
-    public void removeVCenterAlignIndexEntry(AlignAndDistributeControl shape, double vCenter)
+    public void removeVCenterAlignIndexEntry(final AlignAndDistributeControl shape, final double vCenter)
     {
         removeAlignIndexEntry(m_vCenterIndex, shape, vCenter);
     }
 
-    public void removeBottomAlignIndexEntry(AlignAndDistributeControl shape, double bottom)
+    public void removeBottomAlignIndexEntry(final AlignAndDistributeControl shape, final double bottom)
     {
         removeAlignIndexEntry(m_bottomIndex, shape, bottom);
     }
@@ -806,7 +845,7 @@ public class AlignAndDistribute
         {
         }
 
-        public AlignAndDistributeMatches(AlignAndDistributeControl handler, double leftPos, LinkedList<AlignAndDistributeControl> leftList, double hCenterPos, LinkedList<AlignAndDistributeControl> hCenterList, double rightPos, LinkedList<AlignAndDistributeControl> rightList, double topPos, LinkedList<AlignAndDistributeControl> topList, double vCenterPos, LinkedList<AlignAndDistributeControl> vCenterList, double bottomPos, LinkedList<AlignAndDistributeControl> bottomList, LinkedList<DistributionEntry> leftDistList, LinkedList<DistributionEntry> hCenterDistList, LinkedList<DistributionEntry> rightDistList, LinkedList<DistributionEntry> topDistList, LinkedList<DistributionEntry> vCenterDistList, LinkedList<DistributionEntry> bottomDistList)
+        public AlignAndDistributeMatches(final AlignAndDistributeControl handler, final double leftPos, final LinkedList<AlignAndDistributeControl> leftList, final double hCenterPos, final LinkedList<AlignAndDistributeControl> hCenterList, final double rightPos, final LinkedList<AlignAndDistributeControl> rightList, final double topPos, final LinkedList<AlignAndDistributeControl> topList, final double vCenterPos, final LinkedList<AlignAndDistributeControl> vCenterList, final double bottomPos, final LinkedList<AlignAndDistributeControl> bottomList, final LinkedList<DistributionEntry> leftDistList, final LinkedList<DistributionEntry> hCenterDistList, final LinkedList<DistributionEntry> rightDistList, final LinkedList<DistributionEntry> topDistList, final LinkedList<DistributionEntry> vCenterDistList, final LinkedList<DistributionEntry> bottomDistList)
         {
             m_handler = handler;
             m_leftPos = leftPos;
@@ -934,7 +973,7 @@ public class AlignAndDistribute
         }
     }
 
-    private static double round(double value)
+    private static double round(final double value)
     {
         return Math.round(value);
     }
@@ -950,7 +989,7 @@ public class AlignAndDistribute
     {
         private final Shape<?>[] m_lines       = new Shape<?>[18];
 
-        private Layer            m_layer;
+        private final Layer      m_layer;
 
         private Layer            m_overs;
 
@@ -960,12 +999,12 @@ public class AlignAndDistribute
 
         private DashArray        m_dashArray   = new DashArray(10, 10);
 
-        public DefaultAlignAndDistributeMatchesCallback(Layer layer)
+        public DefaultAlignAndDistributeMatchesCallback(final Layer layer)
         {
             m_layer = layer;
         }
 
-        public DefaultAlignAndDistributeMatchesCallback(Layer layer, double strokeWidth, String strokeColor, DashArray dashArray)
+        public DefaultAlignAndDistributeMatchesCallback(final Layer layer, final double strokeWidth, final String strokeColor, final DashArray dashArray)
         {
             this(layer);
             m_strokeWidth = strokeWidth;
@@ -978,7 +1017,7 @@ public class AlignAndDistribute
             return m_strokeWidth;
         }
 
-        public void setStrokeWidth(double strokeWidth)
+        public void setStrokeWidth(final double strokeWidth)
         {
             m_strokeWidth = strokeWidth;
         }
@@ -988,7 +1027,7 @@ public class AlignAndDistribute
             return m_strokeColor;
         }
 
-        public void setStrokeColor(String strokeColor)
+        public void setStrokeColor(final String strokeColor)
         {
             m_strokeColor = strokeColor;
         }
@@ -998,7 +1037,7 @@ public class AlignAndDistribute
             return m_dashArray;
         }
 
-        public void setDashArray(DashArray dashArray)
+        public void setDashArray(final DashArray dashArray)
         {
             m_dashArray = dashArray;
         }
@@ -1030,9 +1069,9 @@ public class AlignAndDistribute
         }
 
         @Override
-        public void call(AlignAndDistributeMatches matches)
+        public void call(final AlignAndDistributeMatches matches)
         {
-            AlignAndDistributeControl handler = matches.getHandler();
+            final AlignAndDistributeControl handler = matches.getHandler();
 
             drawAlignIfMatches(handler, matches.getLeftList(), matches.getLeftPos(), 0, true);
             drawAlignIfMatches(handler, matches.getHorizontalCenterList(), matches.getHorizontalCenterPos(), 1, true);
@@ -1051,7 +1090,7 @@ public class AlignAndDistribute
             drawDistIfMatches(handler, matches.getBottomDistList(), 16, true);
         }
 
-        private void drawAlignIfMatches(AlignAndDistributeControl handler, LinkedList<AlignAndDistributeControl> shapes, double pos, int index, boolean vertical)
+        private void drawAlignIfMatches(final AlignAndDistributeControl handler, final LinkedList<AlignAndDistributeControl> shapes, final double pos, final int index, final boolean vertical)
         {
             final Layer layer = getOverLayer();
 
@@ -1075,17 +1114,17 @@ public class AlignAndDistribute
             }
         }
 
-        private void drawDistIfMatches(AlignAndDistributeControl h, LinkedList<DistributionEntry> shapes, int index, boolean vertical)
+        private void drawDistIfMatches(final AlignAndDistributeControl h, final LinkedList<DistributionEntry> shapes, final int index, final boolean vertical)
         {
             final Layer layer = getOverLayer();
 
             if (shapes != null)
             {
-                for (DistributionEntry dist : shapes)
+                for (final DistributionEntry dist : shapes)
                 {
-                    AlignAndDistributeControl h1 = dist.getShape1();
+                    final AlignAndDistributeControl h1 = dist.getShape1();
 
-                    AlignAndDistributeControl h2 = dist.getShape2();
+                    final AlignAndDistributeControl h2 = dist.getShape2();
 
                     if (!vertical)
                     {
@@ -1210,14 +1249,14 @@ public class AlignAndDistribute
             }
         }
 
-        private void removeLine(int index, Shape<?> line)
+        private void removeLine(final int index, final Shape<?> line)
         {
             getOverLayer().remove(line);
 
             m_lines[index] = null;
         }
 
-        private void drawPolyLine(int index, double edge, double x0, double y0, double x1, double y1, boolean vertical)
+        private void drawPolyLine(final int index, final double edge, final double x0, final double y0, final double x1, final double y1, final boolean vertical)
         {
             Point2DArray points;
 
@@ -1246,15 +1285,15 @@ public class AlignAndDistribute
             }
         }
 
-        private void drawHorizontalLine(AlignAndDistributeControl handler, double pos, LinkedList<AlignAndDistributeControl> shapes, int index)
+        private void drawHorizontalLine(final AlignAndDistributeControl handler, final double pos, final LinkedList<AlignAndDistributeControl> shapes, final int index)
         {
             double left = handler.getLeft();
             double right = handler.getRight();
 
-            for (AlignAndDistributeControl otherHandler : shapes)
+            for (final AlignAndDistributeControl otherHandler : shapes)
             {
-                double newLeft = otherHandler.getLeft();
-                double newRight = otherHandler.getRight();
+                final double newLeft = otherHandler.getLeft();
+                final double newRight = otherHandler.getRight();
 
                 if (newLeft < left)
                 {
@@ -1269,7 +1308,7 @@ public class AlignAndDistribute
             drawHorizontalLine(pos, left, right, index);
         }
 
-        private void drawHorizontalLine(double pos, double left, double right, int index)
+        private void drawHorizontalLine(final double pos, final double left, final double right, final int index)
         {
             Line line = (Line) m_lines[index];
             if (line == null)
@@ -1287,15 +1326,15 @@ public class AlignAndDistribute
             }
         }
 
-        private void drawVerticalLine(AlignAndDistributeControl handler, double pos, LinkedList<AlignAndDistributeControl> shapes, int index)
+        private void drawVerticalLine(final AlignAndDistributeControl handler, final double pos, final LinkedList<AlignAndDistributeControl> shapes, final int index)
         {
             double top = handler.getTop();
             double bottom = handler.getBottom();
 
-            for (AlignAndDistributeControl otherHandler : shapes)
+            for (final AlignAndDistributeControl otherHandler : shapes)
             {
-                double newTop = otherHandler.getTop();
-                double newBottom = otherHandler.getBottom();
+                final double newTop = otherHandler.getTop();
+                final double newBottom = otherHandler.getBottom();
 
                 if (newTop < top)
                 {
@@ -1310,7 +1349,7 @@ public class AlignAndDistribute
             drawVerticalLine(pos, top, bottom, index);
         }
 
-        private void drawVerticalLine(double pos, double top, double bottom, int index)
+        private void drawVerticalLine(final double pos, final double top, final double bottom, final int index)
         {
             Line line = (Line) m_lines[index];
             if (line == null)

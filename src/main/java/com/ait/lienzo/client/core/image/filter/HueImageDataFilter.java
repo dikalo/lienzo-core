@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2017 Ahome' Innovation Technologies. All rights reserved.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ait.lienzo.client.core.image.filter;
@@ -35,12 +35,12 @@ public class HueImageDataFilter extends AbstractValueImageDataFilter<HueImageDat
         super(ImageFilterType.HueImageDataFilterType, 0);
     }
 
-    public HueImageDataFilter(double value)
+    public HueImageDataFilter(final double value)
     {
         super(ImageFilterType.HueImageDataFilterType, value);
     }
 
-    protected HueImageDataFilter(JSONObject node, ValidationContext ctx) throws ValidationException
+    protected HueImageDataFilter(final JSONObject node, final ValidationContext ctx) throws ValidationException
     {
         super(ImageFilterType.HueImageDataFilterType, node, ctx);
     }
@@ -64,7 +64,7 @@ public class HueImageDataFilter extends AbstractValueImageDataFilter<HueImageDat
     }
 
     @Override
-    public ImageData filter(ImageData source, boolean copy)
+    public ImageData filter(ImageData source, final boolean copy)
     {
         if (null == source)
         {
@@ -91,20 +91,20 @@ public class HueImageDataFilter extends AbstractValueImageDataFilter<HueImageDat
 
     private final native void filter_(JavaScriptObject data, int w, int h, double value, ImageDataFilterCommonOps fops)
     /*-{
-    	 for (var y = 0; y < h; y++) {
-            for (var x = 0; x < w; x++) {
-                var p = (y * w + x) * 4;
-                var hsv = fops.RGBtoHSV(data[p], data[p + 1], data[p + 2]);
-                hsv[0] += value;
-                while(hsv[0] < 0) {
-                    hsv[0] += 360;
-                }
-                var rgb = fops.HSVtoRGB(hsv[0], hsv[1], hsv[2]);
-                for(var i = 0; i < 3; i++) {
-                    data[p+i] = rgb[i];
-                }
-            }   
-        }
+		for (var y = 0; y < h; y++) {
+			for (var x = 0; x < w; x++) {
+				var p = (y * w + x) * 4;
+				var hsv = fops.RGBtoHSV(data[p], data[p + 1], data[p + 2]);
+				hsv[0] += value;
+				while (hsv[0] < 0) {
+					hsv[0] += 360;
+				}
+				var rgb = fops.HSVtoRGB(hsv[0], hsv[1], hsv[2]);
+				for (var i = 0; i < 3; i++) {
+					data[p + i] = rgb[i];
+				}
+			}
+		}
     }-*/;
 
     @Override
@@ -121,7 +121,7 @@ public class HueImageDataFilter extends AbstractValueImageDataFilter<HueImageDat
         }
 
         @Override
-        public HueImageDataFilter create(JSONObject node, ValidationContext ctx) throws ValidationException
+        public HueImageDataFilter create(final JSONObject node, final ValidationContext ctx) throws ValidationException
         {
             return new HueImageDataFilter(node, ctx);
         }
