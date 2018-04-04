@@ -29,6 +29,7 @@ import com.ait.lienzo.client.core.shape.wires.handlers.WiresShapeControl;
 import com.ait.lienzo.client.core.shape.wires.picker.ColorMapBackedPicker;
 import com.ait.lienzo.client.core.types.BoundingBox;
 import com.ait.lienzo.client.core.types.Point2D;
+import com.ait.lienzo.client.core.util.Geometry;
 import com.ait.tooling.nativetools.client.collection.NFastArrayList;
 
 /**
@@ -178,10 +179,12 @@ public class WiresShapeControlImpl extends AbstractWiresBoundsConstraintControl 
         if (isDockAdjust)
         {
             final Point2D dadjust = m_dockingAndControl.getAdjust();
-
-            dxy.setX(dadjust.getX());
-
-            dxy.setY(dadjust.getY());
+            double adjustDistance = Geometry.distance(dx, dy, dadjust.getX(), dadjust.getY());
+            if (adjustDistance > getWiresManager().getDockingAcceptor().getHotspotSize())
+            {
+                dxy.setX(dadjust.getX());
+                dxy.setY(dadjust.getY());
+            }
         }
         final boolean isContAdjust = (null != m_containmentControl) && m_containmentControl.onMove(dx, dy);
 

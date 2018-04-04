@@ -16,15 +16,21 @@
 
 package com.ait.lienzo.client.core.shape.wires.handlers;
 
+import com.ait.lienzo.client.core.shape.wires.WiresContainer;
+import com.ait.lienzo.client.core.shape.wires.WiresShape;
 import com.ait.lienzo.client.core.types.Point2D;
 
 public interface WiresDockingControl extends WiresMoveControl, WiresControl
 {
-    public WiresDockingControl setEnabled(boolean enabled);
+    WiresDockingControl setEnabled(boolean enabled);
 
-    public boolean isAllow();
+    boolean isAllow();
 
-    public boolean accept();
+    boolean accept();
 
-    public Point2D getCandidateLocation();
+    Point2D getCandidateLocation();
+
+    void dock(WiresShape shape, WiresContainer parent, Point2D location);
+
+    void undock(WiresShape shape, WiresContainer parent);
 }
