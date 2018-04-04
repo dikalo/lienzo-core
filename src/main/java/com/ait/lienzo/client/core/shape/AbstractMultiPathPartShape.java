@@ -146,10 +146,7 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
                 m_cornerPoints.add(cornerList);
             }
         }
-        if (false == validSizeConstraints())
-        {
-            throw new IllegalArgumentException("Constraints are either smaller or larger than size.");
-        }
+
         return true;
     }
 
@@ -230,47 +227,6 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
         getAttributes().setSizeConstraints(sizeConstraints);
 
         return refresh();
-    }
-
-    private boolean validSizeConstraints()
-    {
-        final BoundingBox shapeBB = getBoundingBox();
-
-        final BoundingBox constraintsBB = getSizeConstraints();
-
-        if (constraintsBB == null)
-        {
-            return true;
-        }
-        final double minWidth = constraintsBB.getMinX();
-
-        final double minHeight = constraintsBB.getMinY();
-
-        final double maxWidth = constraintsBB.getMaxX();
-
-        final double maxHeight = constraintsBB.getMaxY();
-
-        final double width = shapeBB.getWidth();
-
-        final double height = shapeBB.getHeight();
-
-        if (minWidth > width)
-        {
-            return false;
-        }
-        if (minHeight > height)
-        {
-            return false;
-        }
-        if (maxWidth < width)
-        {
-            return false;
-        }
-        if (maxHeight < height)
-        {
-            return false;
-        }
-        return true;
     }
 
     public double getCornerRadius()
