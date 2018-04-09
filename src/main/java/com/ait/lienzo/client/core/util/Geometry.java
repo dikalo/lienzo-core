@@ -1328,9 +1328,9 @@ public final class Geometry
         Point2D pathStart = new Point2D(0, 0);
 
         Point2D segmentStart = pathStart;
-        
+
         int i = PathPartList.skipRedundantLeadingMoveTo(path);
-        
+
         // A set is used as vertex's may intersect, so the start/end of two liens will intersect
         for (; i < path.size(); i++)
         {
@@ -1405,7 +1405,7 @@ public final class Geometry
                     {
                         final Point2D cardinal = cardinals.get(j);
                         final Point2DArray intersectPoints = Geometry.intersectLineArcTo(center, cardinal, segmentStart, p0, p1, r);
-                                             
+
                         if (intersectPoints.size() > 0)
                         {
                             for (final Point2D p : intersectPoints)
@@ -1415,18 +1415,18 @@ public final class Geometry
                         }
                     }
                     segmentStart = end;
-                    
-                    if (i == path.size() - 1)
-                    { 
-                    	if (p1.getX() == pathStart.getX() && p1.getY() == pathStart.getY())
-                    	{
-                    		// so the arc ends at the start point.
-                    		addIntersect(intersections, 1, pathStart);                    		
-                    	}
-                    }                    
+
+                    if (i == (path.size() - 1))
+                    {
+                        if ((p1.getX() == pathStart.getX()) && (p1.getY() == pathStart.getY()))
+                        {
+                            // so the arc ends at the start point.
+                            addIntersect(intersections, 1, pathStart);
+                        }
+                    }
                 }
-                
-                break;
+
+                    break;
             }
         }
         if (addCenter)
@@ -1438,7 +1438,7 @@ public final class Geometry
     public static Point2DArray getCardinalIntersects(final PathPartList path, final Direction[] requestedCardinals)
     {
         final Point2DArray cardinals = getCardinals(path.getBoundingBox(), requestedCardinals);
-       
+
         @SuppressWarnings("unchecked")
         final Set<Point2D>[] intersections = new Set[cardinals.size()];// c is removed, so -1
 
