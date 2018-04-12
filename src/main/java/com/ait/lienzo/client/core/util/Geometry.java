@@ -1150,36 +1150,38 @@ public final class Geometry
      * @param r
      * @return
      */
+    /**
+     * Canvas arcTo's have a variable center, as points a, b and c form two lines from the same point at a tangent to the arc's cirlce.
+     * This returns the arcTo arc start, center and end points.
+     *
+     * @param p0
+     * @param p1
+     * @param r
+     * @return
+     */
     public static final Point2DArray getCanvasArcToPoints(final Point2D p0, final Point2D p1, final Point2D p2, final double r)
     {
         // see tangents drawn from same point to a circle
         // http://www.mathcaptain.com/geometry/tangent-of-a-circle.html
-        final double a0 = getAngleBetweenTwoLines(p0, p1, p2) / 2;
-
-        final double ln = getLengthFromASA(RADIANS_90 - a0, r, a0);
+        // With arcTo the tangent forms a 90degree angle. This forms a square, with each
+        // side the length of the radius. We can use this to walk via units and perpendicular
+        // from p1 (this type of the tangent) to pc.
 
         Point2D dv = p1.sub(p0);
 
         Point2D dx = dv.unit();
 
-        Point2D dl = dx.mul(ln);
+        Point2D ps = p1.sub(dx.mul(r));
 
-        final Point2D ps = p1.sub(dl);// ps is arc start point
+        dx = dx.perpendicular();
+
+        final Point2D pc = ps.add(dx.mul(r));
 
         dv = p1.sub(p2);
 
         dx = dv.unit();
 
-        dl = dx.mul(ln);
-
-        final Point2D pe = p1.sub(dl);// ep is arc end point
-
-        // this gets the direction as a unit, from p1 to the center
-        final Point2D midPoint = new Point2D((ps.getX() + pe.getX()) / 2, (ps.getY() + pe.getY()) / 2);
-
-        dx = midPoint.sub(p1).unit();
-
-        final Point2D pc = p1.add(dx.mul(distance(r, ln)));
+        Point2D pe = p1.sub(dx.mul(r));
 
         return new Point2DArray(ps, pc, pe);
     }
