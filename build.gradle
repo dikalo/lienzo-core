@@ -24,7 +24,7 @@ buildscript {
         classpath(group: 'commons-logging', name: 'commons-logging', version: '1.2')
         classpath(group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.5')
         classpath(group: 'org.fusesource.jansi', name: 'jansi', version: '1.17')
-        classpath(group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.14', classifier: 'indy')
+        classpath(group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.15', classifier: 'indy')
     }
 }
 
@@ -47,7 +47,7 @@ sourceCompatibility = 1.7
 
 targetCompatibility = 1.7
 
-version = '2.0.296.0-SNAPSHOT'
+version = '2.0.297-RELEASE'
 
 group = 'com.ahome-it'
 
@@ -92,7 +92,7 @@ task checkCodeQuality { doLast { println ':checkCodeQuality-done' } }
 checkCodeQuality.dependsOn checkstyleMain,pmdMain,findbugsMain
 
 task deleteConfigs(type: Delete) {
-    FileTree tree = project.fileTree(dir: "${buildDir}/resources/main")
+    def tree = project.fileTree(dir: "${buildDir}/resources/main")
     tree.each { File file ->
         delete(file)
     }
@@ -111,7 +111,7 @@ task doJavaDocs(type: Groovydoc) {
     destinationDir = project.file("${buildDir}/docs/javadoc")
     includes = ['com/ait/lienzo/**']
     docTitle = "Lienzo 2D Structured Graphics"
-    footer = "<small><a href=\"https://github.com/ahome-it/lienzo-core\" target=\"_blank\">Lienzo - ${version} - Author: Dean S. Jones</a></small>"
+    footer = "<small><a href=\"https://github.com/ahome-it/lienzo-core\" target=\"_blank\">Lienzo - ${getBuildModuleVersion()} - Author: Dean S. Jones</a></small>"
     getGroovydocLinks().each { name, list ->
         link(name, *list)
     }
@@ -131,7 +131,7 @@ compileJava.dependsOn(clean)
 
 jar {
     manifest {
-        attributes 'Implementation-Title': 'Lienzo-Core', 'Implementation-Version': version
+        attributes 'Implementation-Title': 'Lienzo-Core', 'Implementation-Version': getBuildModuleVersion()
     }
 }
 
