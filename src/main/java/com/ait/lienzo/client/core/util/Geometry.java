@@ -1067,24 +1067,24 @@ public final class Geometry
     private static final boolean intersectPointWithinBounding(final Point2D p, final Point2D a0, final Point2D a1)
     {
         boolean withinX = false;
-
+        
         if (a0.getX() < a1.getX())
         {
-            withinX = (p.getX() >= a0.getX()) && (p.getX() <= a1.getX());
+            withinX = (p.getX() - a0.getX() > -NRRF_PRECISION) && (p.getX() - a1.getX() < NRRF_PRECISION);
         }
         else
         {
-            withinX = (p.getX() >= a1.getX()) && (p.getX() <= a0.getX());
+            withinX = (p.getX() - a1.getX() > -NRRF_PRECISION) && (p.getX() - a0.getX() < NRRF_PRECISION);
         }
         boolean withinY = false;
 
         if (a0.getY() < a1.getY())
         {
-            withinY = (p.getY() >= a0.getY()) && (p.getY() <= a1.getY());
+            withinY = (p.getY() - a0.getY() > -NRRF_PRECISION) && (p.getY() - a1.getY() < NRRF_PRECISION);
         }
         else
         {
-            withinY = (p.getY() >= a1.getY()) && (p.getY() <= a0.getY());
+            withinY = (p.getY() - a1.getY() > -NRRF_PRECISION) && (p.getY() - a0.getY() < NRRF_PRECISION);
         }
         return withinX && withinY;
     }
@@ -1113,24 +1113,20 @@ public final class Geometry
 
         final double discrimant = (r * r * dSq) - (det * det);
 
-        if (discrimant < 0)
+        if (discrimant < -NRRF_PRECISION)
         {
             // line does not intersect
             return new Point2DArray();
         }
-        if (discrimant == 0)
+        if (discrimant < NRRF_PRECISION)
         {
             // line only intersects once, so the start or end is inside of the circle
             return new Point2DArray(((det * d.getY()) / dSq) + pc.getX(), ((-det * d.getX()) / dSq) + pc.getY());
         }
         final double discSqrt = Math.sqrt(discrimant);
 
-        double sgn = 1;
+        double sgn = (d.getY() < 0) ? -1 : 1;
 
-        if (d.getY() < 0)
-        {
-            sgn = -1;
-        }
         final Point2DArray intr = new Point2DArray((((det * d.getY()) + (sgn * d.getX() * discSqrt)) / dSq) + pc.getX(), (((-det * d.getX()) + (Math.abs(d.getY()) * discSqrt)) / dSq) + pc.getY());
 
         return intr.push((((det * d.getY()) - (sgn * d.getX() * discSqrt)) / dSq) + pc.getX(), (((-det * d.getX()) - (Math.abs(d.getY()) * discSqrt)) / dSq) + pc.getY());
@@ -1140,6 +1136,16 @@ public final class Geometry
     {
         return false;
     }
+
+    /**
+     * Canvas arcTo's have a variable center, as points a, b and c form two lines from the same point at a tangent to the arc's cirlce.
+     * This returns the arcTo arc start, center and end points.
+     *
+     * @param p0
+     * @param p1
+     * @param r
+     * @return
+     */
 
     /**
      * Canvas arcTo's have a variable center, as points a, b and c form two lines from the same point at a tangent to the arc's cirlce.
@@ -1164,7 +1170,7 @@ public final class Geometry
 
         Point2D dl = dx.mul(ln);
 
-        final Point2D ps = p1.sub(dl);// ps is arc start point
+        Point2D ps = p1.sub(dl);// ps is arc start point
 
         dv = p1.sub(p2);
 
@@ -1172,10 +1178,10 @@ public final class Geometry
 
         dl = dx.mul(ln);
 
-        final Point2D pe = p1.sub(dl);// ep is arc end point
+        Point2D pe = p1.sub(dl);// ep is arc end point
 
         // this gets the direction as a unit, from p1 to the center
-        final Point2D midPoint = new Point2D((ps.getX() + pe.getX()) / 2, (ps.getY() + pe.getY()) / 2);
+        Point2D midPoint = new Point2D((ps.getX() + pe.getX()) / 2, (ps.getY() + pe.getY()) / 2);
 
         dx = midPoint.sub(p1).unit();
 
@@ -1415,15 +1421,6 @@ public final class Geometry
                         }
                     }
                     segmentStart = end;
-
-                    if (i == (path.size() - 1))
-                    {
-                        if ((p1.getX() == pathStart.getX()) && (p1.getY() == pathStart.getY()))
-                        {
-                            // so the arc ends at the start point.
-                            addIntersect(intersections, 1, pathStart);
-                        }
-                    }
                 }
 
                     break;
