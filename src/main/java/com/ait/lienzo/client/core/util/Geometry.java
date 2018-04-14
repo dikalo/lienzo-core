@@ -1070,23 +1070,33 @@ public final class Geometry
 
         if (a0.getX() < a1.getX())
         {
-            withinX = (p.getX() >= a0.getX()) && (p.getX() <= a1.getX());
+            withinX = greaterOrCloseEnough(p.getX() , a0.getX()) && lesserOrCloseEnough(p.getX(), a1.getX());
         }
         else
         {
-            withinX = (p.getX() >= a1.getX()) && (p.getX() <= a0.getX());
+            withinX = greaterOrCloseEnough(p.getX() , a1.getX()) && lesserOrCloseEnough(p.getX(), a0.getX());
         }
         boolean withinY = false;
 
         if (a0.getY() < a1.getY())
         {
-            withinY = (p.getY() >= a0.getY()) && (p.getY() <= a1.getY());
+            withinY = greaterOrCloseEnough(p.getY() , a0.getY()) && lesserOrCloseEnough(p.getY(), a1.getY());
         }
         else
         {
-            withinY = (p.getY() >= a1.getY()) && (p.getY() <= a0.getY());
+            withinY = greaterOrCloseEnough(p.getY() , a1.getY()) && lesserOrCloseEnough(p.getY(), a0.getY());
         }
         return withinX && withinY;
+    }
+    
+    private static boolean greaterOrCloseEnough(double a, double b)
+    {
+    	return closeEnough(a, b) || a > b;
+    }
+    
+    private static boolean lesserOrCloseEnough(double a, double b)
+    {
+    	return closeEnough(a, b) || a < b;
     }
 
     /**
@@ -1113,24 +1123,20 @@ public final class Geometry
 
         final double discrimant = (r * r * dSq) - (det * det);
 
-        if (discrimant < 0)
+        if (lesserOrCloseEnough(discrimant, 0))
         {
             // line does not intersect
             return new Point2DArray();
         }
-        if (discrimant == 0)
+        if (closeEnough(discrimant, 0))
         {
             // line only intersects once, so the start or end is inside of the circle
             return new Point2DArray(((det * d.getY()) / dSq) + pc.getX(), ((-det * d.getX()) / dSq) + pc.getY());
         }
         final double discSqrt = Math.sqrt(discrimant);
 
-        double sgn = 1;
-
-        if (d.getY() < 0)
-        {
-            sgn = -1;
-        }
+        double sgn = (d.getY() < 0) ? -1 : 1;
+        
         final Point2DArray intr = new Point2DArray((((det * d.getY()) + (sgn * d.getX() * discSqrt)) / dSq) + pc.getX(), (((-det * d.getX()) + (Math.abs(d.getY()) * discSqrt)) / dSq) + pc.getY());
 
         return intr.push((((det * d.getY()) - (sgn * d.getX() * discSqrt)) / dSq) + pc.getX(), (((-det * d.getX()) - (Math.abs(d.getY()) * discSqrt)) / dSq) + pc.getY());
@@ -1414,19 +1420,9 @@ public final class Geometry
                             }
                         }
                     }
-                    segmentStart = end;
-
-                    if (i == (path.size() - 1))
-                    {
-                        if ((p1.getX() == pathStart.getX()) && (p1.getY() == pathStart.getY()))
-                        {
-                            // so the arc ends at the start point.
-                            addIntersect(intersections, 1, pathStart);
-                        }
-                    }
+                    segmentStart = end;                   
                 }
-
-                    break;
+                break;
             }
         }
         if (addCenter)
