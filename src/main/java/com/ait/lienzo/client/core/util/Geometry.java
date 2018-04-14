@@ -1070,33 +1070,33 @@ public final class Geometry
 
         if (a0.getX() < a1.getX())
         {
-            withinX = greaterOrCloseEnough(p.getX() , a0.getX()) && lesserOrCloseEnough(p.getX(), a1.getX());
+            withinX = greaterOrCloseEnough(p.getX(), a0.getX()) && lesserOrCloseEnough(p.getX(), a1.getX());
         }
         else
         {
-            withinX = greaterOrCloseEnough(p.getX() , a1.getX()) && lesserOrCloseEnough(p.getX(), a0.getX());
+            withinX = greaterOrCloseEnough(p.getX(), a1.getX()) && lesserOrCloseEnough(p.getX(), a0.getX());
         }
         boolean withinY = false;
 
         if (a0.getY() < a1.getY())
         {
-            withinY = greaterOrCloseEnough(p.getY() , a0.getY()) && lesserOrCloseEnough(p.getY(), a1.getY());
+            withinY = greaterOrCloseEnough(p.getY(), a0.getY()) && lesserOrCloseEnough(p.getY(), a1.getY());
         }
         else
         {
-            withinY = greaterOrCloseEnough(p.getY() , a1.getY()) && lesserOrCloseEnough(p.getY(), a0.getY());
+            withinY = greaterOrCloseEnough(p.getY(), a1.getY()) && lesserOrCloseEnough(p.getY(), a0.getY());
         }
         return withinX && withinY;
     }
-    
-    private static boolean greaterOrCloseEnough(double a, double b)
+
+    private static boolean greaterOrCloseEnough(final double a, final double b)
     {
-    	return closeEnough(a, b) || a > b;
+        return closeEnough(a, b) || (a > b);
     }
-    
-    private static boolean lesserOrCloseEnough(double a, double b)
+
+    private static boolean lesserOrCloseEnough(final double a, final double b)
     {
-    	return closeEnough(a, b) || a < b;
+        return closeEnough(a, b) || (a < b);
     }
 
     /**
@@ -1135,8 +1135,8 @@ public final class Geometry
         }
         final double discSqrt = Math.sqrt(discrimant);
 
-        double sgn = (d.getY() < 0) ? -1 : 1;
-        
+        final double sgn = (d.getY() < 0) ? -1 : 1;
+
         final Point2DArray intr = new Point2DArray((((det * d.getY()) + (sgn * d.getX() * discSqrt)) / dSq) + pc.getX(), (((-det * d.getX()) + (Math.abs(d.getY()) * discSqrt)) / dSq) + pc.getY());
 
         return intr.push((((det * d.getY()) - (sgn * d.getX() * discSqrt)) / dSq) + pc.getX(), (((-det * d.getX()) - (Math.abs(d.getY()) * discSqrt)) / dSq) + pc.getY());
@@ -1420,9 +1420,9 @@ public final class Geometry
                             }
                         }
                     }
-                    segmentStart = end;                   
+                    segmentStart = end;
                 }
-                break;
+                    break;
             }
         }
         if (addCenter)
