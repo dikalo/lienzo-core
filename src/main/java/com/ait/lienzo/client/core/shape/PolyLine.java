@@ -125,6 +125,7 @@ public class PolyLine extends AbstractDirectionalMultiPointShape<PolyLine>
                 }
                 return true;
             }
+            return true;
         }
         return false;
     }
