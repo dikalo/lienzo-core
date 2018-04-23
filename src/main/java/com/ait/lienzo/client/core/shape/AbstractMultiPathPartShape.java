@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ait.lienzo.client.core.Attribute;
 import com.ait.lienzo.client.core.Context2D;
 import com.ait.lienzo.client.core.animation.AnimationProperties;
 import com.ait.lienzo.client.core.animation.AnimationProperty;
@@ -217,15 +218,55 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
         }
     }
 
-    public BoundingBox getSizeConstraints()
-    {
-        return getAttributes().getSizeConstraints();
+    public Double getMinWidth() {
+        if (getAttributes().isDefined(Attribute.MIN_WIDTH)) {
+            return getAttributes().getMinWidth();
+        } else {
+            return null;
+        }
     }
 
-    public T setSizeConstraints(final BoundingBox sizeConstraints)
-    {
-        getAttributes().setSizeConstraints(sizeConstraints);
+    public T setMinWidth(final Double minWidth) {
+        getAttributes().setMinWidth(minWidth);
+        return refresh();
+    }
 
+    public Double getMaxWidth() {
+        if (getAttributes().isDefined(Attribute.MAX_WIDTH)) {
+            return getAttributes().getMaxWidth();
+        } else {
+            return null;
+        }
+    }
+
+    public T setMaxWidth(final Double maxWidth) {
+        getAttributes().setMaxWidth(maxWidth);
+        return refresh();
+    }
+
+    public Double getMinHeight() {
+        if (getAttributes().isDefined(Attribute.MIN_HEIGHT)) {
+            return getAttributes().getMinHeight();
+        } else {
+            return null;
+        }
+    }
+
+    public T setMinHeight(final Double minHeight) {
+        getAttributes().setMinHeight(minHeight);
+        return refresh();
+    }
+
+    public Double getMaxHeight() {
+        if (getAttributes().isDefined(Attribute.MAX_HEIGHT)) {
+            return getAttributes().getMaxHeight();
+        } else {
+            return null;
+        }
+    }
+
+    public T setMaxHeight(final Double maxHeight) {
+        getAttributes().setMaxHeight(maxHeight);
         return refresh();
     }
 
@@ -334,13 +375,14 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
 
     public static final class DefaultMultiPathShapeHandleFactory implements IControlHandleFactory
     {
+
         private final NFastArrayList<PathPartList> m_listOfPaths;
 
-        private final Shape<?>                     m_shape;
+        private final AbstractMultiPathPartShape<?> m_shape;
 
-        private final DragMode                     m_dmode = DragMode.SAME_LAYER;
+        private DragMode m_dmode = DragMode.SAME_LAYER;
 
-        public DefaultMultiPathShapeHandleFactory(final NFastArrayList<PathPartList> listOfPaths, final Shape<?> shape)
+        public DefaultMultiPathShapeHandleFactory(final NFastArrayList<PathPartList> listOfPaths, final AbstractMultiPathPartShape<?> shape)
         {
             m_listOfPaths = listOfPaths;
 
@@ -446,7 +488,7 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
             node.animate(AnimationTweener.LINEAR, AnimationProperties.toPropertyList(property), ANIMATION_DURATION);
         }
 
-        public static IControlHandleList getResizeHandles(final Shape<?> shape, final NFastArrayList<PathPartList> listOfPaths, final DragMode dragMode)
+        public static IControlHandleList getResizeHandles(final AbstractMultiPathPartShape<?> shape, final NFastArrayList<PathPartList> listOfPaths, final DragMode dragMode)
         {
             // FIXME This isn't quite right yet, do not release  (mdp, um what did I mean here?)
 
@@ -493,7 +535,7 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
             return chlist;
         }
 
-        private static ResizeControlHandle getResizeControlHandle(final IControlHandleList chlist, final ArrayList<ResizeControlHandle> orderedChList, final Shape<?> shape, final NFastArrayList<PathPartList> listOfPaths, final Point2D point, final int position, final DragMode dragMode)
+        private static ResizeControlHandle getResizeControlHandle(final IControlHandleList chlist, final ArrayList<ResizeControlHandle> orderedChList, final AbstractMultiPathPartShape<?> shape, final NFastArrayList<PathPartList> listOfPaths, final Point2D point, final int position, final DragMode dragMode)
         {
             final Circle prim = getControlPrimitive(R0, point.getX(), point.getY(), shape, dragMode);
 
@@ -714,7 +756,8 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
 
     private static class ResizeControlHandle extends AbstractControlHandle
     {
-        private final Shape<?>                       m_shape;
+
+        private final AbstractMultiPathPartShape<?> m_shape;
 
         private final NFastArrayList<PathPartList>   m_listOfPaths;
 
@@ -726,7 +769,7 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
 
         private int                                  m_position;
 
-        public ResizeControlHandle(final Circle prim, final IControlHandleList hlist, final ArrayList<ResizeControlHandle> orderedChList, final Shape<?> shape, final NFastArrayList<PathPartList> listOfPaths, final int position)
+        public ResizeControlHandle(final Circle prim, final IControlHandleList hlist, final ArrayList<ResizeControlHandle> orderedChList, final AbstractMultiPathPartShape<?> shape, final NFastArrayList<PathPartList> listOfPaths, final int position)
         {
             m_prim = prim;
 
@@ -895,7 +938,8 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
 
     public static class ResizeHandleDragHandler implements DragConstraintEnforcer, NodeDragEndHandler
     {
-        private final Shape<?>                      m_shape;
+
+        private final AbstractMultiPathPartShape<?> m_shape;
 
         private final NFastArrayList<PathPartList>  m_listOfPaths;
 
@@ -919,7 +963,7 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
 
         private double                              m_offsetY;
 
-        public ResizeHandleDragHandler(final Shape<?> shape, final NFastArrayList<PathPartList> listOfPaths, final IControlHandleList chlist, final Shape<?> prim, final ResizeControlHandle handle)
+        public ResizeHandleDragHandler(final AbstractMultiPathPartShape<?> shape, final NFastArrayList<PathPartList> listOfPaths, final IControlHandleList chlist, final Shape<?> prim, final ResizeControlHandle handle)
         {
             m_shape = shape;
 
@@ -1162,19 +1206,13 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
 
         public boolean adjustPrimitive(final Point2D dxy)
         {
-            final BoundingBox sizeConstraints = m_shape.getAttributes().getSizeConstraints();
+            Double minWidth = m_shape.getMinWidth();
 
-            if (sizeConstraints == null)
-            {
-                return true;
-            }
-            final double minWidth = sizeConstraints.getMinX();
+            Double maxWidth = m_shape.getMaxWidth();
 
-            final double maxWidth = sizeConstraints.getMaxX();
+            Double minHeight = m_shape.getMinHeight();
 
-            final double minHeight = sizeConstraints.getMinY();
-
-            final double maxHeight = sizeConstraints.getMaxY();
+            Double maxHeight = m_shape.getMaxHeight();
 
             Point2D adjustedDelta = adjustForPosition(dxy);
 
@@ -1188,7 +1226,7 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
 
             boolean needsAdjustment = false;
 
-            if (width < minWidth)
+            if (minWidth != null && width < minWidth)
             {
                 final double difference = width - minWidth;
 
@@ -1198,7 +1236,8 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
             {
                 needsAdjustment = true;
             }
-            if (width > maxWidth)
+
+            if (maxWidth != null && width > maxWidth)
             {
                 final double difference = width - maxWidth;
 
@@ -1208,7 +1247,8 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
             {
                 needsAdjustment = true;
             }
-            if (height < minHeight)
+
+            if (minHeight != null && height < minHeight)
             {
                 final double difference = height - minHeight;
 
@@ -1218,7 +1258,8 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
             {
                 needsAdjustment = true;
             }
-            if (height > maxHeight)
+
+            if (maxHeight != null && height > maxHeight)
             {
                 final double difference = height - maxHeight;
 
