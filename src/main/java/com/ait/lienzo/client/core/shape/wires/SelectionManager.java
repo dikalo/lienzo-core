@@ -195,6 +195,18 @@ public class SelectionManager implements NodeMouseDoubleClickHandler, NodeMouseC
         return m_selected;
     }
 
+    public Point2D getUntransformedStartPoint() 
+    {
+    	Transform transform = m_layer.getViewport().getTransform();
+    	if (transform != null)
+    	{
+    		Point2D untransformed = new Point2D();
+    		transform.getInverse().transform(m_start, untransformed);
+    		return untransformed;
+    	}        	
+    	return m_start;        	
+    }
+    
     public class OnMouseXEventHandler implements OnMouseEventHandler
     {
         public void down(final MouseEvent<? extends EventHandler> event)
@@ -263,7 +275,16 @@ public class SelectionManager implements NodeMouseDoubleClickHandler, NodeMouseC
                     {
                         height += 1;
                     }
-                    drawSelectionShape(m_start.getX(), m_start.getY(), width, height, m_layer.getViewport().getOverLayer());
+                    
+                    Point2D unStartPoint = getUntransformedStartPoint();                    
+                    Transform transform = m_layer.getViewport().getTransform();
+                    if (transform != null) 
+                    {                    	
+                    	width = width / transform.getScaleX();
+                    	height = height / transform.getScaleY();
+                    }                  
+                                       
+                    drawSelectionShape(unStartPoint.getX(), unStartPoint.getY(), width, height, m_layer.getViewport().getOverLayer());
                     m_layer.getViewport().getOverLayer().draw();
 
                     return false;
@@ -415,12 +436,14 @@ public class SelectionManager implements NodeMouseDoubleClickHandler, NodeMouseC
         if (sw < 0)
         {
             sw = Math.abs(sw);
-            sx = m_start.getX() - sw;
+            Point2D unStartPoint = getUntransformedStartPoint();
+            sx = unStartPoint.getX() - sw;
         }
         if (sh < 0)
         {
             sh = Math.abs(sh);
-            sy = m_start.getY() - sh;
+            Point2D unStartPoint = getUntransformedStartPoint();
+            sy = unStartPoint.getY() - sh;
         }
         sw = sw + (padding * 2);
         sh = sh + (padding * 2);
