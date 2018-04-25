@@ -227,25 +227,21 @@ public class WiresShape extends WiresContainer
 
     private WiresShapeControlHandleList _loadControls(final ControlHandleType type)
     {
-        final WiresShapeControlHandleList list = getControls();
-
-        if (null != list)
-        {
-            list.destroy();
-
-            setWiresShapeControlHandleList(null);
-        }
         final Map<ControlHandleType, IControlHandleList> handles = getPath().getControlHandles(type);
 
         if (null != handles)
         {
-            final IControlHandleList controls = handles.get(type);
-
-            if ((null != controls) && (controls.isActive()))
+            if (getControls() == null)
             {
-                setWiresShapeControlHandleList(createControlHandles(type, (ControlHandleList) controls));
+                final IControlHandleList controls = handles.get(type);
+
+                if ((null != controls) && (controls.isActive()))
+                {
+                    setWiresShapeControlHandleList(createControlHandles(type, (ControlHandleList) controls));
+                }
             }
         }
+
         return getControls();
     }
 
