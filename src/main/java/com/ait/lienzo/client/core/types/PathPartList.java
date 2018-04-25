@@ -42,8 +42,6 @@ public final class PathPartList
 
     private final PathPartListJSO                       m_jso;
 
-    private final HashMap<PathPartEntryJSO, Proportion> m_proportions;
-
     public PathPartList()
     {
         this(PathPartListJSO.make(), false);
@@ -59,75 +57,17 @@ public final class PathPartList
 
             m_fin = true;
         }
-        m_proportions = new HashMap<>();
-    }
-
-    public Proportion getProportion(final PathPartEntryJSO entry)
-    {
-        return m_proportions.get(entry);
-    }
-
-    public void refreshProportions()
-    {
-        final BoundingBox bb = getBoundingBox();
-
-        if ((bb.getHeight() == 0) || (bb.getWidth() == 0))
-        {
-            return;
-        }
-        final double startTopLeftX = bb.getX();
-
-        final double startTopLeftY = bb.getY();
-
-        final double startW = bb.getWidth();
-
-        final double startH = bb.getHeight();
-
-        for (int i = 0; i < m_jso.length(); i++)
-        {
-            final PathPartEntryJSO entry = m_jso.get(i);
-
-            Proportion proportion = m_proportions.get(entry);
-
-            if (proportion == null)
-            {
-                proportion = new Proportion();
-
-                m_proportions.put(entry, proportion);
-            }
-            final double x = entry.getPoints().get(0);
-
-            final double y = entry.getPoints().get(1);
-
-            final double rightProportion = ((100 / startW) * (x - startTopLeftX)) / 100;
-
-            final double topProportion = ((100 / startH) * ((startTopLeftY + startH) - y)) / 100;
-
-            final double bottomProportion = ((100 / startH) * (y - startTopLeftY)) / 100;
-
-            final double leftProportion = ((100 / startW) * ((startTopLeftX + startW) - x)) / 100;
-
-            proportion.setRight(rightProportion);
-
-            proportion.setLeft(leftProportion);
-
-            proportion.setBottom(bottomProportion);
-
-            proportion.setTop(topProportion);
-        }
     }
 
     public final void push(final PathPartEntryJSO part)
     {
-        m_box = null;
+        resetBoundingBox();
 
         if (false == m_mov)
         {
             M(0, 0);
         }
         m_jso.push(part);
-
-        refreshProportions();
     }
 
     public final PathPartEntryJSO get(final int i)
@@ -144,7 +84,7 @@ public final class PathPartList
     {
         m_p2d = null;
 
-        m_box = null;
+        resetBoundingBox();
 
         m_mov = false;
 
@@ -443,16 +383,19 @@ public final class PathPartList
 
     public BoundingBox getBoundingBox()
     {
-        final int size = size();
-
-        if (size < 1)
-        {
-            return new BoundingBox(0, 0, 0, 0);
-        }
         if (m_box != null)
         {
             return m_box;
         }
+
+        final int size = size();
+
+        if (size < 1)
+        {
+            m_box = new BoundingBox(0, 0, 0, 0);
+            return m_box;
+        }
+
         m_box = new BoundingBox();
 
         double oldx = 0;
@@ -560,8 +503,6 @@ public final class PathPartList
             switch (part.getCommand())
             {
                 case PathPartEntryJSO.LINETO_ABSOLUTE:
-                    points.push(oldx = p.get(0), oldy = p.get(1));
-                    break;
                 case PathPartEntryJSO.MOVETO_ABSOLUTE:
                     points.push(oldx = p.get(0), oldy = p.get(1));
                     break;
@@ -599,57 +540,6 @@ public final class PathPartList
 
         protected PathPartListJSO()
         {
-        }
-    }
-
-    public static final class Proportion
-    {
-        private double m_top;
-
-        private double m_bottom;
-
-        private double m_left;
-
-        private double m_right;
-
-        public double getTop()
-        {
-            return m_top;
-        }
-
-        public void setTop(final double top)
-        {
-            this.m_top = top;
-        }
-
-        public double getBottom()
-        {
-            return m_bottom;
-        }
-
-        public void setBottom(final double bottom)
-        {
-            this.m_bottom = bottom;
-        }
-
-        public double getLeft()
-        {
-            return m_left;
-        }
-
-        public void setLeft(final double left)
-        {
-            this.m_left = left;
-        }
-
-        public double getRight()
-        {
-            return m_right;
-        }
-
-        public void setRight(final double right)
-        {
-            this.m_right = right;
         }
     }
 }
