@@ -101,7 +101,7 @@ public class WiresShapeControlHandleList implements IControlHandleList
     {
         final BoundingBox bbox = getPath().getBoundingBox();
 
-        resize(null, null, bbox.getWidth(), bbox.getHeight(), true);
+        resize(bbox.getWidth(), bbox.getHeight(), true);
     }
 
     @Override
@@ -312,10 +312,12 @@ public class WiresShapeControlHandleList implements IControlHandleList
 
     protected void resize(final Double x, final Double y, final double width, final double height, final boolean refresh)
     {
-        if ((null != x) && (null != y))
-        {
-            m_wires_shape.getLayoutContainer().setOffset(new Point2D(x, y));
-        }
+        m_wires_shape.getLayoutContainer().setOffset(new Point2D(x, y));
+        resize(width, height, refresh);
+    }
+
+    protected void resize(final double width, final double height, final boolean refresh)
+    {
         m_wires_shape.getLayoutContainer().setSize(width, height);
 
         if (refresh)
@@ -331,6 +333,7 @@ public class WiresShapeControlHandleList implements IControlHandleList
         // Layout content whilst resizing
         m_wires_shape.getLayoutHandler().requestLayout(m_wires_shape);
     }
+
 
     private Point2DArray getControlPointsArray()
     {
