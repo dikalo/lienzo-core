@@ -19,9 +19,8 @@ package com.ait.lienzo.client.core.shape.wires.handlers.impl;
 import com.ait.lienzo.client.core.Context2D;
 import com.ait.lienzo.client.core.event.NodeDragEndEvent;
 import com.ait.lienzo.client.core.event.NodeDragEndHandler;
-import com.ait.lienzo.client.core.event.NodeMouseDoubleClickEvent;
-import com.ait.lienzo.client.core.event.NodeMouseDoubleClickHandler;
 import com.ait.lienzo.client.core.shape.AbstractDirectionalMultiPointShape;
+import com.ait.lienzo.client.core.shape.IDirectionalMultiPointShape;
 import com.ait.lienzo.client.core.shape.IPrimitive;
 import com.ait.lienzo.client.core.shape.Shape;
 import com.ait.lienzo.client.core.shape.wires.BackingColorMapUtils;
@@ -32,6 +31,7 @@ import com.ait.lienzo.client.core.shape.wires.WiresConnector;
 import com.ait.lienzo.client.core.shape.wires.WiresManager;
 import com.ait.lienzo.client.core.shape.wires.handlers.WiresConnectionControl;
 import com.ait.lienzo.client.core.shape.wires.handlers.WiresConnectorControl;
+import com.ait.lienzo.client.core.shape.wires.handlers.WiresControlPointHandler;
 import com.ait.lienzo.client.core.types.BoundingBox;
 import com.ait.lienzo.client.core.types.ImageData;
 import com.ait.lienzo.client.core.types.PathPartEntryJSO;
@@ -58,9 +58,12 @@ import com.ait.tooling.nativetools.client.event.HandlerRegistrationManager;
  * line points must move. This differing behaviour is controlled by
  * booleans on the relevant classes.
  */
-public class WiresConnectorControlImpl implements WiresConnectorControl
-{
-    private final WiresConnector       m_connector;
+
+public class WiresConnectorControlImpl implements WiresConnectorControl {
+
+    public static final int            MINIMUM_STROKE_WITH = 4;
+
+    private WiresConnector             m_connector;
 
     private HandlerRegistrationManager m_HandlerRegistrationManager;
 
@@ -111,8 +114,6 @@ public class WiresConnectorControlImpl implements WiresConnectorControl
     {
         m_connector.getGroup().setX(0).setY(0);
 
-        // move(context.getDx(), context.getDy(), false, true);
-
         m_wiresManager.getLayer().getLayer().batch();
 
         dragEnd();
@@ -134,10 +135,8 @@ public class WiresConnectorControlImpl implements WiresConnectorControl
     /**
      * See class javadocs to explain why we have these booleans
      */
-    @Override
-    public void move(final double dx, final double dy, final boolean midPointsOnly, final boolean moveLinePoints)
-    {
-        final IControlHandleList handles = m_connector.getPointHandles();
+    public void move(double dx, double dy, boolean midPointsOnly, boolean moveLinePoints) {
+        IControlHandleList handles = m_connector.getPointHandles();
 
         int start = 0;
 
@@ -221,8 +220,7 @@ public class WiresConnectorControlImpl implements WiresConnectorControl
     }
 
     @Override
-    public void addControlPoint(final double x, final double y)
-    {
+    public int addControlPoint(final double x, final double y) {
         hideControlPoints();
 
         final Point2DArray oldPoints = m_connector.getLine().getPoint2DArray();
@@ -252,6 +250,48 @@ public class WiresConnectorControlImpl implements WiresConnectorControl
         showPointHandles();
 
         m_connector.getLine().getLayer().batch();
+        return pointIndex;
+    }
+
+    @Override
+    public void addControlPointToLine(final double x, final double y, final int index) {
+
+        Point2DArray oldPoints = m_connector.getLine().getPoint2DArray();
+        if (index <= 0 || index >= oldPoints.size()) {
+            throw new IllegalArgumentException("Index should be between head and tail line points. Index: " + index);
+        }
+
+        Point2DArray newPoints = new Point2DArray();
+
+        for (int i = 0; i < oldPoints.size(); i++)
+        {
+            if (i == index)
+            {
+                newPoints.push(new Point2D(x, y));
+            }
+            newPoints.push(oldPoints.get(i));
+        }
+
+        m_connector.getLine().setPoint2DArray(newPoints);
+        addControlPoint(x, y);
+        m_connector.select();
+    }
+
+    @Override
+    public void removeControlPoint(final double x, final double y)
+    {
+        Point2DArray points = m_connector.getLine().getPoint2DArray();
+        Point2DArray newPoints = new Point2DArray();
+        for (Point2D point : points)
+        {
+            if (point.getX() == x && point.getY() == y)
+            {
+                continue;
+            }
+            newPoints.push(point);
+        }
+        m_connector.getLine().setPoint2DArray(newPoints);
+        m_connector.select();
     }
 
     @Override
@@ -318,6 +358,11 @@ public class WiresConnectorControlImpl implements WiresConnectorControl
     }
 
     @Override
+    public Point2D adjustControlPointAt(double x, double y, double deltaX, double deltaY) {
+        return m_connector.getLine().adjustPoint(x, y, deltaX, deltaY);
+    }
+
+    @Override
     public WiresConnectionControl getHeadConnectionControl()
     {
         return m_headConnectionControl;
@@ -338,25 +383,20 @@ public class WiresConnectorControlImpl implements WiresConnectorControl
     {
         final NFastStringMap<Integer> colorMap = new NFastStringMap<>();
 
-        final AbstractDirectionalMultiPointShape<?> line = connector.getLine();
+        final IDirectionalMultiPointShape<?> line = connector.getLine();
 
         final ScratchPad scratch = line.getScratchPad();
-
         scratch.clear();
-
-        final PathPartList path = line.getPathPartList();
-
+        PathPartList path = line.asShape().getPathPartList();
         int pointsIndex = 1;
 
         String color = MagnetManager.m_c_rotor.next();
 
         colorMap.put(color, pointsIndex);
-
-        final Context2D ctx = scratch.getContext();
-
-        final double strokeWidth = line.getStrokeWidth();
-
-        ctx.setStrokeWidth(strokeWidth);
+        Context2D ctx = scratch.getContext();
+        double strokeWidth = line.asShape().getStrokeWidth();
+        //setting a minimum stroke width to make finding a close point to the connector easier
+        ctx.setStrokeWidth((strokeWidth < MINIMUM_STROKE_WITH ? MINIMUM_STROKE_WITH : strokeWidth));
 
         final Point2D absolutePos = connector.getLine().getComputedLocation();
 
@@ -540,13 +580,17 @@ public class WiresConnectorControlImpl implements WiresConnectorControl
 
             m_HandlerRegistrationManager.register(tail.addNodeDragEndHandler(tailConnectionHandler));
 
-            final WiresConnectorControlHandler controlPointsHandler = new WiresConnectorControlHandler();
+            final WiresControlPointHandler controlPointsHandler =
+                    m_wiresManager.getWiresHandlerFactory().newControlPointHandler(m_connector, this);
 
             for (final IControlHandle handle : m_connector.getPointHandles())
             {
                 final Shape<?> shape = handle.getControl().asShape();
 
                 m_HandlerRegistrationManager.register(shape.addNodeMouseDoubleClickHandler(controlPointsHandler));
+                m_HandlerRegistrationManager.register(shape.addNodeDragStartHandler(controlPointsHandler));
+                m_HandlerRegistrationManager.register(shape.addNodeDragEndHandler(controlPointsHandler));
+                m_HandlerRegistrationManager.register(shape.addNodeDragMoveHandler(controlPointsHandler));
             }
         }
     }
@@ -610,22 +654,6 @@ public class WiresConnectorControlImpl implements WiresConnectorControl
             if (!allowed)
             {
                 event.getDragContext().reset();
-            }
-        }
-    }
-
-    private final class WiresConnectorControlHandler implements NodeMouseDoubleClickHandler
-    {
-        @Override
-        public void onNodeMouseDoubleClick(final NodeMouseDoubleClickEvent event)
-        {
-            if (m_connector.getPointHandles().isVisible())
-            {
-                //addControlPoint(event.getX(), event.getY());
-
-                destroyControlPoint((IPrimitive<?>) event.getSource());
-
-                m_connector.getLine().getLayer().batch();
             }
         }
     }

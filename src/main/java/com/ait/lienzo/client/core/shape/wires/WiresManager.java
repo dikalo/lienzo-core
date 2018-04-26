@@ -24,10 +24,13 @@ import com.ait.lienzo.client.core.shape.wires.event.WiresResizeEndEvent;
 import com.ait.lienzo.client.core.shape.wires.event.WiresResizeEndHandler;
 import com.ait.lienzo.client.core.shape.wires.handlers.AlignAndDistributeControl;
 import com.ait.lienzo.client.core.shape.wires.handlers.WiresConnectorControl;
+import com.ait.lienzo.client.core.shape.wires.handlers.WiresConnectorHandler;
 import com.ait.lienzo.client.core.shape.wires.handlers.WiresControl;
 import com.ait.lienzo.client.core.shape.wires.handlers.WiresControlFactory;
+import com.ait.lienzo.client.core.shape.wires.handlers.WiresHandlerFactory;
 import com.ait.lienzo.client.core.shape.wires.handlers.WiresShapeControl;
 import com.ait.lienzo.client.core.shape.wires.handlers.impl.WiresControlFactoryImpl;
+import com.ait.lienzo.client.core.shape.wires.handlers.impl.WiresHandlerFactoryImpl;
 import com.ait.lienzo.client.core.shape.wires.handlers.impl.WiresShapeHandler;
 import com.ait.lienzo.client.core.types.OnLayerBeforeDraw;
 import com.ait.lienzo.client.core.types.Point2D;
@@ -58,6 +61,8 @@ public final class WiresManager
     private final WiresLayer                                 m_layer;
 
     private WiresControlFactory                              m_controlFactory;
+
+    private WiresHandlerFactory                              m_wiresHandlerFactory;
 
     private ILocationAcceptor                                m_locationAcceptor    = ILocationAcceptor.ALL;
 
@@ -97,6 +102,7 @@ public final class WiresManager
         m_index = new AlignAndDistribute(layer);
 
         m_handler = null;
+        m_wiresHandlerFactory = new WiresHandlerFactoryImpl();
     }
 
     public void enableSelectionManager()
@@ -163,7 +169,10 @@ public final class WiresManager
     {
         shape.setWiresManager(this);
 
-        final WiresShapeHandler handler = new WiresShapeHandler(getControlFactory().newShapeControl(shape, this), getControlFactory().newShapeHighlight(this), this);
+
+        final WiresShapeHandler handler = getWiresHandlerFactory().newShapeHandler(getControlFactory().newShapeControl(shape, this),
+                                                                                   getControlFactory().newShapeHighlight(this),
+                                                                                   this);
 
         if (addIntoIndex)
         {
@@ -237,7 +246,7 @@ public final class WiresManager
 
         final HandlerRegistrationManager m_registrationManager = createHandlerRegistrationManager();
 
-        final WiresConnector.WiresConnectorHandler handler = new WiresConnector.WiresConnectorHandlerImpl(connector, this);
+        final WiresConnectorHandler handler = getWiresHandlerFactory().newConnectorHandler(connector, this);
 
         connector.setWiresConnectorHandler(m_registrationManager, handler);
 
@@ -303,6 +312,10 @@ public final class WiresManager
         this.m_controlFactory = factory;
     }
 
+    public void setWiresHandlerFactory(WiresHandlerFactory wiresHandlerFactory) {
+        this.m_wiresHandlerFactory = wiresHandlerFactory;
+    }
+
     public WiresControlFactory getControlFactory()
     {
         if (null == m_controlFactory)
@@ -310,6 +323,10 @@ public final class WiresManager
             m_controlFactory = new WiresControlFactoryImpl();
         }
         return m_controlFactory;
+    }
+
+    public WiresHandlerFactory getWiresHandlerFactory() {
+        return m_wiresHandlerFactory;
     }
 
     public IConnectionAcceptor getConnectionAcceptor()

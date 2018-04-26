@@ -16,161 +16,160 @@
 
 package com.ait.lienzo.client.core;
 
-import com.ait.lienzo.client.core.Path2D.NativePath2D;
 import com.ait.lienzo.client.core.types.ImageData;
-import com.ait.lienzo.client.core.types.LinearGradient.LinearGradientJSO;
-import com.ait.lienzo.client.core.types.PathPartList.PathPartListJSO;
-import com.ait.lienzo.client.core.types.PatternGradient.PatternGradientJSO;
-import com.ait.lienzo.client.core.types.RadialGradient.RadialGradientJSO;
-import com.ait.lienzo.client.core.types.Shadow.ShadowJSO;
+import com.ait.lienzo.client.core.types.LinearGradient;
+import com.ait.lienzo.client.core.types.PathPartList;
+import com.ait.lienzo.client.core.types.PatternGradient;
+import com.ait.lienzo.client.core.types.RadialGradient;
+import com.ait.lienzo.client.core.types.Shadow;
 import com.ait.lienzo.client.core.types.TextMetrics;
-import com.ait.lienzo.client.core.types.Transform.TransformJSO;
+import com.ait.lienzo.client.core.types.Transform;
 import com.ait.tooling.nativetools.client.collection.NFastDoubleArrayJSO;
 import com.google.gwt.dom.client.Element;
 
-public interface INativeContext2D
-{
-    public void initDeviceRatio();
+public interface INativeContext2D {
 
-    public void saveContainer();
+    void initDeviceRatio();
 
-    public void restoreContainer();
+    void saveContainer();
 
-    public void save();
+    void restoreContainer();
 
-    public void restore();
+    void save();
 
-    public void beginPath();
+    void restore();
 
-    public void closePath();
+    void beginPath();
 
-    public void moveTo(double x, double y);
+    void closePath();
 
-    public void lineTo(double x, double y);
+    void moveTo(double x, double y);
 
-    public void setGlobalCompositeOperation(String operation);
+    void lineTo(double x, double y);
 
-    public void setLineCap(String lineCap);
+    void setGlobalCompositeOperation(String operation);
 
-    public void setLineJoin(String lineJoin);
+    void setLineCap(String lineCap);
 
-    public void quadraticCurveTo(double cpx, double cpy, double x, double y);
+    void setLineJoin(String lineJoin);
 
-    public void arc(double x, double y, double radius, double startAngle, double endAngle);
+    void quadraticCurveTo(double cpx, double cpy, double x, double y);
 
-    public void arc(double x, double y, double radius, double startAngle, double endAngle, boolean antiClockwise);
+    void arc(double x, double y, double radius, double startAngle, double endAngle);
 
-    public void ellipse(double x, double y, double rx, double ry, double ro, double sa, double ea, boolean ac);
+    void arc(double x, double y, double radius, double startAngle, double endAngle, boolean antiClockwise);
 
-    public void ellipse(double x, double y, double rx, double ry, double ro, double sa, double ea);
+    void ellipse(double x, double y, double rx, double ry, double ro, double sa, double ea, boolean ac);
 
-    public void arcTo(double x1, double y1, double x2, double y2, double radius);
+    void ellipse(double x, double y, double rx, double ry, double ro, double sa, double ea);
 
-    public void bezierCurveTo(double cp1x, double cp1y, double cp2x, double cp2y, double x, double y);
+    void arcTo(double x1, double y1, double x2, double y2, double radius);
 
-    public void clearRect(double x, double y, double w, double h);
+    void bezierCurveTo(double cp1x, double cp1y, double cp2x, double cp2y, double x, double y);
 
-    public void clip();
+    void clearRect(double x, double y, double w, double h);
 
-    public void fill();
+    void clip();
 
-    public void stroke();
+    void fill();
 
-    public void fillRect(double x, double y, double w, double h);
+    void stroke();
 
-    public void fillText(String text, double x, double y);
+    void fillRect(double x, double y, double w, double h);
 
-    public void fillTextWithGradient(String text, double x, double y, double sx, double sy, double ex, double ey, String color);
+    void fillText(String text, double x, double y);
 
-    public void fillText(String text, double x, double y, double maxWidth);
+    void fillTextWithGradient(String text, double x, double y, double sx, double sy, double ex, double ey, String color);
 
-    public void setFillColor(String fill);
+    void fillText(String text, double x, double y, double maxWidth);
 
-    public void rect(double x, double y, double w, double h);
+    void setFillColor(String fill);
 
-    public void rotate(double angle);
+    void rect(double x, double y, double w, double h);
 
-    public void scale(double sx, double sy);
+    void rotate(double angle);
 
-    public void setStrokeColor(String color);
+    void scale(double sx, double sy);
 
-    public void setStrokeWidth(double width);
+    void setStrokeColor(String color);
 
-    public void setImageSmoothingEnabled(boolean enabled);
+    void setStrokeWidth(double width);
 
-    public void setFillGradient(LinearGradientJSO grad);
+    void setImageSmoothingEnabled(boolean enabled);
 
-    public void setFillGradient(PatternGradientJSO grad);
+    void setFillGradient(LinearGradient.LinearGradientJSO grad);
 
-    public void setFillGradient(RadialGradientJSO grad);
+    void setFillGradient(PatternGradient.PatternGradientJSO grad);
 
-    public void transform(TransformJSO jso);
+    void setFillGradient(RadialGradient.RadialGradientJSO grad);
 
-    public void transform(double d0, double d1, double d2, double d3, double d4, double d5);
+    void transform(Transform.TransformJSO jso);
 
-    public void setTransform(TransformJSO jso);
+    void transform(double d0, double d1, double d2, double d3, double d4, double d5);
 
-    public void setTransform(double d0, double d1, double d2, double d3, double d4, double d5);
+    void setTransform(Transform.TransformJSO jso);
 
-    public void setToIdentityTransform();
+    void setTransform(double d0, double d1, double d2, double d3, double d4, double d5);
 
-    public void setTextFont(String font);
+    void setToIdentityTransform();
 
-    public void setTextBaseline(String baseline);
+    void setTextFont(String font);
 
-    public void setTextAlign(String align);
+    void setTextBaseline(String baseline);
 
-    public void strokeText(String text, double x, double y);
+    void setTextAlign(String align);
 
-    public void setGlobalAlpha(double alpha);
+    void strokeText(String text, double x, double y);
 
-    public void translate(double x, double y);
+    void setGlobalAlpha(double alpha);
 
-    public void setShadow(ShadowJSO shadow);
+    void translate(double x, double y);
 
-    public boolean isSupported(String feature);
+    void setShadow(Shadow.ShadowJSO shadow);
 
-    public boolean isPointInPath(double x, double y);
+    boolean isSupported(String feature);
 
-    public ImageData getImageData(double x, double y, double width, double height);
+    boolean isPointInPath(double x, double y);
 
-    public ImageData createImageData(double width, double height);
+    ImageData getImageData(double x, double y, double width, double height);
 
-    public ImageData createImageData(ImageData data);
+    ImageData createImageData(double width, double height);
 
-    public void putImageData(ImageData imageData, double x, double y);
+    ImageData createImageData(ImageData data);
 
-    public void putImageData(ImageData imageData, double x, double y, double dx, double dy, double dw, double dh);
+    void putImageData(ImageData imageData, double x, double y);
 
-    public TextMetrics measureText(String text);
+    void putImageData(ImageData imageData, double x, double y, double dx, double dy, double dw, double dh);
 
-    public void drawImage(Element image, double x, double y);
+    TextMetrics measureText(String text);
 
-    public void drawImage(Element image, double x, double y, double w, double h);
+    void drawImage(Element image, double x, double y);
 
-    public void drawImage(Element image, double sx, double sy, double sw, double sh, double x, double y, double w, double h);
+    void drawImage(Element image, double x, double y, double w, double h);
 
-    public void resetClip();
+    void drawImage(Element image, double sx, double sy, double sw, double sh, double x, double y, double w, double h);
 
-    public void setMiterLimit(double limit);
+    void resetClip();
 
-    public void setLineDash(NFastDoubleArrayJSO dashes);
+    void setMiterLimit(double limit);
 
-    public void setLineDashOffset(double offset);
+    void setLineDash(NFastDoubleArrayJSO dashes);
 
-    public double getBackingStorePixelRatio();
+    void setLineDashOffset(double offset);
 
-    public boolean path(PathPartListJSO list);
+    double getBackingStorePixelRatio();
 
-    public boolean clip(PathPartListJSO list);
+    boolean path(PathPartList.PathPartListJSO list);
 
-    public void fill(NativePath2D path);
+    boolean clip(PathPartList.PathPartListJSO list);
 
-    public void stroke(NativePath2D path);
+    void fill(Path2D.NativePath2D path);
 
-    public void clip(NativePath2D path);
+    void stroke(Path2D.NativePath2D path);
 
-    public NativePath2D getCurrentPath();
+    void clip(Path2D.NativePath2D path);
 
-    public void setCurrentPath(NativePath2D path);
+    Path2D.NativePath2D getCurrentPath();
+
+    void setCurrentPath(Path2D.NativePath2D path);
 }

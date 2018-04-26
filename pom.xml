@@ -45,7 +45,7 @@
 			<snapshots><enabled>true</enabled></snapshots>
 		</repository>
 	</repositories>
-
+	
 	<build>
 		<resources>
 			<!-- Include src/main/java in order not to break the Eclipse GWT plug-in -->
@@ -68,6 +68,19 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                  <execution>
+                    <id>attach-sources</id>
+                    <goals>
+                      <goal>jar</goal>
+                    </goals>
+                  </execution>
+                </executions>
+            </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>

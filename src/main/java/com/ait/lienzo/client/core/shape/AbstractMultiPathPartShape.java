@@ -18,12 +18,11 @@ package com.ait.lienzo.client.core.shape;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ait.lienzo.client.core.Attribute;
 import com.ait.lienzo.client.core.Context2D;
 import com.ait.lienzo.client.core.animation.AnimationProperties;
 import com.ait.lienzo.client.core.animation.AnimationProperty;
@@ -65,11 +64,22 @@ import com.ait.tooling.nativetools.client.event.HandlerRegistrationManager;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.json.client.JSONObject;
 
+import static com.ait.lienzo.client.core.util.Geometry.sgn;
+
 public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPartShape<T>> extends Shape<T>
 {
     private final NFastArrayList<PathPartList> m_points       = new NFastArrayList<>();
 
     private NFastArrayList<PathPartList>       m_cornerPoints = new NFastArrayList<>();
+
+    private NFastDoubleArrayJSO                m_pointRatios;
+
+    protected BoundingBox                      m_box;
+
+    private static final int TOP_LEFT     = 0;
+    private static final int TOP_RIGHT    = 1;
+    private static final int BOTTOM_RIGHT = 2;
+    private static final int BOTTOM_LEFT  = 3;
 
     protected AbstractMultiPathPartShape(final ShapeType type)
     {
@@ -84,6 +94,11 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
     @Override
     public BoundingBox getBoundingBox()
     {
+        if (m_box != null)
+        {
+            return m_box;
+        }
+
         NFastArrayList<PathPartList> points = m_points;
 
         if (getCornerRadius() > 0)
@@ -94,15 +109,22 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
 
         if (size < 1)
         {
-            return new BoundingBox(0, 0, 0, 0);
+            m_box = new BoundingBox(0, 0, 0, 0);
+            return m_box;
         }
-        final BoundingBox bbox = new BoundingBox();
+        m_box = new BoundingBox();
 
         for (int i = 0; i < size; i++)
         {
-            bbox.add(points.get(i).getBoundingBox());
+            m_box.add(points.get(i).getBoundingBox());
         }
-        return bbox;
+        return m_box;
+    }
+
+
+    public void resetBoundingBox()
+    {
+        m_box = null;
     }
 
     @Override
@@ -120,6 +142,8 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
             m_points.get(i).clear();
         }
         m_points.clear();
+
+        resetBoundingBox();
 
         return cast();
     }
@@ -146,10 +170,7 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
                 m_cornerPoints.add(cornerList);
             }
         }
-        if (false == validSizeConstraints())
-        {
-            throw new IllegalArgumentException("Constraints are either smaller or larger than size.");
-        }
+
         return true;
     }
 
@@ -220,57 +241,76 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
         }
     }
 
-    public BoundingBox getSizeConstraints()
+    public Double getMinWidth()
     {
-        return getAttributes().getSizeConstraints();
+        if (getAttributes().isDefined(Attribute.MIN_WIDTH))
+        {
+            return getAttributes().getMinWidth();
+        }
+        else
+        {
+            return null;
+        }
     }
 
-    public T setSizeConstraints(final BoundingBox sizeConstraints)
+    public T setMinWidth(final Double minWidth)
     {
-        getAttributes().setSizeConstraints(sizeConstraints);
-
+        getAttributes().setMinWidth(minWidth);
         return refresh();
     }
 
-    private boolean validSizeConstraints()
+    public Double getMaxWidth()
     {
-        final BoundingBox shapeBB = getBoundingBox();
-
-        final BoundingBox constraintsBB = getSizeConstraints();
-
-        if (constraintsBB == null)
+        if (getAttributes().isDefined(Attribute.MAX_WIDTH))
         {
-            return true;
+            return getAttributes().getMaxWidth();
         }
-        final double minWidth = constraintsBB.getMinX();
-
-        final double minHeight = constraintsBB.getMinY();
-
-        final double maxWidth = constraintsBB.getMaxX();
-
-        final double maxHeight = constraintsBB.getMaxY();
-
-        final double width = shapeBB.getWidth();
-
-        final double height = shapeBB.getHeight();
-
-        if (minWidth > width)
+        else
         {
-            return false;
+            return null;
         }
-        if (minHeight > height)
+    }
+
+    public T setMaxWidth(final Double maxWidth)
+    {
+        getAttributes().setMaxWidth(maxWidth);
+        return refresh();
+    }
+
+    public Double getMinHeight()
+    {
+        if (getAttributes().isDefined(Attribute.MIN_HEIGHT))
         {
-            return false;
+            return getAttributes().getMinHeight();
         }
-        if (maxWidth < width)
+        else
         {
-            return false;
+            return null;
         }
-        if (maxHeight < height)
+    }
+
+    public T setMinHeight(final Double minHeight)
+    {
+        getAttributes().setMinHeight(minHeight);
+        return refresh();
+    }
+
+    public Double getMaxHeight()
+    {
+        if (getAttributes().isDefined(Attribute.MAX_HEIGHT))
         {
-            return false;
+            return getAttributes().getMaxHeight();
         }
-        return true;
+        else
+        {
+            return null;
+        }
+    }
+
+    public T setMaxHeight(final Double maxHeight)
+    {
+        getAttributes().setMaxHeight(maxHeight);
+        return refresh();
     }
 
     public double getCornerRadius()
@@ -299,7 +339,7 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
 
     public static class OnDragMoveIControlHandleList implements AttributesChangedHandler, NodeDragStartHandler, NodeDragMoveHandler, NodeDragEndHandler
     {
-        private final Shape<?>            m_shape;
+        private final AbstractMultiPathPartShape            m_shape;
 
         private final IControlHandleList  m_chlist;
 
@@ -309,7 +349,7 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
 
         private final HandlerRegistration m_nodeDragMoveHandlerReg;
 
-        public OnDragMoveIControlHandleList(final Shape<?> shape, final IControlHandleList chlist)
+        public OnDragMoveIControlHandleList(final AbstractMultiPathPartShape shape, final IControlHandleList chlist)
         {
             m_shape = shape;
 
@@ -378,13 +418,14 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
 
     public static final class DefaultMultiPathShapeHandleFactory implements IControlHandleFactory
     {
+
         private final NFastArrayList<PathPartList> m_listOfPaths;
 
-        private final Shape<?>                     m_shape;
+        private final AbstractMultiPathPartShape<?> m_shape;
 
-        private final DragMode                     m_dmode = DragMode.SAME_LAYER;
+        private DragMode m_dmode = DragMode.SAME_LAYER;
 
-        public DefaultMultiPathShapeHandleFactory(final NFastArrayList<PathPartList> listOfPaths, final Shape<?> shape)
+        public DefaultMultiPathShapeHandleFactory(final NFastArrayList<PathPartList> listOfPaths, final AbstractMultiPathPartShape<?> shape)
         {
             m_listOfPaths = listOfPaths;
 
@@ -490,10 +531,8 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
             node.animate(AnimationTweener.LINEAR, AnimationProperties.toPropertyList(property), ANIMATION_DURATION);
         }
 
-        public static IControlHandleList getResizeHandles(final Shape<?> shape, final NFastArrayList<PathPartList> listOfPaths, final DragMode dragMode)
+        public static IControlHandleList getResizeHandles(final AbstractMultiPathPartShape<?> shape, final NFastArrayList<PathPartList> listOfPaths, final DragMode dragMode)
         {
-            // FIXME This isn't quite right yet, do not release  (mdp, um what did I mean here?)
-
             final ControlHandleList chlist = new ControlHandleList(shape);
 
             final BoundingBox box = shape.getBoundingBox();
@@ -508,25 +547,25 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
 
             final ArrayList<ResizeControlHandle> orderedChList = new ArrayList<>();
 
-            final ResizeControlHandle topLeft = getResizeControlHandle(chlist, orderedChList, shape, listOfPaths, tl, 0, dragMode);
+            final ResizeControlHandle topLeft = getResizeControlHandle(chlist, orderedChList, shape, listOfPaths, tl, TOP_LEFT, dragMode);
 
             chlist.add(topLeft);
 
             orderedChList.add(topLeft);
 
-            final ResizeControlHandle topRight = getResizeControlHandle(chlist, orderedChList, shape, listOfPaths, tr, 1, dragMode);
+            final ResizeControlHandle topRight = getResizeControlHandle(chlist, orderedChList, shape, listOfPaths, tr, TOP_RIGHT, dragMode);
 
             chlist.add(topRight);
 
             orderedChList.add(topRight);
 
-            final ResizeControlHandle bottomRight = getResizeControlHandle(chlist, orderedChList, shape, listOfPaths, br, 2, dragMode);
+            final ResizeControlHandle bottomRight = getResizeControlHandle(chlist, orderedChList, shape, listOfPaths, br, BOTTOM_RIGHT, dragMode);
 
             chlist.add(bottomRight);
 
             orderedChList.add(bottomRight);
 
-            final ResizeControlHandle bottomLeft = getResizeControlHandle(chlist, orderedChList, shape, listOfPaths, bl, 3, dragMode);
+            final ResizeControlHandle bottomLeft = getResizeControlHandle(chlist, orderedChList, shape, listOfPaths, bl, BOTTOM_LEFT, dragMode);
 
             chlist.add(bottomLeft);
 
@@ -537,7 +576,7 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
             return chlist;
         }
 
-        private static ResizeControlHandle getResizeControlHandle(final IControlHandleList chlist, final ArrayList<ResizeControlHandle> orderedChList, final Shape<?> shape, final NFastArrayList<PathPartList> listOfPaths, final Point2D point, final int position, final DragMode dragMode)
+        private static ResizeControlHandle getResizeControlHandle(final IControlHandleList chlist, final ArrayList<ResizeControlHandle> orderedChList, final AbstractMultiPathPartShape<?> shape, final NFastArrayList<PathPartList> listOfPaths, final Point2D point, final int position, final DragMode dragMode)
         {
             final Circle prim = getControlPrimitive(R0, point.getX(), point.getY(), shape, dragMode);
 
@@ -548,7 +587,7 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
             return handle;
         }
 
-        private static Circle getControlPrimitive(final double size, final double x, final double y, final Shape<?> shape, final DragMode dragMode)
+        private static Circle getControlPrimitive(final double size, final double x, final double y, final AbstractMultiPathPartShape shape, final DragMode dragMode)
         {
             return new Circle(size).setX(x + shape.getX()).setY(y + shape.getY()).setFillColor(ColorName.DARKRED).setFillAlpha(0.8).setStrokeColor(ColorName.BLACK).setStrokeWidth(0.5).setDraggable(true).setDragMode(dragMode);
         }
@@ -556,7 +595,7 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
 
     private static class PointControlHandle extends AbstractControlHandle
     {
-        private final Shape<?>                     m_shape;
+        private final AbstractMultiPathPartShape   m_shape;
 
         private final NFastArrayList<PathPartList> m_listOfPaths;
 
@@ -568,7 +607,7 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
 
         private final int                          m_entryIndex;
 
-        public PointControlHandle(final Shape<?> prim, final int pathIndex, final int entryIndex, final Shape<?> shape, final NFastArrayList<PathPartList> listOfPaths, final PathPartList plist, final IControlHandleList hlist)
+        public PointControlHandle(final Shape<?> prim, final int pathIndex, final int entryIndex, final AbstractMultiPathPartShape shape, final NFastArrayList<PathPartList> listOfPaths, final PathPartList plist, final IControlHandleList hlist)
         {
             m_shape = shape;
 
@@ -627,7 +666,7 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
 
     public static class PointHandleDragHandler implements NodeDragStartHandler, NodeDragMoveHandler, NodeDragEndHandler
     {
-        protected final Shape<?>                      m_shape;
+        protected final AbstractMultiPathPartShape    m_shape;
 
         private final NFastArrayList<PathPartList>    m_listOfPaths;
 
@@ -639,7 +678,7 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
 
         protected NFastArrayList<NFastDoubleArrayJSO> m_entries;
 
-        public PointHandleDragHandler(final Shape<?> shape, final NFastArrayList<PathPartList> listOfPaths, final IControlHandleList chlist, final Shape<?> prim, final PointControlHandle handle)
+        public PointHandleDragHandler(final AbstractMultiPathPartShape shape, final NFastArrayList<PathPartList> listOfPaths, final IControlHandleList chlist, final Shape<?> prim, final PointControlHandle handle)
         {
             m_shape = shape;
 
@@ -698,7 +737,7 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
                         break;
                     }
                 }
-                m_shape.refresh();
+                m_shape.resetBoundingBox();
 
                 m_shape.getLayer().batch();
             }
@@ -715,6 +754,7 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
                 {
                     list.resetBoundingBox();
                 }
+                m_shape.resetBoundingBox();
                 m_prim.setFillColor(ColorName.DARKRED);
 
                 m_prim.getLayer().draw();
@@ -723,7 +763,7 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
 
         private void copyDoubles()
         {
-            m_entries = new NFastArrayList<>();
+            m_entries = new NFastArrayList<NFastDoubleArrayJSO>();
 
             final NFastArrayList<PathPartList> lists = m_listOfPaths;
 
@@ -758,7 +798,7 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
 
     private static class ResizeControlHandle extends AbstractControlHandle
     {
-        private final Shape<?>                       m_shape;
+        private final AbstractMultiPathPartShape<?> m_shape;
 
         private final NFastArrayList<PathPartList>   m_listOfPaths;
 
@@ -770,7 +810,7 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
 
         private int                                  m_position;
 
-        public ResizeControlHandle(final Circle prim, final IControlHandleList hlist, final ArrayList<ResizeControlHandle> orderedChList, final Shape<?> shape, final NFastArrayList<PathPartList> listOfPaths, final int position)
+        public ResizeControlHandle(final Circle prim, final IControlHandleList hlist, final ArrayList<ResizeControlHandle> orderedChList, final AbstractMultiPathPartShape<?> shape, final NFastArrayList<PathPartList> listOfPaths, final int position)
         {
             m_prim = prim;
 
@@ -789,11 +829,11 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
 
         public void init()
         {
-            final ResizeHandleDragHandler topRightHandler = new ResizeHandleDragHandler(m_shape, m_listOfPaths, m_chlist, m_prim, this);
+            final ResizeHandleDragHandler handler = new ResizeHandleDragHandler(m_shape, m_listOfPaths, m_chlist, m_prim, this);
 
-            m_prim.setDragConstraints(topRightHandler);
+            m_prim.setDragConstraints(handler);
 
-            register(m_prim.addNodeDragEndHandler(topRightHandler));
+            register(m_prim.addNodeDragEndHandler(handler));
         }
 
         public int getPosition()
@@ -829,7 +869,7 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
             return m_prim;
         }
 
-        public double getX(final double x, final double dx, final PathPartList.Proportion proportions)
+        public double getX(final double startTopLeftX, final double startW, final double dx, double wpc)
         {
             double newX = 0;
 
@@ -837,17 +877,17 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
             {
                 case 0:
                 case 3:
-                    newX = getLeft(x, dx, proportions.getLeft());
+                    newX = getLeft(startTopLeftX, startW, dx, wpc);
                     break;
                 case 1:
                 case 2:
-                    newX = getRight(x, dx, proportions.getRight());
+                    newX = getRight(startTopLeftX, startW, dx, wpc);
                     break;
             }
             return newX;
         }
 
-        public double getY(final double y, final double dy, final PathPartList.Proportion proportions)
+        public double getY(final double startTopLeftY, final double startH, final double dy, double hpc)
         {
             double newY = 0;
 
@@ -855,83 +895,92 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
             {
                 case 0:
                 case 1:
-                    newY = getTop(y, dy, proportions.getTop());
+                    newY = getTop(startTopLeftY, startH, dy, hpc);
                     break;
                 case 2:
                 case 3:
-                    newY = getBottom(y, dy, proportions.getBottom());
+                    newY = getBottom(startTopLeftY, startH, dy, hpc);
                     break;
             }
             return newY;
         }
 
+
         void updateOtherHandles(final double dx, final double dy, final double offsetX, final double offsetY, final double boxStartX, final double boxStartY, final double boxStartWidth, final double boxStartHeight)
         {
             switch (m_position)
             {
-                case 0:
+                case TOP_LEFT:
                 {
-                    final IControlHandle topRight = m_orderedChList.get(1);
+                    final IControlHandle topRight = m_orderedChList.get(TOP_RIGHT);
                     topRight.getControl().setY(boxStartY + dy + offsetY);
 
-                    final IControlHandle bottomLeft = m_orderedChList.get(3);
+                    final IControlHandle bottomLeft = m_orderedChList.get(BOTTOM_LEFT);
                     bottomLeft.getControl().setX(boxStartX + dx + offsetX);
                     break;
                 }
-                case 1:
+                case TOP_RIGHT:
                 {
-                    final IControlHandle topLeft = m_orderedChList.get(0);
+                    final IControlHandle topLeft = m_orderedChList.get(TOP_LEFT);
                     topLeft.getControl().setY(boxStartY + dy + offsetY);
 
-                    final IControlHandle bottomRight = m_orderedChList.get(2);
+                    final IControlHandle bottomRight = m_orderedChList.get(BOTTOM_RIGHT);
                     bottomRight.getControl().setX(boxStartX + boxStartWidth + dx + offsetX);
                     break;
                 }
-                case 2:
+                case BOTTOM_RIGHT:
                 {
-                    final IControlHandle topRight = m_orderedChList.get(1);
+                    final IControlHandle topRight = m_orderedChList.get(TOP_RIGHT);
                     topRight.getControl().setX(boxStartX + boxStartWidth + dx + offsetX);
 
-                    final IControlHandle bottomLeft = m_orderedChList.get(3);
+                    final IControlHandle bottomLeft = m_orderedChList.get(BOTTOM_LEFT);
                     bottomLeft.getControl().setY(boxStartY + boxStartHeight + dy + offsetY);
                     break;
                 }
-                case 3:
+                case BOTTOM_LEFT:
                 {
-                    final IControlHandle topLeft = m_orderedChList.get(0);
+                    final IControlHandle topLeft = m_orderedChList.get(TOP_LEFT);
                     topLeft.getControl().setX(boxStartX + dx + offsetX);
 
-                    final IControlHandle bottomRight = m_orderedChList.get(2);
+                    final IControlHandle bottomRight = m_orderedChList.get(BOTTOM_RIGHT);
                     bottomRight.getControl().setY(boxStartY + boxStartHeight + dy + offsetY);
                     break;
                 }
             }
         }
 
-        double getLeft(final double x, final double dx, final double wpc)
+        double getLeft(final double startTopLeftX, final double startW, final double dx, final double wpc)
         {
-            final double newX = x + (dx * wpc);
+            double right = startTopLeftX + startW;
+            double left = startTopLeftX + dx;
+            double newX = left + (wpc * (right-left));
 
             return newX;
         }
 
-        double getRight(final double x, final double dx, final double wpc)
+        double getRight(final double startTopLeftX, final double startW, final double dx, final double wpc)
         {
-            final double newX = x + (dx * wpc);
+            double right = startTopLeftX + startW + dx;
+            double left = startTopLeftX ;
+            double newX = left + (wpc * (right-left));
 
             return newX;
         }
 
-        double getTop(final double y, final double dy, final double hpc)
+        double getTop(final double startTopLeftY, final double startH, final double dy, final double hpc)
         {
-            final double newY = y + (dy * hpc);
+            double top = startTopLeftY + dy;
+            double bottom = startTopLeftY + startH;
+            double newY = top + (hpc * (bottom-top));
 
             return newY;
         }
 
-        double getBottom(final double y, final double dy, final double hpc)
+        double getBottom(final double startTopLeftY, final double startH, final double dy, final double hpc)
         {
-            final double newY = y + (dy * hpc);
+            double top = startTopLeftY;
+            double bottom = startTopLeftY +  startH + dy;
+            double newY = top + (hpc * (bottom-top));
 
             return newY;
         }
@@ -939,7 +988,7 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
 
     public static class ResizeHandleDragHandler implements DragConstraintEnforcer, NodeDragEndHandler
     {
-        private final Shape<?>                      m_shape;
+        private final AbstractMultiPathPartShape<?> m_shape;
 
         private final NFastArrayList<PathPartList>  m_listOfPaths;
 
@@ -957,13 +1006,11 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
 
         private double                              m_boxStartHeight;
 
-        private NFastArrayList<NFastDoubleArrayJSO> m_entries;
-
         private double                              m_offsetX;
 
         private double                              m_offsetY;
 
-        public ResizeHandleDragHandler(final Shape<?> shape, final NFastArrayList<PathPartList> listOfPaths, final IControlHandleList chlist, final Shape<?> prim, final ResizeControlHandle handle)
+        public ResizeHandleDragHandler(final AbstractMultiPathPartShape<?> shape, final NFastArrayList<PathPartList> listOfPaths, final IControlHandleList chlist, final Shape<?> prim, final ResizeControlHandle handle)
         {
             m_shape = shape;
 
@@ -993,9 +1040,7 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
 
             m_offsetY = m_shape.getY();
 
-            repositionAndResortHandles(box);
-
-            copyDoubles();
+            copyRatios();
 
             if ((m_handle.isActive()) && (m_chlist.isActive()))
             {
@@ -1005,160 +1050,78 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
             }
         }
 
-        /**
-         * If the handles are flip horizontally or vertically, they must be re-aligned with the correct box corner.
-         * @param box
-         */
-        private void repositionAndResortHandles(final BoundingBox box)
-        {
-            double x = m_handle.m_orderedChList.get(0).getPrimitive().getX();
-
-            double y = m_handle.m_orderedChList.get(0).getPrimitive().getY();
-
-            ResizeControlHandle topLeft = m_handle.m_orderedChList.get(0);
-
-            for (final ResizeControlHandle handle : m_handle.m_orderedChList)
-            {
-                if ((handle.getPrimitive().getX() <= x) && (handle.getPrimitive().getY() <= y))
-                {
-                    x = handle.getPrimitive().getX();
-
-                    y = handle.getPrimitive().getY();
-
-                    topLeft = handle;
-                }
-            }
-            topLeft.setPosition(0);
-
-            x = m_handle.m_orderedChList.get(0).getPrimitive().getX();
-
-            y = m_handle.m_orderedChList.get(0).getPrimitive().getY();
-
-            ResizeControlHandle topRight = m_handle.m_orderedChList.get(0);
-
-            for (final ResizeControlHandle handle : m_handle.m_orderedChList)
-            {
-                if ((handle.getPrimitive().getX() >= x) && (handle.getPrimitive().getY() <= y))
-                {
-                    x = handle.getPrimitive().getX();
-
-                    y = handle.getPrimitive().getY();
-
-                    topRight = handle;
-                }
-            }
-            topRight.setPosition(1);
-
-            x = m_handle.m_orderedChList.get(0).getPrimitive().getX();
-
-            y = m_handle.m_orderedChList.get(0).getPrimitive().getY();
-
-            ResizeControlHandle bottomRight = m_handle.m_orderedChList.get(0);
-
-            for (final ResizeControlHandle handle : m_handle.m_orderedChList)
-            {
-                if ((handle.getPrimitive().getX() >= x) && (handle.getPrimitive().getY() >= y))
-                {
-                    x = handle.getPrimitive().getX();
-
-                    y = handle.getPrimitive().getY();
-
-                    bottomRight = handle;
-                }
-            }
-            bottomRight.setPosition(2);
-
-            x = m_handle.m_orderedChList.get(0).getPrimitive().getX();
-
-            y = m_handle.m_orderedChList.get(0).getPrimitive().getY();
-
-            ResizeControlHandle bottomLeft = m_handle.m_orderedChList.get(0);
-
-            for (final ResizeControlHandle handle : m_handle.m_orderedChList)
-            {
-                if ((handle.getPrimitive().getX() <= x) && (handle.getPrimitive().getY() >= y))
-                {
-                    x = handle.getPrimitive().getX();
-
-                    y = handle.getPrimitive().getY();
-
-                    bottomLeft = handle;
-                }
-            }
-            bottomLeft.setPosition(3);
-
-            Collections.sort(m_handle.m_orderedChList, new Comparator<ResizeControlHandle>()
-            {
-                @Override
-                public int compare(final ResizeControlHandle h1, final ResizeControlHandle h2)
-                {
-                    if (h1.getPosition() > h2.getPosition())
-                    {
-                        return 1;
-                    }
-                    if (h1.getPosition() < h2.getPosition())
-                    {
-                        return -1;
-                    }
-                    else
-                    {
-                        return 0;
-                    }
-                }
-            });
-            for (final PathPartList list : m_listOfPaths)
-            {
-                list.refreshProportions();
-            }
-        }
 
         @Override
-        public boolean adjust(final Point2D dxy)
+        public boolean adjust(Point2D dxy)
         {
             if ((m_handle.isActive()) && (m_chlist.isActive()))
             {
-                if (false == adjustPrimitive(dxy))
+                if (!adjustPrimitive(dxy))
                 {
                     return false;
                 }
-                for (final PathPartList list : m_listOfPaths)
+
+                final NFastDoubleArrayJSO ratios = m_shape.m_pointRatios;
+                int ratioPos = 0;
+                for (PathPartList list : m_listOfPaths)
                 {
                     for (int i = 0; i < list.size(); i++)
                     {
-                        final PathPartEntryJSO entry = list.get(i);
+                        final PathPartEntryJSO pathPartEntry = list.get(i);
 
-                        final NFastDoubleArrayJSO points = entry.getPoints();
+                        final NFastDoubleArrayJSO points = pathPartEntry.getPoints();
 
-                        switch (entry.getCommand())
+                        switch (pathPartEntry.getCommand())
                         {
                             case PathPartEntryJSO.MOVETO_ABSOLUTE:
                             case PathPartEntryJSO.LINETO_ABSOLUTE:
                             {
-                                final NFastDoubleArrayJSO doubles = m_entries.get(i);
-
-                                final PathPartList.Proportion proportions = list.getProportion(entry);
-                                final double x = doubles.get(0);
-                                final double newX = m_handle.getX(x, dxy.getX(), proportions);
-
-                                final double y = doubles.get(1);
-                                final double newY = m_handle.getY(y, dxy.getY(), proportions);
-
-                                points.set(0, newX);
-                                points.set(1, newY);
-
+                                resizePoints(dxy, points, 1, ratioPos, ratios);
+                                ratioPos = ratioPos + 2;
+                                break;
+                            }
+                            case PathPartEntryJSO.BEZIER_CURVETO_ABSOLUTE:
+                            {
+                                resizePoints(dxy, points, 3, ratioPos, ratios);
+                                ratioPos = ratioPos + 6;
                                 break;
                             }
                         }
                     }
                     list.resetBoundingBox();
                 }
-                m_handle.updateOtherHandles(dxy.getX(), dxy.getY(), m_offsetX, m_offsetY, m_boxStartX, m_boxStartY, m_boxStartWidth, m_boxStartHeight);
+                m_shape.resetBoundingBox();
 
-                m_shape.refresh();
+                m_handle.updateOtherHandles(dxy.getX(), dxy.getY(), m_offsetX, m_offsetY, m_boxStartX, m_boxStartY, m_boxStartWidth, m_boxStartHeight);
 
                 m_shape.getLayer().batch();
             }
+
             return true;
+        }
+
+        private void resizePoints(Point2D dxy, NFastDoubleArrayJSO points, int numberOfPoints, int ratioPos, NFastDoubleArrayJSO ratios)
+        {
+            for ( int i = 0; i < numberOfPoints * 2; i = i + 2)
+            {
+                double wpc = ratios.get(ratioPos);
+                ratioPos++;
+                double hpc = ratios.get(ratioPos);
+                ratioPos++;
+                resizePoint(dxy, points, i, wpc, hpc);
+            }
+        }
+
+        private void resizePoint(Point2D dxy, NFastDoubleArrayJSO points, int i, double wpc, double hpc)
+        {
+            double x = 0;
+            double newX = m_handle.getX(m_boxStartX, m_boxStartWidth, dxy.getX(), wpc);
+
+            double y = 0;
+            double newY = m_handle.getY(m_boxStartY, m_boxStartHeight, dxy.getY(), hpc);
+
+            points.set(i, newX);
+            points.set(i+1, newY);
         }
 
         @Override
@@ -1166,59 +1129,229 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
         {
             if ((m_handle.isActive()) && (m_chlist.isActive()))
             {
+                updateRatiosIfFlip(event);
+
                 for (final PathPartList list : m_listOfPaths)
                 {
                     list.resetBoundingBox();
+
                 }
+                m_shape.resetBoundingBox();
                 m_prim.setFillColor(ColorName.DARKRED);
 
                 m_prim.getLayer().draw();
             }
         }
 
-        private void copyDoubles()
+        private void updateRatiosIfFlip(final NodeDragEndEvent event)
         {
-            m_entries = new NFastArrayList<>();
+            double dx = event.getDragContext().getDx();
+            double dy = event.getDragContext().getDy();
 
-            for (final PathPartList list : m_listOfPaths)
+            boolean flipH = false;
+            boolean flipV = false;
+
+            switch (m_handle.getPosition())
+            {
+                case TOP_LEFT:
+                case TOP_RIGHT:
+                {
+                    if ( dy > m_boxStartHeight)
+                    {
+                        // it flipped horizontally
+                        flipH =  true;
+                    }
+                    break;
+                }
+                case BOTTOM_LEFT:
+                case BOTTOM_RIGHT:
+                {
+                    if ( m_boxStartHeight + dy < 0)
+                    {
+                        // it flipped horizontally
+                        flipH =  true;
+                    }
+                    break;
+                }
+            }
+
+            switch (m_handle.getPosition())
+            {
+                case TOP_LEFT:
+                case BOTTOM_LEFT:
+                {
+                    if ( dx > m_boxStartWidth)
+                    {
+                        // it flipped horizontally
+                        flipV =  true;
+                    }
+                    break;
+                }
+                case TOP_RIGHT:
+                case BOTTOM_RIGHT:
+                {
+                    if ( m_boxStartWidth + dx < 0)
+                    {
+                        // it flipped horizontally
+                        flipV =  true;
+                    }
+                    break;
+                }
+            }
+
+            if (!flipV && !flipH)
+            {
+                // no flip, so nothing to do.
+                return;
+            }
+
+            ResizeControlHandle topLeft = m_handle.m_orderedChList.get(TOP_LEFT);
+            ResizeControlHandle topRight = m_handle.m_orderedChList.get(TOP_RIGHT);
+            ResizeControlHandle bottomRight = m_handle.m_orderedChList.get(BOTTOM_RIGHT);
+            ResizeControlHandle bottomLeft = m_handle.m_orderedChList.get(BOTTOM_LEFT);
+
+            if (flipV)
+            {
+                ResizeControlHandle temp = topLeft;
+                topLeft = topRight;
+                topRight = temp;
+                topLeft.setPosition(TOP_LEFT);
+                topRight.setPosition(TOP_RIGHT);
+
+                temp = bottomLeft;
+                bottomLeft = bottomRight;
+                bottomRight = temp;
+                bottomLeft.setPosition(BOTTOM_LEFT);
+                bottomRight.setPosition(BOTTOM_RIGHT);
+            }
+
+            if (flipH)
+            {
+                ResizeControlHandle temp = topLeft;
+                topLeft = bottomLeft;
+                bottomLeft = temp;
+                topLeft.setPosition(TOP_LEFT);
+                bottomLeft.setPosition(BOTTOM_LEFT);
+
+                temp = topRight;
+                topRight = bottomRight;
+                bottomRight = temp;
+                topRight.setPosition(TOP_RIGHT);
+                bottomRight.setPosition(BOTTOM_RIGHT);
+            }
+
+            m_handle.m_orderedChList.set(TOP_LEFT, topLeft);
+            m_handle.m_orderedChList.set(TOP_RIGHT, topRight);
+            m_handle.m_orderedChList.set(BOTTOM_RIGHT, bottomRight);
+            m_handle.m_orderedChList.set(BOTTOM_LEFT, bottomLeft);
+
+            final NFastDoubleArrayJSO ratios   = m_shape.m_pointRatios;
+            int                       ratioPos = 0;
+            NFastDoubleArrayJSO       reversed = NFastDoubleArrayJSO.make();
+            for (PathPartList list : m_listOfPaths)
             {
                 for (int i = 0; i < list.size(); i++)
                 {
-                    final PathPartEntryJSO entry = list.get(i);
+                    final PathPartEntryJSO pathPartEntry = list.get(i);
 
-                    final NFastDoubleArrayJSO points = entry.getPoints();
-
-                    switch (entry.getCommand())
+                    switch (pathPartEntry.getCommand())
                     {
                         case PathPartEntryJSO.MOVETO_ABSOLUTE:
                         case PathPartEntryJSO.LINETO_ABSOLUTE:
                         {
-                            final double x = points.get(0);
-                            final double y = points.get(1);
-                            final NFastDoubleArrayJSO doubles = NFastDoubleArrayJSO.make(x, y);
-                            m_entries.push(doubles);
+                            reversed.push(getRatio(flipV, ratios, ratioPos));
+                            reversed.push(getRatio(flipH, ratios, ratioPos+1));
+                            ratioPos = ratioPos + 2;
                             break;
                         }
+                        case PathPartEntryJSO.BEZIER_CURVETO_ABSOLUTE:
+                        {
+                            // reverse
+                            reversed.push(getRatio(flipV, ratios, ratioPos));
+                            reversed.push(getRatio(flipH, ratios, ratioPos+1));
+                            reversed.push(getRatio(flipV, ratios, ratioPos+2));
+                            reversed.push(getRatio(flipH, ratios, ratioPos+3));
+                            reversed.push(getRatio(flipV, ratios, ratioPos+4));
+                            reversed.push(getRatio(flipH, ratios, ratioPos+5));
+                            ratioPos = ratioPos + 6;
+                            break;
+                        }
+                    }
+                }
+                m_shape.m_pointRatios = reversed;
+            }
+        }
+
+        private double getRatio(final boolean flip, final NFastDoubleArrayJSO ratios, final int ratioPos)
+        {
+            return flip ? 1-ratios.get(ratioPos) : ratios.get(ratioPos);
+        }
+
+        private void copyRatios()
+        {
+            NFastDoubleArrayJSO pointRatios = m_shape.m_pointRatios;
+            if (pointRatios == null)
+            {
+                pointRatios = NFastDoubleArrayJSO.make();
+                m_shape.m_pointRatios = pointRatios;
+
+                for (PathPartList pathPart : m_listOfPaths)
+                {
+                    for (int i = 0; i < pathPart.size(); i++)
+                    {
+                        final PathPartEntryJSO entry = pathPart.get(i);
+                        final NFastDoubleArrayJSO points = entry.getPoints();
+
+                        switch (entry.getCommand())
+                        {
+                            case PathPartEntryJSO.MOVETO_ABSOLUTE:
+                            case PathPartEntryJSO.LINETO_ABSOLUTE:
+                            {
+                                addPointRatio(pointRatios, points, 0);
+                                break;
+                            }
+                            case PathPartEntryJSO.BEZIER_CURVETO_ABSOLUTE:
+                            {
+
+                                addPointRatio(pointRatios, points, 0);
+                                addPointRatio(pointRatios, points, 2);
+                                addPointRatio(pointRatios, points, 4);
+                                break;
+                            }
+                        }
+
                     }
                 }
             }
         }
 
+        private void addPointRatio(final NFastDoubleArrayJSO pointRatios, final NFastDoubleArrayJSO points, final int j)
+        {
+            final double x = points.get(j);
+            final double y = points.get(j+1);
+
+            double xDistance = x - m_boxStartX;
+            double yDistance = y - m_boxStartY;
+
+            int xSgn = sgn(xDistance);
+            int ySgn = sgn(yDistance);
+
+            double xRatio = xSgn * (Math.abs(xDistance) / m_boxStartWidth );
+            double yRatio = ySgn * (Math.abs(yDistance) / m_boxStartHeight);
+
+            pointRatios.push(xRatio);
+            pointRatios.push(yRatio);
+        }
+
         public boolean adjustPrimitive(final Point2D dxy)
         {
-            final BoundingBox sizeConstraints = m_shape.getAttributes().getSizeConstraints();
+            Double minWidth = m_shape.getMinWidth();
 
-            if (sizeConstraints == null)
-            {
-                return true;
-            }
-            final double minWidth = sizeConstraints.getMinX();
+            Double maxWidth = m_shape.getMaxWidth();
 
-            final double maxWidth = sizeConstraints.getMaxX();
+            Double minHeight = m_shape.getMinHeight();
 
-            final double minHeight = sizeConstraints.getMinY();
-
-            final double maxHeight = sizeConstraints.getMaxY();
+            Double maxHeight = m_shape.getMaxHeight();
 
             Point2D adjustedDelta = adjustForPosition(dxy);
 
@@ -1232,7 +1365,7 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
 
             boolean needsAdjustment = false;
 
-            if (width < minWidth)
+            if (minWidth != null && width < minWidth)
             {
                 final double difference = width - minWidth;
 
@@ -1242,7 +1375,8 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
             {
                 needsAdjustment = true;
             }
-            if (width > maxWidth)
+
+            if (maxWidth != null && width > maxWidth)
             {
                 final double difference = width - maxWidth;
 
@@ -1252,7 +1386,8 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
             {
                 needsAdjustment = true;
             }
-            if (height < minHeight)
+
+            if (minHeight != null && height < minHeight)
             {
                 final double difference = height - minHeight;
 
@@ -1262,7 +1397,8 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
             {
                 needsAdjustment = true;
             }
-            if (height > maxHeight)
+
+            if (maxHeight != null && height > maxHeight)
             {
                 final double difference = height - maxHeight;
 
@@ -1311,4 +1447,5 @@ public abstract class AbstractMultiPathPartShape<T extends AbstractMultiPathPart
             return adjustedDXY;
         }
     }
+
 }

@@ -27,6 +27,7 @@ import com.ait.lienzo.client.core.shape.wires.WiresManager;
 import com.ait.lienzo.client.core.shape.wires.WiresShape;
 import com.ait.lienzo.client.core.shape.wires.handlers.MouseEvent;
 import com.ait.lienzo.client.core.shape.wires.handlers.WiresCompositeControl;
+import com.ait.lienzo.client.core.shape.wires.handlers.WiresConnectorHandler;
 import com.ait.lienzo.client.core.shape.wires.handlers.WiresShapeControl;
 import com.ait.lienzo.client.core.types.Point2D;
 
@@ -37,39 +38,39 @@ import com.ait.lienzo.client.core.types.Point2D;
  */
 public class WiresCompositeControlImpl extends AbstractWiresBoundsConstraintControl implements WiresCompositeControl
 {
-    private Context                    selectionContext;
+    private Context                    m_selectionContext;
 
-    private Point2D                    delta;
+    private Point2D                    m_delta;
 
-    private Collection<WiresShape>     selectedShapes;
+    private Collection<WiresShape>     m_selectedShapes;
 
-    private Collection<WiresConnector> selectedConnectors;
+    private Collection<WiresConnector> m_selectedConnectors;
 
     private WiresConnector[]           m_connectorsWithSpecialConnections;
 
     public WiresCompositeControlImpl(final Context selectionContext)
     {
-        this.selectionContext = selectionContext;
+        this.m_selectionContext = selectionContext;
     }
 
     @Override
     public void setContext(final Context provider)
     {
-        this.selectionContext = provider;
+        this.m_selectionContext = provider;
     }
 
     @Override
     public void onMoveStart(final double x, final double y)
     {
-        delta = new Point2D(0, 0);
+        m_delta = new Point2D(0, 0);
 
-        selectedShapes = new ArrayList<>(selectionContext.getShapes());
+        m_selectedShapes = new ArrayList<>(m_selectionContext.getShapes());
 
-        selectedConnectors = new ArrayList<>(selectionContext.getConnectors());
+        m_selectedConnectors = new ArrayList<>(m_selectionContext.getConnectors());
 
         final Map<String, WiresConnector> connectors = new HashMap<>();
 
-        for (final WiresShape shape : selectedShapes)
+        for (final WiresShape shape : m_selectedShapes)
         {
             ShapeControlUtils.collectionSpecialConnectors(shape, connectors);
 
@@ -91,12 +92,10 @@ public class WiresCompositeControlImpl extends AbstractWiresBoundsConstraintCont
         }
         m_connectorsWithSpecialConnections = connectors.values().toArray(new WiresConnector[connectors.size()]);
 
-        for (final WiresConnector connector : selectedConnectors)
+        for (WiresConnector connector : m_selectedConnectors)
         {
-            final WiresConnector.WiresConnectorHandler handler = connector.getWiresConnectorHandler();
-
+            final WiresConnectorHandler handler = connector.getWiresConnectorHandler();
             handler.getControl().onMoveStart(x, y); // records the start position of all the points
-
             WiresConnector.updateHeadTailForRefreshedConnector(connector);
         }
     }
@@ -104,7 +103,7 @@ public class WiresCompositeControlImpl extends AbstractWiresBoundsConstraintCont
     @Override
     public boolean isOutOfBounds(final double dx, final double dy)
     {
-        for (final WiresShape shape : selectedShapes)
+        for (final WiresShape shape : m_selectedShapes)
         {
             if (shape.getControl().isOutOfBounds(dx, dy))
             {
@@ -121,10 +120,10 @@ public class WiresCompositeControlImpl extends AbstractWiresBoundsConstraintCont
         {
             return true;
         }
-        delta = new Point2D(dx, dy);
+        m_delta = new Point2D(dx, dy);
 
         // Delegate location deltas to shape controls and obtain current locations for each one.
-        final Collection<WiresShape> shapes = selectedShapes;
+        final Collection<WiresShape> shapes = m_selectedShapes;
 
         if (!shapes.isEmpty())
         {
@@ -158,17 +157,15 @@ public class WiresCompositeControlImpl extends AbstractWiresBoundsConstraintCont
                 }
             }
         }
-        final Collection<WiresConnector> connectors = selectedConnectors;
+        final Collection<WiresConnector> connectors = m_selectedConnectors;
 
         if (!connectors.isEmpty())
         {
             // Update connectors and connections.
-            for (final WiresConnector connector : connectors)
+            for (WiresConnector connector : connectors)
             {
-                final WiresConnector.WiresConnectorHandler handler = connector.getWiresConnectorHandler();
-
-                handler.getControl().move(dx, dy, true, true);
-
+                final WiresConnectorHandler handler = connector.getWiresConnectorHandler();
+                handler.getControl().move(dx, dy,true,true);
                 WiresConnector.updateHeadTailForRefreshedConnector(connector);
             }
         }
@@ -196,13 +193,13 @@ public class WiresCompositeControlImpl extends AbstractWiresBoundsConstraintCont
         // Check parents && allow acceptors.
         final WiresContainer parent = getSharedParent();
 
-        return (null != parent) && parent.getWiresManager().getContainmentAcceptor().containmentAllowed(parent, toArray(selectedShapes));
+        return (null != parent) && parent.getWiresManager().getContainmentAcceptor().containmentAllowed(parent, toArray(m_selectedShapes));
     }
 
     @Override
     public WiresContainer getSharedParent()
     {
-        final Collection<WiresShape> shapes = selectedShapes;
+        final Collection<WiresShape> shapes = m_selectedShapes;
 
         if (shapes.isEmpty())
         {
@@ -227,7 +224,7 @@ public class WiresCompositeControlImpl extends AbstractWiresBoundsConstraintCont
     {
         boolean completeResult = true;
 
-        final Collection<WiresShape> shapes = selectedShapes;
+        final Collection<WiresShape> shapes = m_selectedShapes;
 
         if (!shapes.isEmpty())
         {
@@ -241,7 +238,7 @@ public class WiresCompositeControlImpl extends AbstractWiresBoundsConstraintCont
                 }
             }
         }
-        final Collection<WiresConnector> connectors = selectedConnectors;
+        final Collection<WiresConnector> connectors = m_selectedConnectors;
 
         if (!connectors.isEmpty())
         {
@@ -254,7 +251,7 @@ public class WiresCompositeControlImpl extends AbstractWiresBoundsConstraintCont
                 }
             }
         }
-        delta = new Point2D(0, 0);
+        m_delta = new Point2D(0, 0);
 
         return completeResult;
     }
@@ -262,7 +259,7 @@ public class WiresCompositeControlImpl extends AbstractWiresBoundsConstraintCont
     @Override
     public boolean accept()
     {
-        final Collection<WiresShape> shapes = selectedShapes;
+        final Collection<WiresShape> shapes = m_selectedShapes;
 
         if (!shapes.isEmpty())
         {
@@ -296,16 +293,16 @@ public class WiresCompositeControlImpl extends AbstractWiresBoundsConstraintCont
     @Override
     public void execute()
     {
-        for (final WiresShape shape : selectedShapes)
+        for (final WiresShape shape : m_selectedShapes)
         {
             shape.getControl().getContainmentControl().execute();
 
             postUpdateShape(shape);
         }
-        for (final WiresConnector connector : selectedConnectors)
-        {
-            connector.getWiresConnectorHandler();
 
+        for (WiresConnector connector : m_selectedConnectors)
+        {
+            WiresConnectorHandler handler = connector.getWiresConnectorHandler();
             WiresConnector.updateHeadTailForRefreshedConnector(connector);
         }
         ShapeControlUtils.updateSpecialConnections(m_connectorsWithSpecialConnections, true);
@@ -316,7 +313,7 @@ public class WiresCompositeControlImpl extends AbstractWiresBoundsConstraintCont
     @Override
     public void clear()
     {
-        for (final WiresShape shape : selectedShapes)
+        for (final WiresShape shape : m_selectedShapes)
         {
             shape.getControl().clear();
 
@@ -328,16 +325,16 @@ public class WiresCompositeControlImpl extends AbstractWiresBoundsConstraintCont
     @Override
     public void reset()
     {
-        for (final WiresShape shape : selectedShapes)
+        for (final WiresShape shape : m_selectedShapes)
         {
             shape.getControl().reset();
 
             enableDocking(shape.getControl());
         }
-        for (final WiresConnector connector : selectedConnectors)
-        {
-            final WiresConnector.WiresConnectorHandler handler = connector.getWiresConnectorHandler();
 
+        for (WiresConnector connector : m_selectedConnectors)
+        {
+            final WiresConnectorHandler handler = connector.getWiresConnectorHandler();
             handler.getControl().reset();
 
             WiresConnector.updateHeadTailForRefreshedConnector(connector);
@@ -348,18 +345,18 @@ public class WiresCompositeControlImpl extends AbstractWiresBoundsConstraintCont
     @Override
     public Point2D getAdjust()
     {
-        return delta;
+        return m_delta;
     }
 
     public Context getContext()
     {
-        return selectionContext;
+        return m_selectionContext;
     }
 
     @Override
     public void onMouseClick(final MouseEvent event)
     {
-        for (final WiresShape shape : selectionContext.getShapes())
+        for (final WiresShape shape : m_selectionContext.getShapes())
         {
             shape.getControl().onMouseClick(event);
         }
@@ -368,7 +365,7 @@ public class WiresCompositeControlImpl extends AbstractWiresBoundsConstraintCont
     @Override
     public void onMouseDown(final MouseEvent event)
     {
-        for (final WiresShape shape : selectionContext.getShapes())
+        for (final WiresShape shape : m_selectionContext.getShapes())
         {
             shape.getControl().onMouseDown(event);
         }
@@ -377,7 +374,7 @@ public class WiresCompositeControlImpl extends AbstractWiresBoundsConstraintCont
     @Override
     public void onMouseUp(final MouseEvent event)
     {
-        for (final WiresShape shape : selectionContext.getShapes())
+        for (final WiresShape shape : m_selectionContext.getShapes())
         {
             shape.getControl().onMouseUp(event);
         }
@@ -385,11 +382,11 @@ public class WiresCompositeControlImpl extends AbstractWiresBoundsConstraintCont
 
     private void clearState()
     {
-        delta = new Point2D(0, 0);
+        m_delta = new Point2D(0, 0);
 
-        selectedShapes = null;
+        m_selectedShapes = null;
 
-        selectedConnectors = null;
+        m_selectedConnectors = null;
 
         m_connectorsWithSpecialConnections = null;
     }
