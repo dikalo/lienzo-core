@@ -92,7 +92,7 @@ public class WiresCompositeControlImpl extends AbstractWiresBoundsConstraintCont
         }
         m_connectorsWithSpecialConnections = connectors.values().toArray(new WiresConnector[connectors.size()]);
 
-        for (WiresConnector connector : m_selectedConnectors)
+        for (final WiresConnector connector : m_selectedConnectors)
         {
             final WiresConnectorHandler handler = connector.getWiresConnectorHandler();
             handler.getControl().onMoveStart(x, y); // records the start position of all the points
@@ -162,10 +162,10 @@ public class WiresCompositeControlImpl extends AbstractWiresBoundsConstraintCont
         if (!connectors.isEmpty())
         {
             // Update connectors and connections.
-            for (WiresConnector connector : connectors)
+            for (final WiresConnector connector : connectors)
             {
                 final WiresConnectorHandler handler = connector.getWiresConnectorHandler();
-                handler.getControl().move(dx, dy,true,true);
+                handler.getControl().move(dx, dy, true, true);
                 WiresConnector.updateHeadTailForRefreshedConnector(connector);
             }
         }
@@ -300,9 +300,8 @@ public class WiresCompositeControlImpl extends AbstractWiresBoundsConstraintCont
             postUpdateShape(shape);
         }
 
-        for (WiresConnector connector : m_selectedConnectors)
+        for (final WiresConnector connector : m_selectedConnectors)
         {
-            WiresConnectorHandler handler = connector.getWiresConnectorHandler();
             WiresConnector.updateHeadTailForRefreshedConnector(connector);
         }
         ShapeControlUtils.updateSpecialConnections(m_connectorsWithSpecialConnections, true);
@@ -332,7 +331,7 @@ public class WiresCompositeControlImpl extends AbstractWiresBoundsConstraintCont
             enableDocking(shape.getControl());
         }
 
-        for (WiresConnector connector : m_selectedConnectors)
+        for (final WiresConnector connector : m_selectedConnectors)
         {
             final WiresConnectorHandler handler = connector.getWiresConnectorHandler();
             handler.getControl().reset();

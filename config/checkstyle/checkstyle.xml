@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE module PUBLIC
+    "-//Puppy Crawl//DTD Check Configuration 1.1//EN"
+    "http://www.puppycrawl.com/dtds/configuration_1_1.dtd">
+
+<module name="Checker">
+    <module name="TreeWalker">
+        <module name="MemberName">
+            <property name="format" value="^m_[a-zA-Z0-9_]*$"/>
+        </module>
+        <module name="EmptyBlock"/>
+        <module name="EmptyLineSeparator">
+    		<property name="allowNoEmptyLineBetweenFields" value="true"/>
+    		<property name="allowMultipleEmptyLinesInsideClassMembers" value="true"/>
+		</module>
+    </module>
+    <module name="Translation"/>
+</module>

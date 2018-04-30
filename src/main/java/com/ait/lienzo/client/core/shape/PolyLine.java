@@ -38,9 +38,9 @@ public class PolyLine extends AbstractDirectionalMultiPointShape<PolyLine>
 {
     private static final double SEGMENT_SNAP_DISTANCE = 5d;
 
-    private Point2D      m_headOffsetPoint;
+    private Point2D             m_headOffsetPoint;
 
-    private Point2D      m_tailOffsetPoint;
+    private Point2D             m_tailOffsetPoint;
 
     /**
      * Constructor. Creates an instance of a polyline.
@@ -98,9 +98,11 @@ public class PolyLine extends AbstractDirectionalMultiPointShape<PolyLine>
                 final PathPartList path = getPathPartList();
 
                 final double headOffset = attr.getHeadOffset();
+
                 final double tailOffset = attr.getTailOffset();
 
                 m_headOffsetPoint = Geometry.getProjection(list.get(0), list.get(1), headOffset);
+
                 m_tailOffsetPoint = Geometry.getProjection(list.get(size - 1), list.get(size - 2), tailOffset);
 
                 path.M(m_headOffsetPoint);
@@ -109,16 +111,16 @@ public class PolyLine extends AbstractDirectionalMultiPointShape<PolyLine>
 
                 if (corner <= 0)
                 {
-                    for (int i = 1; i < size - 1; i++)
+                    for (int i = 1; i < (size - 1); i++)
                     {
                         path.L(list.get(i));
                     }
-
                     path.L(m_tailOffsetPoint);
                 }
                 else
                 {
                     list = list.copy();
+
                     list.set(size - 1, m_tailOffsetPoint);
 
                     Geometry.drawArcJoinedLines(path, list, corner);
@@ -207,59 +209,66 @@ public class PolyLine extends AbstractDirectionalMultiPointShape<PolyLine>
         return getBoundingBoxAttributesComposed(Attribute.POINTS, Attribute.CORNER_RADIUS);
     }
 
+    @SuppressWarnings("unused")
     @Override
-    public Point2D adjustPoint(double x, double y, double deltaX, double deltaY) {
-        Point2DArray points = getPoint2DArray();
+    public Point2D adjustPoint(final double x, final double y, final double deltaX, final double deltaY)
+    {
+        final Point2DArray points = getPoint2DArray();
 
         Point2D before = null;
         Point2D target = null;
         Point2D after = null;
 
-        for (Point2D point: points) {
+        for (final Point2D point : points)
+        {
             after = point;
 
-            if (target != null) {
-                if (target.getX() == x && target.getY() == y) {
+            if (target != null)
+            {
+                if ((target.getX() == x) && (target.getY() == y))
+                {
                     break;
                 }
             }
-
             before = target;
             target = after;
         }
-
-        if (target == after) {
+        if (target == after)
+        {
             after = null;
         }
-
         double xDiffBefore = Double.MAX_VALUE;
         double yDiffBefore = Double.MAX_VALUE;
 
-        if (before != null) {
+        if (before != null) // TODO - IDE thinks this is dead code
+        {
             xDiffBefore = target.getX() - before.getX();
             yDiffBefore = target.getY() - before.getY();
         }
-
         double xDiffAfter = Double.MAX_VALUE;
         double yDiffAfter = Double.MAX_VALUE;
 
-        if (after != null) {
+        if (after != null)
+        {
             xDiffAfter = target.getX() - after.getX();
             yDiffAfter = target.getY() - after.getY();
         }
-
-        if (Math.abs(xDiffBefore) < Math.abs(xDiffAfter) && Math.abs(xDiffBefore) <= SEGMENT_SNAP_DISTANCE) {
+        if ((Math.abs(xDiffBefore) < Math.abs(xDiffAfter)) && (Math.abs(xDiffBefore) <= SEGMENT_SNAP_DISTANCE))
+        {
             target.setX(target.getX() - xDiffBefore);
-        } else if (Math.abs(xDiffAfter) <= SEGMENT_SNAP_DISTANCE) {
+        }
+        else if (Math.abs(xDiffAfter) <= SEGMENT_SNAP_DISTANCE)
+        {
             target.setX(target.getX() - xDiffAfter);
         }
-
-        if (Math.abs(yDiffBefore) < Math.abs(yDiffAfter) && Math.abs(yDiffBefore) <= SEGMENT_SNAP_DISTANCE) {
+        if ((Math.abs(yDiffBefore) < Math.abs(yDiffAfter)) && (Math.abs(yDiffBefore) <= SEGMENT_SNAP_DISTANCE))
+        {
             target.setY(target.getY() - yDiffBefore);
-        } else if (Math.abs(yDiffAfter) <= SEGMENT_SNAP_DISTANCE) {
+        }
+        else if (Math.abs(yDiffAfter) <= SEGMENT_SNAP_DISTANCE)
+        {
             target.setY(target.getY() - yDiffAfter);
         }
-
         return new Point2D(target.getX(), target.getY());
     }
 

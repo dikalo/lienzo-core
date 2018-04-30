@@ -47,7 +47,7 @@ sourceCompatibility = 1.7
 
 targetCompatibility = 1.7
 
-version = '2.0.298-RELEASE'
+version = '2.0.299-RELEASE'
 
 group = 'com.ahome-it'
 
@@ -92,9 +92,8 @@ task checkCodeQuality { doLast { println ':checkCodeQuality-done' } }
 checkCodeQuality.dependsOn checkstyleMain,pmdMain,findbugsMain
 
 task deleteConfigs(type: Delete) {
-    def tree = project.fileTree(dir: "${buildDir}/resources/main")
-    tree.each { File file ->
-        delete(file)
+    project.fileTree(dir: "${buildDir}/resources/main").each { file ->
+        file.delete()
     }
 }
 
@@ -277,7 +276,7 @@ task buildGroovydocLinks {
             }
         }
         def make = project.file('groovydoc/GROOVYDOC_LINK_LISTS.txt')
-        if(make.exists()) {
+        if (make.exists()) {
             make.delete()
         }
         make.createNewFile()

@@ -16,10 +16,8 @@
 
 package com.ait.lienzo.client.core.shape.wires;
 
-
 import static com.ait.lienzo.client.core.shape.wires.IControlHandle.ControlHandleStandardType.POINT;
 
-import com.ait.lienzo.client.core.shape.AbstractDirectionalMultiPointShape;
 import com.ait.lienzo.client.core.shape.Group;
 import com.ait.lienzo.client.core.shape.IDirectionalMultiPointShape;
 import com.ait.lienzo.client.core.shape.Layer;
@@ -46,7 +44,7 @@ public class WiresConnector
             // only do this for lines that have had refresh called
             final IDirectionalMultiPointShape<?> line = c.getLine();
 
-            if ( c.isSpecialConnection() && line.asShape().getPathPartList().size() == 0)
+            if (c.isSpecialConnection() && (line.asShape().getPathPartList().size() == 0))
             {
                 // if getPathPartList is empty, it was refreshed due to a point change
                 c.updateForSpecialConnections(false);
@@ -70,25 +68,25 @@ public class WiresConnector
         return false;
     }
 
-    private WiresConnection                             m_headConnection;
+    private WiresConnection                      m_headConnection;
 
-    private WiresConnection                             m_tailConnection;
+    private WiresConnection                      m_tailConnection;
 
-    private IControlHandleList                          m_pointHandles;
+    private IControlHandleList                   m_pointHandles;
 
-    private HandlerRegistrationManager                  m_HandlerRegistrationManager;
+    private HandlerRegistrationManager           m_HandlerRegistrationManager;
 
-    private final IDirectionalMultiPointShape<?>        m_line;
+    private final IDirectionalMultiPointShape<?> m_line;
 
-    private final MultiPathDecorator                    m_headDecorator;
+    private final MultiPathDecorator             m_headDecorator;
 
-    private final MultiPathDecorator                    m_tailDecorator;
+    private final MultiPathDecorator             m_tailDecorator;
 
-    private final Group                                 m_group;
+    private final Group                          m_group;
 
-    private IConnectionAcceptor                         m_connectionAcceptor = IConnectionAcceptor.ALL;
+    private IConnectionAcceptor                  m_connectionAcceptor = IConnectionAcceptor.ALL;
 
-    private WiresConnectorHandler                       m_wiresConnectorHandler;
+    private WiresConnectorHandler                m_wiresConnectorHandler;
 
     public WiresConnector(final IDirectionalMultiPointShape<?> line, final MultiPathDecorator headDecorator, final MultiPathDecorator tailDecorator)
     {
@@ -714,7 +712,6 @@ public class WiresConnector
         }
         return new WiresMagnet[] { headM, tailM };
     }
-
 
     public Point2DArray getControlPoints()
     {

@@ -16,7 +16,6 @@
 
 package com.ait.lienzo.client.core.shape.wires;
 
-import com.ait.lienzo.client.core.shape.AbstractDirectionalMultiPointShape;
 import com.ait.lienzo.client.core.shape.IDirectionalMultiPointShape;
 import com.ait.lienzo.client.core.shape.IPrimitive;
 import com.ait.lienzo.client.core.shape.MultiPath;
@@ -26,23 +25,23 @@ import com.ait.lienzo.shared.core.types.Direction;
 
 public class WiresConnection extends AbstractControlHandle
 {
-    private WiresMagnet                           m_magnet;
+    private WiresMagnet                    m_magnet;
 
-    private WiresConnector                        m_connector;
+    private WiresConnector                 m_connector;
 
-    private IDirectionalMultiPointShape<?>        m_line;
+    private IDirectionalMultiPointShape<?> m_line;
 
-    private MultiPath                             m_endPath;
+    private MultiPath                      m_endPath;
 
-    private Point2D                               m_point;
+    private Point2D                        m_point;
 
-    private ArrowEnd                              m_end;
+    private ArrowEnd                       m_end;
 
-    private boolean                               m_autoConnection;
+    private boolean                        m_autoConnection;
 
-    private double                                m_xOffset;
+    private double                         m_xOffset;
 
-    private double                                m_yOffset;
+    private double                         m_yOffset;
 
     public WiresConnection(final WiresConnector connector, final MultiPath endPath, final ArrowEnd end)
     {
