@@ -25,12 +25,16 @@ import com.ait.lienzo.client.core.types.Point2D;
 public class WiresShapeHighlightImpl implements WiresShapeHighlight<PickerPart.ShapePart>
 {
     private final int  m_borderSize;
-    private WiresShape m_parent;
-    private String     m_priorColor;
-    private Double     m_priorSize;
-    private Double     m_priorAlpha;
-    private MultiPath  m_path;
 
+    private WiresShape m_parent;
+
+    private String     m_priorColor;
+
+    private Double     m_priorSize;
+
+    private Double     m_priorAlpha;
+
+    private MultiPath  m_path;
 
     public WiresShapeHighlightImpl(final int borderSize)
     {
@@ -57,7 +61,8 @@ public class WiresShapeHighlightImpl implements WiresShapeHighlight<PickerPart.S
 
     private void highlight(final WiresShape shape, final PickerPart.ShapePart part, final String color)
     {
-        switch (part) {
+        switch (part)
+        {
             case BODY:
                 highlightBody(shape, color);
                 break;
@@ -68,7 +73,8 @@ public class WiresShapeHighlightImpl implements WiresShapeHighlight<PickerPart.S
 
     private void highlightBody(final WiresShape parent, final String color)
     {
-        if (!isBodyHighlight()) {
+        if (!isBodyHighlight())
+        {
             m_priorColor = parent.getPath().getStrokeColor();
             m_priorAlpha = parent.getPath().getStrokeAlpha();
             m_priorSize = parent.getPath().getStrokeWidth();
@@ -147,7 +153,7 @@ public class WiresShapeHighlightImpl implements WiresShapeHighlight<PickerPart.S
 
     private boolean isBodyHighlight()
     {
-        return null != m_priorColor || null != m_priorAlpha;
+        return (null != m_priorColor) || (null != m_priorAlpha);
     }
 
     private double getPriorAlpha()

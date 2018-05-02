@@ -23,11 +23,7 @@ import com.ait.lienzo.client.core.event.NodeMouseUpHandler;
 import com.ait.lienzo.client.core.shape.wires.handlers.WiresShapeControl;
 import com.ait.lienzo.client.widget.DragConstraintEnforcer;
 
-public interface WiresShapeHandler extends DragConstraintEnforcer,
-                                           NodeDragEndHandler,
-                                           NodeMouseDownHandler,
-                                           NodeMouseUpHandler,
-                                           NodeMouseClickHandler {
-
-    WiresShapeControl getControl();
+public interface WiresShapeHandler extends DragConstraintEnforcer, NodeDragEndHandler, NodeMouseDownHandler, NodeMouseUpHandler, NodeMouseClickHandler
+{
+    public WiresShapeControl getControl();
 }

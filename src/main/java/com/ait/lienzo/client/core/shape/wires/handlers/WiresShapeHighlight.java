@@ -18,13 +18,11 @@ package com.ait.lienzo.client.core.shape.wires.handlers;
 
 import com.ait.lienzo.client.core.shape.wires.WiresShape;
 
-
 public interface WiresShapeHighlight<P>
 {
+    public void highlight(WiresShape shape, P part);
 
-    void highlight(WiresShape shape, P part);
+    public void error(WiresShape shape, P part);
 
-    void error(WiresShape shape, P part);
-
-    void restore();
+    public void restore();
 }

@@ -178,7 +178,7 @@ public class WiresShapeControlImpl extends AbstractWiresBoundsConstraintControl 
         if (isDockAdjust)
         {
             final Point2D dadjust = m_dockingAndControl.getAdjust();
-            double adjustDistance = Geometry.distance(dx, dy, dadjust.getX(), dadjust.getY());
+            final double adjustDistance = Geometry.distance(dx, dy, dadjust.getX(), dadjust.getY());
 
             if (adjustDistance < getWiresManager().getDockingAcceptor().getHotspotSize())
             {
@@ -216,7 +216,7 @@ public class WiresShapeControlImpl extends AbstractWiresBoundsConstraintControl 
                 adjust = false;
             }
         }
-        
+
         // Cache the current adjust point.
         m_adjust = dxy;
 

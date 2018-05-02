@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2018 Ahome' Innovation Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.ait.lienzo.client.core.shape.wires.handlers.impl;
 
 import com.ait.lienzo.client.core.event.NodeDragEndEvent;
@@ -10,15 +26,15 @@ import com.ait.lienzo.client.core.shape.wires.WiresManager;
 import com.ait.lienzo.client.core.shape.wires.handlers.WiresConnectorControl;
 import com.ait.lienzo.client.core.shape.wires.handlers.WiresConnectorHandler;
 
-public class WiresConnectorHandlerImpl implements WiresConnectorHandler {
-
+public class WiresConnectorHandlerImpl implements WiresConnectorHandler
+{
     private final WiresConnectorControl m_control;
 
     private final WiresConnector        m_connector;
 
     private final WiresManager          m_wiresManager;
 
-    public WiresConnectorHandlerImpl(WiresConnector connector, WiresManager wiresManager)
+    public WiresConnectorHandlerImpl(final WiresConnector connector, final WiresManager wiresManager)
     {
         this.m_control = wiresManager.getControlFactory().newConnectorControl(connector, wiresManager);
         this.m_connector = connector;
@@ -26,25 +42,25 @@ public class WiresConnectorHandlerImpl implements WiresConnectorHandler {
     }
 
     @Override
-    public void onNodeDragStart(NodeDragStartEvent event)
+    public void onNodeDragStart(final NodeDragStartEvent event)
     {
         this.m_control.onMoveStart(event.getDragContext().getDragStartX(), event.getDragContext().getDragStartY());
     }
 
     @Override
-    public void onNodeDragMove(NodeDragMoveEvent event)
+    public void onNodeDragMove(final NodeDragMoveEvent event)
     {
         this.m_control.onMove(event.getDragContext().getDragStartX(), event.getDragContext().getDragStartY());
     }
 
     @Override
-    public void onNodeDragEnd(NodeDragEndEvent event)
+    public void onNodeDragEnd(final NodeDragEndEvent event)
     {
         this.m_control.onMoveComplete();
     }
 
     @Override
-    public void onNodeMouseClick(NodeMouseClickEvent event)
+    public void onNodeMouseClick(final NodeMouseClickEvent event)
     {
         if (m_wiresManager.getSelectionManager() != null)
         {
@@ -53,11 +69,12 @@ public class WiresConnectorHandlerImpl implements WiresConnectorHandler {
     }
 
     @Override
-    public void onNodeMouseDoubleClick(NodeMouseDoubleClickEvent event)
+    public void onNodeMouseDoubleClick(final NodeMouseDoubleClickEvent event)
     {
         m_control.addControlPoint(event.getX(), event.getY());
     }
 
+    @Override
     public WiresConnectorControl getControl()
     {
         return m_control;
