@@ -96,7 +96,6 @@ public class WiresShapeControlImpl extends AbstractWiresBoundsConstraintControl 
         // Important - skip the shape and its children, if any, from the picker.
         // Otherwise children or the shape itself are being processed by the parent picker
         // and it ends up with wrong parent-child nested issues.
-
         final NFastArrayList<WiresShape> shapesToSkip = parentPickerControl.getPickerOptions().getShapesToSkip();
 
         shapesToSkip.clear();
@@ -109,26 +108,26 @@ public class WiresShapeControlImpl extends AbstractWiresBoundsConstraintControl 
         {
             shapesToSkip.add(children.get(i));
         }
-        // Delegate mvoe start to the shape's docking control
 
+        // Delegate move start to the shape's docking control
         if (m_dockingAndControl != null)
         {
             m_dockingAndControl.onMoveStart(x, y);
         }
-        // Delegate mvoe start to the shape's containment control
 
+        // Delegate move start to the shape's containment control
         if (m_containmentControl != null)
         {
             m_containmentControl.onMoveStart(x, y);
         }
-        // Delegate mvoe start to the align and distribute control.
 
+        // Delegate move start to the align and distribute control.
         if (m_alignAndDistributeControl != null)
         {
             m_alignAndDistributeControl.dragStart();
         }
-        // index nested shapes that have special connectors, to avoid searching during drag.
 
+        // index nested shapes that have special connectors, to avoid searching during drag.
         m_connectorsWithSpecialConnections = ShapeControlUtils.collectionSpecialConnectors(getShape());
     }
 
@@ -180,7 +179,8 @@ public class WiresShapeControlImpl extends AbstractWiresBoundsConstraintControl 
         {
             final Point2D dadjust = m_dockingAndControl.getAdjust();
             double adjustDistance = Geometry.distance(dx, dy, dadjust.getX(), dadjust.getY());
-            if (adjustDistance > getWiresManager().getDockingAcceptor().getHotspotSize())
+
+            if (adjustDistance < getWiresManager().getDockingAcceptor().getHotspotSize())
             {
                 dxy.setX(dadjust.getX());
                 dxy.setY(dadjust.getY());
@@ -216,8 +216,8 @@ public class WiresShapeControlImpl extends AbstractWiresBoundsConstraintControl 
                 adjust = false;
             }
         }
+        
         // Cache the current adjust point.
-
         m_adjust = dxy;
 
         parentPickerControl.onMoveAdjusted(m_adjust);
