@@ -22,6 +22,7 @@ import com.ait.lienzo.client.core.shape.IPrimitive;
 import com.ait.lienzo.client.core.shape.Node;
 import com.ait.lienzo.client.core.types.Point2D;
 import com.ait.lienzo.client.core.types.Transform;
+import com.ait.lienzo.client.core.util.Geometry;
 import com.ait.lienzo.shared.core.types.NodeType;
 
 /**
@@ -197,18 +198,7 @@ public class DragContext
         {
             m_drag.adjust(m_lclp);
         }
-        final double x = m_prmx + m_lclp.getX();
-
-        final double y = m_prmy + m_lclp.getY();
-
-        if (m_lstx != x)
-        {
-            m_prim.setX(m_lstx = x);
-        }
-        if (m_lsty != y)
-        {
-            m_prim.setY(m_lsty = y);
-        }
+        save();
     }
 
     /**
@@ -219,15 +209,20 @@ public class DragContext
      */
     public void dragDone()
     {
+        save();
+    }
+
+    private final void save()
+    {
         final double x = m_prmx + m_lclp.getX();
 
         final double y = m_prmy + m_lclp.getY();
 
-        if (m_lstx != x)
+        if (false == Geometry.same(m_lstx, x))
         {
             m_prim.setX(m_lstx = x);
         }
-        if (m_lsty != y)
+        if (false == Geometry.same(m_lsty, y))
         {
             m_prim.setY(m_lsty = y);
         }

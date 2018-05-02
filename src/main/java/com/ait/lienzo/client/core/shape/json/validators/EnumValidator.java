@@ -16,19 +16,22 @@
 
 package com.ait.lienzo.client.core.shape.json.validators;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.ait.lienzo.shared.core.types.EnumWithValue;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 
 public class EnumValidator<T extends Enum<T> & EnumWithValue> extends AbstractAttributeTypeValidator
 {
-    private final T[] m_values;
+    private final List<T> m_values;
 
     public EnumValidator(final String typeName, final T[] values)
     {
         super(typeName);
 
-        m_values = values;
+        m_values = Arrays.asList(values);
     }
 
     @Override

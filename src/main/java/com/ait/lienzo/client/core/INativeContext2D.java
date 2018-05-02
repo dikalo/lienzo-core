@@ -27,7 +27,8 @@ import com.ait.lienzo.client.core.types.Transform;
 import com.ait.tooling.nativetools.client.collection.NFastDoubleArrayJSO;
 import com.google.gwt.dom.client.Element;
 
-public interface INativeContext2D {
+public interface INativeContext2D
+{
 
     void initDeviceRatio();
 

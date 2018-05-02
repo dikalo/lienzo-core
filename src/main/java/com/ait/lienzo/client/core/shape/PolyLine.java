@@ -85,47 +85,37 @@ public class PolyLine extends AbstractDirectionalMultiPointShape<PolyLine>
     @Override
     public boolean parse(final Attributes attr)
     {
-        Point2DArray list = attr.getPoints();
+        final Point2DArray list = attr.getPoints().noAdjacentPoints();
 
-        if (null != list)
+        final int size = list.size();
+
+        if (size > 1)
         {
-            list = list.noAdjacentPoints();
+            final PathPartList path = getPathPartList();
 
-            final int size = list.size();
+            final double headOffset = attr.getHeadOffset();
 
-            if (size > 1)
+            final double tailOffset = attr.getTailOffset();
+
+            m_headOffsetPoint = Geometry.getProjection(list.get(0), list.get(1), headOffset);
+
+            m_tailOffsetPoint = Geometry.getProjection(list.get(size - 1), list.get(size - 2), tailOffset);
+
+            path.M(m_headOffsetPoint);
+
+            final double corner = getCornerRadius();
+
+            if (corner <= 0)
             {
-                final PathPartList path = getPathPartList();
-
-                final double headOffset = attr.getHeadOffset();
-
-                final double tailOffset = attr.getTailOffset();
-
-                m_headOffsetPoint = Geometry.getProjection(list.get(0), list.get(1), headOffset);
-
-                m_tailOffsetPoint = Geometry.getProjection(list.get(size - 1), list.get(size - 2), tailOffset);
-
-                path.M(m_headOffsetPoint);
-
-                final double corner = getCornerRadius();
-
-                if (corner <= 0)
+                for (int i = 1; i < (size - 1); i++)
                 {
-                    for (int i = 1; i < (size - 1); i++)
-                    {
-                        path.L(list.get(i));
-                    }
-                    path.L(m_tailOffsetPoint);
+                    path.L(list.get(i));
                 }
-                else
-                {
-                    list = list.copy();
-
-                    list.set(size - 1, m_tailOffsetPoint);
-
-                    Geometry.drawArcJoinedLines(path, list, corner);
-                }
-                return true;
+                path.L(m_tailOffsetPoint);
+            }
+            else
+            {
+                Geometry.drawArcJoinedLines(path, list.copy().set(size - 1, m_tailOffsetPoint), corner);
             }
             return true;
         }

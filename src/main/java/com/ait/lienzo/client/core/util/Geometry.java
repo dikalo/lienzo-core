@@ -71,6 +71,11 @@ public final class Geometry
     {
     }
 
+    public static final boolean same(final double a, final double b)
+    {
+        return (Math.abs(a - b) < 0.0000001);
+    }
+
     public static final boolean closeEnough(final double a, final double b, final double slop)
     {
         return (Math.abs(a - b) < slop);

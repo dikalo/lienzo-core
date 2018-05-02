@@ -226,7 +226,7 @@ public class ImageProxy<T extends AbstractImageShape<T>> implements ImageDataFil
     {
         if (null == ckey)
         {
-            m_k_color = ckey;
+            m_k_color = null;
 
             m_ignores = new ClearFilter();
         }

@@ -18,6 +18,7 @@ package com.ait.lienzo.client.core.mediator;
 
 import com.ait.lienzo.client.core.shape.Viewport;
 import com.ait.lienzo.client.core.types.Transform;
+import com.ait.tooling.common.api.java.util.UUID;
 
 /**
  * AbstractMediator provides common functionality for {@link IMediator}s.
@@ -31,17 +32,15 @@ import com.ait.lienzo.client.core.types.Transform;
  */
 public abstract class AbstractMediator implements IMediator
 {
-    private static long  s_name_counter = 0;
-
-    private IEventFilter m_filter       = null;
+    private IEventFilter m_filter  = null;
 
     private Viewport     m_viewport;
 
-    private boolean      m_enabled      = true;
+    private boolean      m_enabled = true;
 
-    private boolean      m_batch        = false;
+    private boolean      m_batch   = false;
 
-    private String       m_name         = getClass().getName() + "_" + (s_name_counter++); // Create a default unique name, we don't create alot of Mediators, so... good'nuf
+    private String       m_name    = getClass().getName() + "_" + UUID.uuid(); // Create a default unique name, we don't create alot of Mediators, so... good'nuf
 
     public void setBatchDraw(final boolean batch)
     {

@@ -377,13 +377,9 @@ public class ToolTip extends GroupOf<IPrimitive<?>, ToolTip> implements IGuidePr
     {
         final JSONObject object = super.toJSONObject();
 
-        if (null != object)
-        {
-            object.put("type", new JSONString("ToolTip"));
+        object.put("type", new JSONString("ToolTip"));
 
-            return object.toString();
-        }
-        return null;
+        return object.toString();
     }
 
     @Override

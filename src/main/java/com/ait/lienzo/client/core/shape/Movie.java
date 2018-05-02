@@ -168,9 +168,9 @@ public class Movie extends Shape<Movie> implements ImageDataFilterable<Movie>
 
     private final native void setErrorHandler(Movie movie, VideoElement element)
     /*-{
-    	element.onerror = function(e) {
-    		movie.@com.ait.lienzo.client.core.shape.Movie::setErrorCode(I)(e.target.error.code);
-    	};
+		element.onerror = function(e) {
+			movie.@com.ait.lienzo.client.core.shape.Movie::setErrorCode(I)(e.target.error.code);
+		};
     }-*/;
 
     private final String getTextBestFit(final Context2D context, final String text, final int wide)
@@ -277,7 +277,7 @@ public class Movie extends Shape<Movie> implements ImageDataFilterable<Movie>
 
                 context.clip();
 
-                context.fillText(m_error, wide / 2, high / 2);
+                context.fillText(m_error, wide / 2.0d, high / 2.0d);
 
                 context.restore();
             }
@@ -702,6 +702,9 @@ public class Movie extends Shape<Movie> implements ImageDataFilterable<Movie>
                 break;
             case MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED:
                 m_error = MessageConstants.MESSAGES.movieFormatNotSupported();
+                break;
+            default:
+                m_error = "Unknown code " + code;
                 break;
         }
     }

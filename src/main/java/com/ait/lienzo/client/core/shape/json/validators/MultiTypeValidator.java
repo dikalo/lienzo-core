@@ -16,12 +16,15 @@
 
 package com.ait.lienzo.client.core.shape.json.validators;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.ait.lienzo.client.core.AttributeType;
 import com.google.gwt.json.client.JSONValue;
 
 public class MultiTypeValidator extends AbstractAttributeTypeValidator
 {
-    private final AttributeType[] m_types;
+    private final List<AttributeType> m_types;
 
     /**
      *
@@ -32,7 +35,7 @@ public class MultiTypeValidator extends AbstractAttributeTypeValidator
     {
         super(typeName);
 
-        m_types = types;
+        m_types = Arrays.asList(types);
     }
 
     @Override

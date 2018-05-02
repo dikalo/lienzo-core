@@ -411,18 +411,16 @@ public class GridLayer extends Layer
 
                 final DashArray previousDashes = line.getDashArray();
 
-                if (previousDashes != null)
+                final double[] d = previousDashes.getNormalizedArray();
+
+                final DashArray dashes = new DashArray();
+
+                for (final double element : d)
                 {
-                    final double[] d = previousDashes.getNormalizedArray();
-
-                    final DashArray dashes = new DashArray();
-
-                    for (final double element : d)
-                    {
-                        dashes.push(element / scale);
-                    }
-                    line.setDashArray(dashes);
+                    dashes.push(element / scale);
                 }
+                line.setDashArray(dashes);
+
                 long n1 = Math.round(min / size);
 
                 if ((n1 * size) < min)
@@ -479,10 +477,7 @@ public class GridLayer extends Layer
                 }
                 line.setStrokeWidth(previousLineWidth); // restore stroke width
 
-                if (previousDashes != null)
-                {
-                    line.setDashArray(previousDashes);
-                }
+                line.setDashArray(previousDashes);
             }
         }
         // Draw children (if any)

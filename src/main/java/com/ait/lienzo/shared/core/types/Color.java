@@ -17,6 +17,7 @@
 package com.ait.lienzo.shared.core.types;
 
 import com.ait.lienzo.client.core.types.ColorKeyRotor;
+import com.ait.lienzo.client.core.util.Geometry;
 import com.ait.lienzo.client.core.util.StringFormatter;
 
 /**
@@ -894,15 +895,15 @@ public class Color implements IColor
 
             final double delb = (((vmax - b) / 6.0) + (diff / 2.0)) / diff;
 
-            if (r == vmax)
+            if (Geometry.same(vmax, r))
             {
                 h = delb - delg;
             }
-            else if (g == vmax)
+            else if (Geometry.same(vmax, g))
             {
                 h = ((1.0 / 3.0) + delr) - delb;
             }
-            else if (b == vmax)
+            else if (Geometry.same(vmax, b))
             {
                 h = ((2.0 / 3.0) + delg) - delr;
             }
