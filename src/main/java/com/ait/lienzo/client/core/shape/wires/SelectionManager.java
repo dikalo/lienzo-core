@@ -200,19 +200,6 @@ public class SelectionManager implements NodeMouseDoubleClickHandler, NodeMouseC
         return m_selected;
     }
 
-    public Point2D getUntransformedStartPoint()
-    {
-        final Transform transform = m_layer.getViewport().getTransform();
-
-        if (transform != null)
-        {
-            final Point2D untransformed = new Point2D();
-            transform.getInverse().transform(m_start, untransformed);
-            return untransformed;
-        }
-        return m_start;
-    }
-
     public class OnMouseXEventHandler implements OnMouseEventHandler
     {
         public void down(final MouseEvent<? extends EventHandler> event)
@@ -270,29 +257,7 @@ public class SelectionManager implements NodeMouseDoubleClickHandler, NodeMouseC
             {
                 if (m_selectionCreationInProcess)
                 {
-                    double width = event.getX() - m_start.getX();
-                    double height = event.getY() - m_start.getY();
-                    // if either width or height is zero, you won't see the line being drawn, so ensure atleast 1px separation
-                    if (width == 0)
-                    {
-                        width += 1;
-                    }
-                    if (height == 0)
-                    {
-                        height += 1;
-                    }
-
-                    final Point2D unStartPoint = getUntransformedStartPoint();
-                    final Transform transform = m_layer.getViewport().getTransform();
-                    if (transform != null)
-                    {
-                        width = width / transform.getScaleX();
-                        height = height / transform.getScaleY();
-                    }
-
-                    drawSelectionShape(unStartPoint.getX(), unStartPoint.getY(), width, height, m_layer.getViewport().getOverLayer());
-                    m_layer.getViewport().getOverLayer().draw();
-
+                    drawSelectionShape(event);
                     return false;
                 }
                 else
@@ -308,9 +273,39 @@ public class SelectionManager implements NodeMouseDoubleClickHandler, NodeMouseC
             return true;
         }
 
-        private boolean selectionEventHandlingComplete(final MouseEvent<? extends EventHandler> event)
+        void drawSelectionShape(final MouseEvent<? extends EventHandler> event)
         {
-            if (m_selectionCreationInProcess)
+            final double relativeStartX = getSelectionManager().relativeStartX();
+            final double relativeStartY = getSelectionManager().relativeStartY();
+            final Point2D untransformedPoint = getSelectionManager().getUntransformedPoint(new Point2D(event.getX(), event.getY()));
+            final double relativeEventX = untransformedPoint.getX();
+            final double relativeEventY = untransformedPoint.getY();
+            final Layer overLayer = m_layer.getViewport().getOverLayer();
+
+            double width = relativeEventX - relativeStartX;
+            double height = relativeEventY - relativeStartY;
+
+            // if either width or height is zero, you won't see the line being drawn, so ensure at least 1px separation
+            if ( width == 0 )
+            {
+                width += 1;
+            }
+            if ( height == 0 )
+            {
+                height += 1;
+            }
+
+            getSelectionManager().drawSelectionShape(relativeStartX, relativeStartY, width, height, overLayer);
+            overLayer.draw();
+        }
+
+        SelectionManager getSelectionManager()
+        {
+            return SelectionManager.this;
+        }
+
+        private boolean selectionEventHandlingComplete(MouseEvent<? extends EventHandler> event) {
+            if(m_selectionCreationInProcess)
             {
                 m_selected.clear();
                 // selection shape is null, for a layer mouse down without any drag
@@ -460,14 +455,12 @@ public class SelectionManager implements NodeMouseDoubleClickHandler, NodeMouseC
         if (sw < 0)
         {
             sw = Math.abs(sw);
-            final Point2D unStartPoint = getUntransformedStartPoint();
-            sx = unStartPoint.getX() - sw;
+            sx = relativeStartX() - sw;
         }
         if (sh < 0)
         {
             sh = Math.abs(sh);
-            final Point2D unStartPoint = getUntransformedStartPoint();
-            sy = unStartPoint.getY() - sh;
+            sy = relativeStartY() - sh;
         }
         sw = sw + (padding * 2);
         sh = sh + (padding * 2);
@@ -491,6 +484,45 @@ public class SelectionManager implements NodeMouseDoubleClickHandler, NodeMouseC
         }
         // Update location and size.
         m_selectionShapeProvider.setLocation(location).setSize(sw, sh);
+    }
+
+    double relativeStartX()
+    {
+        return getUntransformedStartPoint().getX();
+    }
+
+    double relativeStartY()
+    {
+        return getUntransformedStartPoint().getY();
+    }
+
+    public Point2D getUntransformedStartPoint()
+    {
+        return getUntransformedPoint(getStart());
+    }
+
+    public Point2D getUntransformedPoint(final Point2D point2D)
+    {
+        final Transform transform = getViewportTransform();
+        final Point2D untransformed = new Point2D();
+
+        if (transform != null)
+        {
+            transform.getInverse().transform(point2D, untransformed);
+            return untransformed;
+        }
+
+        return point2D;
+    }
+
+    Point2D getStart()
+    {
+        return m_start;
+    }
+
+    public Transform getViewportTransform()
+    {
+        return m_layer.getViewport().getTransform();
     }
 
     public static class ChangedItems

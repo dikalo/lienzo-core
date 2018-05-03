@@ -74,7 +74,7 @@ public class WiresShapeControlHandleList implements IControlHandleList
         this(wiresShape, controlsType, controls, new HandlerRegistrationManager());
     }
 
-    private WiresShapeControlHandleList(final WiresShape wiresShape, final ControlHandleType controlsType, final ControlHandleList controls, final HandlerRegistrationManager registrationManager)
+    public WiresShapeControlHandleList(final WiresShape wiresShape, final ControlHandleType controlsType, final ControlHandleList controls, final HandlerRegistrationManager registrationManager)
     {
         m_wires_shape = wiresShape;
 
