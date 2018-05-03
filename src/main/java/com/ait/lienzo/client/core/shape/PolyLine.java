@@ -85,7 +85,14 @@ public class PolyLine extends AbstractDirectionalMultiPointShape<PolyLine>
     @Override
     public boolean parse(final Attributes attr)
     {
-        final Point2DArray list = attr.getPoints().noAdjacentPoints();
+        final Point2DArray points = attr.getPoints();
+
+        if (points == null)
+        {
+            return false;
+        }
+
+        final Point2DArray list = points.noAdjacentPoints();
 
         final int size = list.size();
 
@@ -119,7 +126,7 @@ public class PolyLine extends AbstractDirectionalMultiPointShape<PolyLine>
             }
             return true;
         }
-        return false;
+        return true;
     }
 
     @Override
