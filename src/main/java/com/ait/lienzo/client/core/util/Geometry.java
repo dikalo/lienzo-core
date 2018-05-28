@@ -21,7 +21,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.ait.lienzo.client.core.shape.AbstractMultiPathPartShape;
-import com.ait.lienzo.client.core.shape.BezierCurve;
 import com.ait.lienzo.client.core.shape.IPrimitive;
 import com.ait.lienzo.client.core.shape.MultiPath;
 import com.ait.lienzo.client.core.shape.QuadraticCurve;
@@ -35,6 +34,7 @@ import com.ait.lienzo.client.core.types.Point2DArray;
 import com.ait.lienzo.client.core.types.Transform;
 import com.ait.lienzo.shared.core.types.Direction;
 import com.ait.tooling.nativetools.client.collection.NFastArrayList;
+import com.ait.tooling.nativetools.client.collection.NFastDoubleArray;
 import com.ait.tooling.nativetools.client.collection.NFastDoubleArrayJSO;
 
 /**
@@ -44,8 +44,6 @@ import com.ait.tooling.nativetools.client.collection.NFastDoubleArrayJSO;
 public final class Geometry
 {
     private static final double NRRF_PRECISION        = 0.000001;
-
-    private static double[][]   BINOMIAL_COEFFICIENTS = { { 1 }, { 1, 1 } };
 
     public static final double  RADIANS_0             = toRadians(0);
 
@@ -94,124 +92,6 @@ public final class Geometry
     private static boolean lesserOrCloseEnough(final double a, final double b)
     {
         return closeEnough(a, b) || (a < b);
-    }
-
-    public static final BoundingBox getBoundingBox(final QuadraticCurve curve)
-    {
-        if (curve == null)
-        {
-            return null;
-        }
-        return getBoundingBoxOfCurve(curve.getControlPoints());
-    }
-
-    public static final BoundingBox getBoundingBox(final BezierCurve curve)
-    {
-        if (curve == null)
-        {
-            return null;
-        }
-        return getBoundingBoxOfCurve(curve.getControlPoints());
-    }
-
-    public static final BoundingBox getBoundingBoxOfCurve(final Point2DArray points)
-    {
-        return getBoundingBoxOfCurve(0, 0, points);
-    }
-
-    public static final BoundingBox getBoundingBoxOfCurve(final double computedLocationOffsetX, final double computedLocationOffsetY, final Point2DArray points)
-    {
-        if (null == points)
-        {
-            return null;
-        }
-        int size = points.size();
-
-        if (size < 3)
-        {
-            return null;
-        }
-        double minx = Double.MAX_VALUE;
-
-        double miny = Double.MAX_VALUE;
-
-        double maxx = -Double.MAX_VALUE;
-
-        double maxy = -Double.MAX_VALUE;
-
-        final NFastDoubleArrayJSO xval = NFastDoubleArrayJSO.make();
-
-        final NFastDoubleArrayJSO yval = NFastDoubleArrayJSO.make();
-
-        for (int i = 0; i < size; i++)
-        {
-            final Point2D p = points.get(i);
-
-            xval.push(p.getX());
-
-            yval.push(p.getY());
-        }
-        final NFastDoubleArrayJSO inflections = getInflections(points, xval, yval);
-
-        size = inflections.size();
-
-        for (int i = 0; i < size; i++)
-        {
-            final double t = inflections.get(i);
-
-            final double x = getValue(t, xval);
-
-            final double y = getValue(t, yval);
-
-            minx = Math.min(x, minx);
-
-            maxx = Math.max(x, maxx);
-
-            miny = Math.min(y, miny);
-
-            maxy = Math.max(y, maxy);
-        }
-        return new BoundingBox(computedLocationOffsetX + minx, computedLocationOffsetY + miny, computedLocationOffsetX + maxx, computedLocationOffsetY + maxy);
-    }
-
-    private static final NFastDoubleArrayJSO getInflections(final Point2DArray points, final NFastDoubleArrayJSO xval, final NFastDoubleArrayJSO yval)
-    {
-        final int size = points.size();
-
-        final int ordr = size - 1;
-
-        final NFastDoubleArrayJSO tval = NFastDoubleArrayJSO.make();
-
-        tval.push(0.0);
-
-        tval.push(1.0);
-
-        populateT(1, xval, tval);
-        populateT(1, yval, tval);
-
-        if (ordr > 2)
-        {
-            populateT(2, xval, tval);
-            populateT(2, yval, tval);
-        }
-        return tval.uniq();
-    }
-
-    private static void populateT(final int derivative, final NFastDoubleArrayJSO xval, final NFastDoubleArrayJSO tval)
-    {
-        final NFastDoubleArrayJSO root = findAllRoots(derivative, xval);
-
-        final int size = root.size();
-
-        for (int i = 0; i < size; i++)
-        {
-            final double t = root.get(i);
-
-            if ((0 < t) && (t < 1))
-            {
-                tval.push(t);
-            }
-        }
     }
 
     public static BoundingBox getBoundingBoxOfArcTo(final Point2D p0, final Point2D p1, final Point2D p2, final double r)
@@ -352,122 +232,8 @@ public final class Geometry
         return new BoundingBox(xmin, ymin, xmax, ymax);
     }
 
-    private static final NFastDoubleArrayJSO findAllRoots(final int derivative, final NFastDoubleArrayJSO values)
-    {
-        final NFastDoubleArrayJSO root = NFastDoubleArrayJSO.make();
 
-        if (areLinear(values) || ((derivative == 1) && (values.size() == 3)))
-        {
-            if (derivative > 1)
-            {
-                return root;
-            }
-            final double beg = getDerivative(1, 0, values);
 
-            final double end = getDerivative(1, 1, values);
-
-            if ((beg > 0) && (end > 0))
-            {
-                return root;
-            }
-            if ((beg < 0) && (end < 0))
-            {
-                return root;
-            }
-            root.push(map(0, beg, end, 0, 1));
-
-            return root;
-        }
-        for (double t = 0; t <= 1.0; t += 0.01)
-        {
-            final double r = Math.round(findRoots(derivative, t, values) / NRRF_PRECISION) * NRRF_PRECISION;
-
-            if (root.contains(r))
-            {
-                continue;
-            }
-            root.push(r);
-        }
-        return root;
-    }
-
-    private static final double findRoots(final int derivative, final double t, final NFastDoubleArrayJSO values)
-    {
-        return findRoots(derivative, t, values, 0);
-    }
-
-    private static final double findRoots(final int derivative, final double t, final NFastDoubleArrayJSO values, final double offset)
-    {
-        return findRootsRecursive(derivative, t, values, offset, 0);
-    }
-
-    /**
-     * Newton-Raphson root finding (with depth capping).
-     * Iteratively compute x(n+1) = x(n) - f(x)/f'(x),
-     * until (x(n+1) - x(n)) approaches zero with a
-     * satisfactory precision.
-     */
-    private static final double findRootsRecursive(final int derivative, final double t, final NFastDoubleArrayJSO values, final double offset, final int depth)
-    {
-        final double d0 = getDerivative(derivative + 0, t, values) - offset;
-
-        final double df = getDerivative(derivative + 1, t, values);
-
-        double t2 = t - (d0 / df);
-
-        if (df == 0)
-        {
-            t2 = t - d0;
-        }
-        if (depth > 12)
-        {
-            if (Math.abs(t - t2) < NRRF_PRECISION)
-            {
-                return t2;
-            }
-            return -1;
-        }
-        if (Math.abs(t - t2) > NRRF_PRECISION)
-        {
-            return findRootsRecursive(derivative, t2, values, offset, depth + 1);
-        }
-        return t2;
-    }
-
-    private static final double map(final double value, final double istart, final double istop, final double ostart, final double ostop)
-    {
-        return ostart + ((ostop - ostart) * ((value - istart) / (istop - istart)));
-    }
-
-    private static final double getDerivative(final int derivative, final double t, final NFastDoubleArrayJSO values)
-    {
-        final int n = values.size() - 1;
-
-        if (n == 0)
-        {
-            return 0;
-        }
-        if (derivative == 0)
-        {
-            double value = 0;
-
-            for (int k = 0; k <= n; k++)
-            {
-                value += binomial(n, k) * Math.pow(1 - t, n - k) * Math.pow(t, k) * values.get(k);
-            }
-            return value;
-        }
-        else
-        {
-            final NFastDoubleArrayJSO lowers = NFastDoubleArrayJSO.make();
-
-            for (int k = 0; k < n; k++)
-            {
-                lowers.push(n * (values.get(k + 1) - values.get(k)));
-            }
-            return getDerivative(derivative - 1, t, lowers);
-        }
-    }
 
     private static final boolean areLinear(final NFastDoubleArrayJSO values)
     {
@@ -485,37 +251,6 @@ public final class Geometry
             }
         }
         return true;
-    }
-
-    public static final double binomial(final int n, final int k)
-    {
-        while (n >= BINOMIAL_COEFFICIENTS.length)
-        {
-            final int size = BINOMIAL_COEFFICIENTS.length;
-
-            final double[][] repl = new double[size + 1][];
-
-            for (int i = 0; i < size; i++)
-            {
-                repl[i] = BINOMIAL_COEFFICIENTS[i];
-            }
-            final double[] curr = BINOMIAL_COEFFICIENTS[size - 1];
-
-            final double[] next = new double[size + 1];
-
-            repl[size] = next;
-
-            next[0] = 1;
-
-            for (int i = 1; i < curr.length; i++)
-            {
-                next[i] = curr[i] + curr[i - 1];
-            }
-            next[size] = 1;
-
-            BINOMIAL_COEFFICIENTS = repl;
-        }
-        return BINOMIAL_COEFFICIENTS[n][k];
     }
 
     public static final Point2DArray intersectLineCurve(final double[] xval, final double[] yval, final double[] lx, final double[] ly)
@@ -572,29 +307,28 @@ public final class Geometry
     {
         if (closeEnough(p[0], 0))
         {
-            final double[] roots = quadraticRoots(p);
+            final double[] roots = quadraticDerivitiveRoots(p);
             return roots;
         }
 
         final double[] roots = new double[3];
 
-        // a would be p0
-        final double b = p[1] / p[0];
-        final double c = p[2] / p[0];
-        final double d = p[3] / p[0];
+        final double a = p[1] / p[0];
+        final double b = p[2] / p[0];
+        final double c = p[3] / p[0];
 
-        final double q = ((3 * c) - Math.pow(b, 2)) / 9;
-        final double r = ((9 * b * c) - (27 * d) - (2 * Math.pow(b, 3))) / 54;
-        final double discriminant = Math.pow(q, 3) + Math.pow(r, 2);    // polynomial discriminant
+        final double q = ((3 * b) - Math.pow(a, 2)) / 9;
+        final double r = ((9 * a * b) - (27 * c) - (2 * Math.pow(a, 3))) / 54;
+        final double d = Math.pow(q, 3) + Math.pow(r, 2);    // polynomial discriminant
 
-        if (discriminant >= 0)                                 // complex or duplicate roots
+        if (d >= 0) // complex or duplicate roots
         {
-            final double sqrtD = Math.sqrt(discriminant);
+            final double sqrtD = Math.sqrt(d);
             final double s = sgn(r + sqrtD) * Math.pow(Math.abs(r + sqrtD), (1 / 3));
             final double t = sgn(r - sqrtD) * Math.pow(Math.abs(r - sqrtD), (1 / 3));
 
             roots[0] = s + t;                                   // real root
-            roots[1] = (-b / 3) - ((s + t) / 2);                        // real part of complex root
+            roots[1] = (-a / 3) - ((s + t) / 2);                        // real part of complex root
             roots[2] = roots[1];                                // real part of complex root
             final double rootPair = Math.abs((Math.sqrt(3) * (s - t)) / 2); // complex part of root pair
 
@@ -608,9 +342,9 @@ public final class Geometry
         else
         {
             final double th = Math.acos(r / Math.sqrt(-Math.pow(q, 3)));
-            roots[0] = (2 * Math.sqrt(-q) * Math.cos(th / 3)) - (b / 3);
-            roots[1] = (2 * Math.sqrt(-q) * Math.cos((th + (2 * Math.PI)) / 3)) - (b / 3);
-            roots[2] = (2 * Math.sqrt(-q) * Math.cos((th + (4 * Math.PI)) / 3)) - (b / 3);
+            roots[0] = (2 * Math.sqrt(-q) * Math.cos(th / 3)) - (a / 3);
+            roots[1] = (2 * Math.sqrt(-q) * Math.cos((th + (2 * Math.PI)) / 3)) - (a / 3);
+            roots[2] = (2 * Math.sqrt(-q) * Math.cos((th + (4 * Math.PI)) / 3)) - (a / 3);
         }
 
         // discard out of spec roots
@@ -628,52 +362,157 @@ public final class Geometry
         return roots;
     }
 
-    private static double[] quadraticRoots(final double[] p)
+    public static final BoundingBox getBoundingBox(final QuadraticCurve curve)
     {
-        double[] roots;
-
-        if (closeEnough(p[1], 0))
+        if (curve == null)
         {
-            roots = linearRoots(p);
+            return null;
+        }
+        Point2DArray points = curve.getControlPoints();
+        BoundingBox  box    = getBoundingBoxForQuadraticCurve(points);
+        return box;
+    }
+
+    public static BoundingBox getBoundingBoxForQuadraticCurve(final Point2DArray points)
+    {
+        NFastDoubleArray cubicPoints = quadraticToCubic(points.get(0).getX(), points.get(0).getY(),
+                                                        points.get(1).getX(), points.get(1).getY(),
+                                                        points.get(2).getX(), points.get(2).getY());
+
+        double[] xval = new double[4];
+        double[] yval = new double[4];
+        for (int i = 0; i<cubicPoints.size(); i = i + 2)
+        {
+            xval[i] = cubicPoints.get(i);
+            yval[i] = cubicPoints.get(i+1);
+        }
+
+        return getBoundingBoxOfCubicCurve(xval, yval);
+    }
+
+    public static NFastDoubleArray quadraticToCubic(double x0, double y0, double cx, double cy, double x1, double y1)
+    {
+        double c0x = x0 + 2.0/3.0 * (cx-x0);
+        double c0y = y0 + 2.0/3.0 * (cy-y0);
+        double c1x = c0x + (x1 - x0)/3.0;
+        double c1y = c0y + (y1 - y0)/3.0;
+        return new NFastDoubleArray(x0, y0, c0x, c0y, c1x, c1y, x1, y1);
+    }
+
+    public static BoundingBox getBoundingBoxOfCubicCurve(double[] xval, double[] yval)
+    {
+        return getBoundingBoxOfCubicCurve(0, 0, xval, yval);
+    }
+
+    public static BoundingBox getBoundingBoxOfCubicCurve(final double computedLocationOffsetX, final double computedLocationOffsetY, double[] xval, double[] yval)
+    {
+        // https://stackoverflow.com/questions/2587751/an-algorithm-to-find-bounding-box-of-closed-bezier-curves/14429749#14429749
+
+        double[] xroots = quadraticDerivitiveRoots(xval);
+        double[] yroots = quadraticDerivitiveRoots(yval);
+
+        BoundingBox box = new BoundingBox();
+        box.add(xval[0], yval[0]);
+        box.add(xval[3], yval[3]);
+
+        addBezierPolynomial(xval, yval, xroots, box);
+        addBezierPolynomial(xval, yval, yroots, box);
+        return box;
+    }
+
+    private static void addBezierPolynomial(final double[] xval, final double[] yval, final double[] roots, final BoundingBox box)
+    {
+        for ( int i = 0; i < roots.length; i++)
+        {
+            if ( roots[i] >= 0 )
+            {
+                double x = cubicBezierPoint(xval, roots[i]);
+                double y = cubicBezierPoint(yval, roots[i]);
+                box.add(x,y);
+            }
+        }
+    }
+
+    private static double cubicBezierPoint(double[] val, double t)
+    {
+        double s = 1 - t;
+        double a = s * s  * s;
+        double b = 3 * s * s * t;
+        double c = 3 * s * t * t;
+        double d = t * t * t;
+
+        double v = a * val[0] +
+                   b * val[1] +
+                   c * val[2] +
+                   d * val[3];
+
+        return v;
+
+    }
+
+    private static double[] quadraticDerivitiveRoots(double[] val)
+    {
+        double a = -3 * val[0] + 9 * val[1] - 9 * val[2] + 3 * val[3];
+        double b = 6 * val[0] - 12 * val[1] + 6 * val[2];
+        double c = 3 * val[1] - 3 * val[0];
+
+        return quadraticRoots(a, b, c);
+    }
+
+    private static double[] quadraticRoots(final double a, final double b, final double c)
+    {
+        final double[] roots;
+        if (closeEnough(a, 0))
+        {
+            roots = linearRoots(b, c);
             return roots;
         }
 
         roots = new double[] { -1, -1, -1 };
-
-        final double dq = Math.pow(p[2], 2) - (4 * p[1] * p[3]); // quadratic discriminant
-        if (closeEnough(dq, 0))
-        { // One real root.
-            roots[0] = -p[2] / (2 * p[1]);
-            roots[1] = -p[2] / (2 * p[1]);
-        }
-        else if (dq > 0)
+        final double dq = (b*b) - (4 * a * c); // quadratic discriminant
+        if (dq > 0)
         {
+            // used approach to avoid round-off, as per https://github.com/jdowner/bbox.js/blob/master/src/bbox.js
             final double rdq = Math.sqrt(dq);
-            roots[0] = (-p[2] - rdq) / (2 * p[1]);
-            roots[1] = (-p[2] + rdq) / (2 * p[1]);
+            double t = (-b + rdq)/(2 * a);
+            if (0 < t && t < 1)
+            {
+                roots[0] = t;
+            }
+
+            t = (-b - rdq)/(2 * a);
+            if (0 < t && t < 1)
+            {
+                roots[1] = t;
+            }
         }
-        else
-        {
-            //Console.get().warn("quadraticRoots had dq < 0");
-            // Complex roots
-            //return null;
+        else if (closeEnough(dq, 0))
+        { // One real root.
+            roots[0] = -b / (2 * a);
+            roots[1] = roots[0];
         }
 
         return roots;
     }
 
-    private static double[] linearRoots(final double[] p)
+    private static double[] linearRoots(final double a, final double b)
     {
-        final double t = -p[3] / p[2];
-        if ((p[2] == 0) || (t < 0) || (t > 1))
+        final double[] roots = new double[] { -1, -1, -1 };
+        if ( !closeEnough(a, 0))
         {
-            return new double[] { -1, -1, -1 };
+            final double t = -b / a;
+            if (0 < t && t < 1)
+            {
+                roots[0] = t;
+            }
         }
-
-        final double[] roots = new double[] { t, -1, -1 };
         return roots;
     }
 
+    /**
+     * sort, but place -1 at the end
+     * @param d
+     */
     public static void sortSpecial(final double[] d)
     {
         boolean flip;
@@ -684,7 +523,8 @@ public final class Geometry
             flip = false;
             for (int i = 0; i < (d.length - 1); i++)
             {
-                if (((d[i + 1] >= 0) && (d[i] > d[i + 1])) || ((d[i] < 0) && (d[i + 1] >= 0)))
+                if (((d[i + 1] >= 0) && (d[i] > d[i + 1])) ||
+                    ((d[i] < 0) && (d[i + 1] >= 0)))
                 {
                     flip = true;
                     temp = d[i];
@@ -710,35 +550,6 @@ public final class Geometry
     public static int sgn(final double x)
     {
         return (x < 0.0) ? -1 : 1;
-    }
-
-    public static final void cubicRoots(final Point2D points)
-    {
-
-    }
-
-    public static final double polyterm(final int n, final int k, final double t)
-    {
-        return Math.pow((1 - t), n - k) * Math.pow(t, k);
-    }
-
-    private static final double getValue(final double t, final NFastDoubleArrayJSO values)
-    {
-        final int n = values.size() - 1;
-
-        double value = 0;
-
-        for (int k = 0; k <= n; k++)
-        {
-            final double v = values.get(k);
-
-            if (v == 0)
-            {
-                continue;
-            }
-            value += binomial(n, k) * polyterm(n, k, t) * v;
-        }
-        return value;
     }
 
     /**
@@ -1604,13 +1415,14 @@ public final class Geometry
                     final double x3 = points.get(4);
                     final double y3 = points.get(5);
 
+                    final double[] xvals = new double[] { x0, x1, x2, x3 };
+                    final double[] yvals = new double[] { y0, y1, y2, y3 };
+
                     final Point2D end = new Point2D(x3, y3);
 
                     for (int j = 1; j < cardinals.size(); j++)
                     {
                         final Point2D cardinal = cardinals.get(j);
-                        final double[] xvals = new double[] { x0, x1, x2, x3 };
-                        final double[] yvals = new double[] { y0, y1, y2, y3 };
 
                         final double[] lx = new double[] { center.getX(), cardinal.getX() };
                         final double[] ly = new double[] { center.getY(), cardinal.getY() };
