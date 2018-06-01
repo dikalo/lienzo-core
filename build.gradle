@@ -47,7 +47,7 @@ sourceCompatibility = 1.7
 
 targetCompatibility = 1.7
 
-version = '2.0.299-RELEASE'
+version = '2.0.300-RELEASE'
 
 group = 'com.ahome-it'
 
@@ -108,8 +108,10 @@ task doJavaDocs(type: Groovydoc) {
     source = sourceSets.main.allSource
     classpath = sourceSets.main.runtimeClasspath + buildscript.configurations.classpath
     destinationDir = project.file("${buildDir}/docs/javadoc")
-    includes = ['com/ait/lienzo/**']
-    docTitle = "Lienzo 2D Structured Graphics"
+    includes = [
+    	'com/ait/lienzo/**'
+    ]
+    docTitle = 'Lienzo 2D Structured Graphics'
     footer = "<small><a href=\"https://github.com/ahome-it/lienzo-core\" target=\"_blank\">Lienzo - ${getBuildModuleVersion()} - Author: Dean S. Jones</a></small>"
     getGroovydocLinks().each { name, list ->
         link(name, *list)
