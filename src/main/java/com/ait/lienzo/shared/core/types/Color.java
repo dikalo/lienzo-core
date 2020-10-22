@@ -205,7 +205,7 @@ public class Color implements IColor
      */
     public static final String toBrowserRGBA(final int r, final int g, final int b, final double a)
     {
-        return "rgba(" + fixRGB(r) + "," + fixRGB(g) + "," + fixRGB(g) + "," + fixAlpha(a) + ")";
+        return "rgba(" + fixRGB(r) + "," + fixRGB(g) + "," + fixRGB(b) + "," + fixAlpha(a) + ")";
     }
 
     /**
